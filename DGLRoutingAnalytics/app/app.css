@@ -23,3 +23,32 @@
   content: "|";
   padding-right: 0.3em;
 }
+
+.impedance-box{
+  width: 200px;
+  height: 70px;
+  /*border-top-left-radius: 2px;
+  border-top-right-radius: 2px;*/
+  background-color: #fff;
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+.impedance-selector{
+  margin-top: 10px;
+  /*margin-left: 20px;*/
+  /*display: block;*/
+}
+
+.search-button{
+  margin-top: 10px;
+  /*margin-left: 20px;*/
+  /*display: block;*/
+}
+
+.route-popup-box span{
+  display: block;
+}
