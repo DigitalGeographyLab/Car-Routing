@@ -78,8 +78,11 @@
             //"Light Map": light
         };
 
+        var center = [45.532189, -122.640910]; //Portland
+        center = [60.165063, 24.938400]; //Helsinki
+
         $scope.map = L.map('map', {
-            center: [45.532189, -122.640910], //Default location
+            center: center, //Default location
             zoom: 12, //Default Zoom, Higher = Closer)
             layers: [streets], // Default basemaplayer on startrup, can also give another layer here to show by default)
             maxZoom: 22,
@@ -99,6 +102,106 @@
         L.marker([51.5, -0.09]).addTo(map)
             .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
             .openPopup();*/
+
+        $scope.changeImpedance = function (event) {
+            $scope.impedanceFilter = event.target.value;
+        }
+
+        $scope.searchRoute = function () {
+            if ($scope.startMarker && $scope.endMarker) {
+                if (!$scope.impedanceFilter) {
+                    $scope.impedanceFilter = "pituus";// "time";
+                }
+                var viewParams = [
+                    'source:' + $scope.startMarker.options["id"],
+                    'target:' + $scope.endMarker.options["id"],
+                    'cost:' + $scope.impedanceFilter
+                ];
+
+                var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
+                    'request=GetFeature&typeName=tutorial:shortest_path&' +
+                    'outputformat=application/json&' +
+                    '&viewparams=' + viewParams.join(';');
+
+                url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
+                    'request=GetFeature&typeName=tutorial:dgl_shortest_path&' +
+                    'outputformat=application/json&' +
+                    '&viewparams=' + viewParams.join(';');
+
+                $.ajax({
+                    url: url,
+                    async: false,
+                    type: "GET",
+                    //dataType: 'json',
+                    contentType: 'text/plain',
+                    xhrFields: {
+                        // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
+                        // This can be used to set the 'withCredentials' property.
+                        // Set the value to 'true' if you'd like to pass cookies to the server.
+                        // If this is enabled, your server must respond with the header
+                        // 'Access-Control-Allow-Credentials: true'.
+                        withCredentials: false
+                    },
+                    headers: {
+                        // Set any custom headers here.
+                        // If you set any non-simple headers, your server must include these
+                        // headers in the 'Access-Control-Allow-Headers' response header.
+                    },
+                    success: function (json) {
+                        $scope.loadRoute(json);
+                    },
+                    error: function () {
+                        // Here's where you handle an error response.
+                        // Note that if the error was due to a CORS issue,
+                        // this function will still fire, but there won't be any additional
+                        // information about the error.
+                    }
+                });
+            }
+        }
+
+        $scope.impedanceFilter = "pituus";
+
+        L.Control.SelectionBox = L.Control.extend({
+            onAdd: function (map) {
+                var div = L.DomUtil.create('div', 'impedance-box leaflet-bar');
+
+                var selection = L.DomUtil.create('select', 'impedance-selector', div);
+                L.DomEvent.addListener(selection, 'change', $scope.changeImpedance);
+
+                var impedance_attributes = {
+                    "pituus": "Distance",
+                    "digiroa_aa": "Speed limit time",
+                    "kokopva_aa": "Day average delay time",
+                    "keskpva_aa": "Midday delay time",
+                    "ruuhka_aa": "Rush hour delay time"
+                };
+
+                for (var key in impedance_attributes) {
+                    var option = L.DomUtil.create('option', 'impedance-option', selection);
+                    option.value = key;
+                    option.innerHTML = impedance_attributes[key];
+                }
+
+                var searchRouteButton = L.DomUtil.create('input', 'search-button', div);
+                searchRouteButton.type = "button";
+                searchRouteButton.value = "Search Route";
+
+                L.DomEvent.addListener(searchRouteButton, 'click', $scope.searchRoute);
+
+                return div;
+            },
+
+            onRemove: function (map) {
+                // Nothing to do here
+            }
+        });
+
+        L.control.selectionBox = function (opts) {
+            return new L.Control.SelectionBox(opts);
+        }
+
+        L.control.selectionBox({position: 'topleft'}).addTo($scope.map);
 
 
         var zoom = 12;
@@ -219,7 +322,10 @@
                 'outputformat=application/json&' +
                 'viewparams=x:' + coordinates.lng + ';y:' + coordinates.lat;
 
-            //url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html',
+            url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
+                'request=GetFeature&typeName=tutorial:dgl_nearest_vertex&' +
+                'outputformat=application/json&' +
+                'viewparams=x:' + coordinates.lng + ';y:' + coordinates.lat;
 
             $.ajax({
                 url: url,
@@ -254,8 +360,61 @@
 
         }
 
+        function calculateTotalTravelTime(features) {
+
+            var distance = 0;
+            var speed_limit_time = 0;
+            var day_avg_delay_time = 0;
+            var midday_delay_time = 0;
+            var rush_hour_delay_time = 0;
+
+            for (var i in features) {
+                distance += features[i].properties.distance;
+                speed_limit_time += features[i].properties.speed_limit_time;
+                day_avg_delay_time += features[i].properties.day_avg_delay_time;
+                midday_delay_time += features[i].properties.midday_delay_time;
+                rush_hour_delay_time += features[i].properties.rush_hour_delay_time;
+            }
+
+            var totals = {
+                "distance": distance,
+                "speed_limit_time": speed_limit_time,
+                "day_avg_delay_time": day_avg_delay_time,
+                "midday_delay_time": midday_delay_time,
+                "rush_hour_delay_time": rush_hour_delay_time
+            }
+
+            return totals;
+        }
+
         $scope.loadRoute = function (jsonRoute) {
             $scope.routeLayer = L.Proj.geoJson(jsonRoute);
+
+            var totalTimes = calculateTotalTravelTime(jsonRoute.features);
+
+            var div = L.DomUtil.create('div', 'route-popup-box');
+
+            var impedance_attributes = {
+                "distance": "Total Distance",
+                "speed_limit_time": "Total speed limit time",
+                "day_avg_delay_time": "Total day average delay time",
+                "midday_delay_time": "Total Midday delay time",
+                "rush_hour_delay_time": "Total rush hour delay time"
+            };
+
+            for (var key in totalTimes) {
+                var option = L.DomUtil.create('span', '', div);
+                option.innerHTML = impedance_attributes[key] + ": " + Math.round(totalTimes[key]);
+            }
+
+            $scope.routeLayer.bindPopup(div);
+
+            $scope.routeLayer.on('mouseover', function (e) {
+                this.openPopup();
+            });
+            /*$scope.routeLayer.on('mouseout', function (e) {
+                this.closePopup();
+            });*/
             $scope.routeLayer.addTo($scope.map);
         }
 
@@ -316,49 +475,7 @@
                 .bindPopup(message)
                 .openPopup();
 
-            if ($scope.startMarker && $scope.endMarker) {
-                var impedanceFilter = "time";
-                var viewParams = [
-                    'source:' + $scope.startMarker.options["id"],
-                    'target:' + $scope.endMarker.options["id"],
-                    'cost:' + impedanceFilter
-                ];
-
-                var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                    'request=GetFeature&typeName=tutorial:shortest_path&' +
-                    'outputformat=application/json&' +
-                    '&viewparams=' + viewParams.join(';');
-
-                $.ajax({
-                    url: url,
-                    async: false,
-                    type: "GET",
-                    //dataType: 'json',
-                    contentType: 'text/plain',
-                    xhrFields: {
-                        // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
-                        // This can be used to set the 'withCredentials' property.
-                        // Set the value to 'true' if you'd like to pass cookies to the server.
-                        // If this is enabled, your server must respond with the header
-                        // 'Access-Control-Allow-Credentials: true'.
-                        withCredentials: false
-                    },
-                    headers: {
-                        // Set any custom headers here.
-                        // If you set any non-simple headers, your server must include these
-                        // headers in the 'Access-Control-Allow-Headers' response header.
-                    },
-                    success: function (json) {
-                        $scope.loadRoute(json);
-                    },
-                    error: function () {
-                        // Here's where you handle an error response.
-                        // Note that if the error was due to a CORS issue,
-                        // this function will still fire, but there won't be any additional
-                        // information about the error.
-                    }
-                });
-            }
+            $scope.searchRoute();
         }
 
         //$scope.map.fitWorld();
