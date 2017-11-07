@@ -41,6 +41,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         # self.assertEqual(, outputFeaturesGeojson)
 
     def test_givenAListOfGeojson_then_createSummary(self):
+        self.maxDiff = None
         dir = self.dir + '/src/test/data/geojson/metroAccessDigiroadSummaryResult.geojson'
         outputFolderFeaturesURL = self.dir + '/src/test/data/outputFolder/'
 

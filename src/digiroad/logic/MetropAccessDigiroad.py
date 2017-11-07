@@ -41,18 +41,23 @@ class MetropAccessDigiroadApplication:
                 "lng": lng
             })
 
-            newFeature = startPointNearestVertexCoordinates["features"][0]
-            # lat = newFeature["geometry"]["coordinates"][1]
-            # lng = newFeature["geometry"]["coordinates"][0]
-            startVertexId = newFeature["id"].split(".")[1]
+            startPoint = startPointNearestVertexCoordinates["features"][0]
+            # lat = startPoint["geometry"]["coordinates"][1]
+            # lng = startPoint["geometry"]["coordinates"][0]
+            startVertexId = startPoint["id"].split(".")[1]
 
-            newFeature = endPointNearestVertexCoordinates["features"][0]
-            # lat = newFeature["geometry"]["coordinates"][1]
-            # lng = newFeature["geometry"]["coordinates"][0]
-            endVertexId = newFeature["id"].split(".")[1]
+            endPoint = endPointNearestVertexCoordinates["features"][0]
+            # lat = endPoint["geometry"]["coordinates"][1]
+            # lng = endPoint["geometry"]["coordinates"][0]
+            endVertexId = endPoint["id"].split(".")[1]
 
             shortestPath = wfsServiceProvider.getShortestPath(startVertexId=startVertexId, endVertexId=endVertexId,
                                                               cost=costAttribute)
+
+            shortestPath["overallProperties"] = {
+                "startCoordinates": startPoint["geometry"]["coordinates"],
+                "endCoordinates": endPoint["geometry"]["coordinates"]
+            }
 
             completeFilename = "%s_%s_%s.%s" % (filename, startVertexId, endVertexId, extension)
             self.writeFile(folderPath=outputFolderPath, filename=completeFilename, data=shortestPath)
@@ -61,13 +66,16 @@ class MetropAccessDigiroadApplication:
         totals = {"features": []}
 
         for file in os.listdir(folderPath):
-            if file.endswith(".geojson"):
+            if file.endswith(".geojson") and file != "metroAccessDigiroadSummary.geojson":
 
                 filemetadata = file.split("_")
                 if len(filemetadata) < 2:
                     print filemetadata
 
+                shortestPath = self.readJsonFile(filePath=folderPath + file)
+
                 newSummaryFeature = {
+                    "crs": shortestPath["crs"],
                     "geometry": {
                         "coordinates": [
                         ],
@@ -75,11 +83,13 @@ class MetropAccessDigiroadApplication:
                     },
                     "properties": {
                         "startVertexId": filemetadata[1],
-                        "endVertexId": filemetadata[2].replace(".geojson", "")
+                        "endVertexId": filemetadata[2].replace(".geojson", ""),
+                        "startCoordinates": shortestPath["overallProperties"]["startCoordinates"],
+                        "endCoordinates": shortestPath["overallProperties"]["endCoordinates"]
                     }
                 }
 
-                shortestPath = self.readJsonFile(filePath=folderPath + file)
+
                 startPoints = None
                 endPoints = None
 

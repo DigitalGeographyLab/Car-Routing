@@ -41,3 +41,5 @@ def main():
     starter.calculateTotalTimeTravel(wfsServiceProvider=readData,
                                      inputCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
                                      outputFolderPath=outputShortestGeojsonPathLayerFilename)
+
+    starter.createSummary(outputShortestGeojsonPathLayerFilename, "metroAccessDigiroadSummary.geojson")
