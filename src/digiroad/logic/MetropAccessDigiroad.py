@@ -2,25 +2,37 @@ import json
 import os
 import shutil
 
-# from src.digiroad.carRoutingExceptions import FileNotFoundException, NotWFSDefinedException, NotURLDefinedException # ONLY test purposes
+# from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
-from digiroad.enumerations import CostAttributes
+from digiroad.connection import FileActions
+from digiroad.enumerations import CostAttributes, GeometryType
 
 
 class MetropAccessDigiroadApplication:
     def __init__(self):
-        pass
+        self.fileActions = FileActions()
 
     def calculateTotalTimeTravel(self, wfsServiceProvider=None, inputCoordinatesGeojsonFilename=None,
                                  outputFolderPath=None, costAttribute=CostAttributes.DISTANCE):
+        """
+        Given a set of pair points and the ``cost attribute``, calculate the shortest path between each of them and
+        store the Shortest Path Geojson file in the ``outputFolderPath``.
+
+        :param wfsServiceProvider: WFS Service Provider data connection
+        :param inputCoordinatesGeojsonFilename: Geojson file (Geometry type: MultiPoint) containing pair of points.
+        :param outputFolderPath: URL to store the shortest path geojson features of each pair of points.
+        :param costAttribute: Attribute to calculate the impedance of the Shortest Path algorithm.
+        :return: None. Store the information in the ``outputFolderPath``.
+        """
+
         if not wfsServiceProvider:
             raise NotWFSDefinedException()
         if not inputCoordinatesGeojsonFilename or not outputFolderPath:
             raise NotURLDefinedException()
 
-        self.deleteFolder(path=outputFolderPath)
+        self.fileActions.deleteFolder(path=outputFolderPath)
 
-        inputCoordinates = wfsServiceProvider.readMultiPointJson(inputCoordinatesGeojsonFilename)
+        inputCoordinates = self.fileActions.readMultiPointJson(inputCoordinatesGeojsonFilename)
 
         filename = "shortestPath"
         extension = "geojson"
@@ -60,9 +72,19 @@ class MetropAccessDigiroadApplication:
             }
 
             completeFilename = "%s_%s_%s.%s" % (filename, startVertexId, endVertexId, extension)
-            self.writeFile(folderPath=outputFolderPath, filename=completeFilename, data=shortestPath)
+            self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename, data=shortestPath)
 
     def createSummary(self, folderPath, outputFilename):
+        """
+        Given a set of Geojson (Geometry type: LineString) files, read all the files from the given ``folderPath`` and
+        sum all the attribute values (distance, speed_limit_time, day_avg_delay_time, midday_delay_time and
+        rush_hour_delay_time) and create a simple features Geojson (Geometry type: LineString)
+        with the summary information.
+
+        :param folderPath: Folder containing the shortest path geojson features.
+        :param outputFilename: Filename to give to the summary file.
+        :return: None. Store the summary information in the folderPath with the name given in outputFilename.
+        """
         totals = {"features": []}
 
         for file in os.listdir(folderPath):
@@ -72,14 +94,14 @@ class MetropAccessDigiroadApplication:
                 if len(filemetadata) < 2:
                     print filemetadata
 
-                shortestPath = self.readJsonFile(filePath=folderPath + file)
+                shortestPath = self.fileActions.readJson(url=folderPath + file)
 
                 newSummaryFeature = {
                     "crs": shortestPath["crs"],
                     "geometry": {
                         "coordinates": [
                         ],
-                        "type": "LineString"
+                        "type": GeometryType.LINE_STRING
                     },
                     "properties": {
                         "startVertexId": filemetadata[1],
@@ -88,7 +110,6 @@ class MetropAccessDigiroadApplication:
                         "endCoordinates": shortestPath["overallProperties"]["endCoordinates"]
                     }
                 }
-
 
                 startPoints = None
                 endPoints = None
@@ -113,24 +134,4 @@ class MetropAccessDigiroadApplication:
                                                                endPoints
                 totals["features"].append(newSummaryFeature)
 
-        self.writeFile(folderPath=folderPath, filename=outputFilename, data=totals)
-
-    def readJsonFile(self, filePath):
-        with open(filePath, 'r') as outfile:
-            data = json.load(outfile)
-        return data
-
-    def writeFile(self, folderPath, filename, data):
-        if not os.path.exists(folderPath):
-            os.makedirs(folderPath)
-
-        fileURL = folderPath + "/%s" % filename
-
-        with open(fileURL, 'w+') as outfile:
-            json.dump(data, outfile, sort_keys=True)
-
-    def deleteFolder(self, path):
-        print "Deleting FOLDER %s" % path
-        if os.path.exists(path):
-            shutil.rmtree(path)
-        print "The FOLDER %s was deleted" % path
+        self.fileActions.writeFile(folderPath=folderPath, filename=outputFilename, data=totals)
