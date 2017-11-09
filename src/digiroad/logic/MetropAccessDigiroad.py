@@ -1,6 +1,4 @@
-import json
 import os
-import shutil
 
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
@@ -85,8 +83,11 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the summary information in the folderPath with the name given in outputFilename.
         """
-        totals = {"features": []}
-
+        totals = {
+            "features": [],
+            "totalFeatures": 0,
+            "type": "FeatureCollection"
+        }
         for file in os.listdir(folderPath):
             if file.endswith(".geojson") and file != "metroAccessDigiroadSummary.geojson":
 
@@ -96,8 +97,10 @@ class MetropAccessDigiroadApplication:
 
                 shortestPath = self.fileActions.readJson(url=folderPath + file)
 
+                if "crs" not in totals:
+                    totals["crs"] = shortestPath["crs"]
+
                 newSummaryFeature = {
-                    "crs": shortestPath["crs"],
                     "geometry": {
                         "coordinates": [
                         ],
@@ -134,4 +137,5 @@ class MetropAccessDigiroadApplication:
                                                                endPoints
                 totals["features"].append(newSummaryFeature)
 
+        totals["totalFeatures"] = len(totals["features"])
         self.fileActions.writeFile(folderPath=folderPath, filename=outputFilename, data=totals)
