@@ -21,3 +21,12 @@ class NotWFSDefinedException(Exception):
     The exception is thrown if there is not any WFS service defined to retrieve the features.
     """
     pass
+
+
+class ImpedanceAttributeNotDefinedException(Exception):
+    """
+    Thrown when the impedance argument do not match with the available impedance values
+    """
+
+    def __init__(self, message):
+        super(ImpedanceAttributeNotDefinedException, self).__init__(message)

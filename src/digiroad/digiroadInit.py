@@ -4,7 +4,9 @@ import sys
 import configparser
 import os
 
+from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException
 from digiroad.connection import WFSServiceProvider
+from digiroad.enumerations import CostAttributes
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 
 
@@ -24,10 +26,18 @@ def main():
     :return: None. All the information is stored in the ``shortestPathOutput`` URL.
     """
     argv = sys.argv[1:]
-    opts, args = getopt.getopt(argv, "c:s:", ["coordinates=", "shortestPathOutput="])
+    opts, args = getopt.getopt(argv, "c:s:i:", ["coordinates=", "shortestPathOutput=", "impedance"])
 
     inputCoordinatesGeojsonFilename = None
     outputShortestGeojsonPathLayerFilename = None
+    impedance = CostAttributes.DISTANCE
+    impedances = {
+        "DISTANCE": CostAttributes.DISTANCE,
+        "SPEED_LIMIT_TIME": CostAttributes.SPEED_LIMIT_TIME,
+        "DAY_AVG_DELAY_TIME": CostAttributes.DAY_AVG_DELAY_TIME,
+        "MIDDAY_DELAY_TIME": CostAttributes.MIDDAY_DELAY_TIME,
+        "RUSH_HOUR_DELAY": CostAttributes.RUSH_HOUR_DELAY
+    }
 
     for opt, arg in opts:
         print "options: %s, arg: %s" % (opt, arg)
@@ -37,6 +47,12 @@ def main():
 
         if opt in ("-s", "--shortestPathOutput"):
             outputShortestGeojsonPathLayerFilename = arg
+
+        if opt in ("-i", "--impedance"):
+            if arg not in impedances:
+                raise ImpedanceAttributeNotDefinedException("Allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY")
+
+            impedance = impedances[arg]
 
     config = configparser.ConfigParser()
     dir = os.getcwd()
@@ -51,6 +67,7 @@ def main():
 
     starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
                                      inputCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
-                                     outputFolderPath=outputShortestGeojsonPathLayerFilename)
+                                     outputFolderPath=outputShortestGeojsonPathLayerFilename,
+                                     costAttribute=impedance)
 
     starter.createSummary(outputShortestGeojsonPathLayerFilename, "metroAccessDigiroadSummary.geojson")

@@ -50,3 +50,7 @@ Repository for developing the car routing using OS GIS.
 ### [OptaPlanner](https://www.optaplanner.org/) (TSP and Delivery)
 * Constraint satisfaction solver
 * Written in Java
+
+## Digiroad Pre-analysis Tool
+
+[How to use](.github/src/SETUP.md). 

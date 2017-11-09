@@ -42,3 +42,40 @@ WHERE
           ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint(%x%, %y%), 3857) LIMIT 1)
   AND (e.source = v.id OR e.target = v.id)
 GROUP BY v.id, v.the_geom
+
+
+--------------------------------------------------------------------------------------------------
+--Driver distance cost from one vertex in a given radius
+
+SELECT
+	r.seq,
+	v.id,
+	r.cost,
+  v.the_geom
+FROM pgr_drivingDistance(
+    'SELECT id::integer,
+    	source::integer,
+    	target::integer,
+    	%cost%::double precision AS cost,
+    	(CASE
+    		WHEN liikennevi = 2 OR liikennevi = 3 OR liikennevi = 4
+   			THEN %cost%
+    		ELSE -1
+    	END)::double precision AS reverse_cost
+    FROM edges_noded', %source%, %radius%, true, true) as r,
+    edges_noded_vertices_pgr AS v
+WHERE r.id1 = v.id
+
+-- for one to many points
+SELECT * FROM pgr_drivingDistance(
+        'SELECT id::integer,
+    	source::integer,
+    	target::integer,
+    	pituus::double precision AS cost,
+    	(CASE
+    		WHEN liikennevi = 2 OR liikennevi = 3 OR liikennevi = 4
+   			THEN pituus
+    		ELSE -1
+    	END)::double precision AS reverse_cost
+    FROM edges_noded',
+        array[106290,96275,99733], 100, false, equicost:=true);
