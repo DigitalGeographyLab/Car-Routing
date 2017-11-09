@@ -53,4 +53,4 @@ Repository for developing the car routing using OS GIS.
 
 ## Digiroad Pre-analysis Tool
 
-[How to use](.github/src/SETUP.md). 
+[How to use](./src/SETUP.md). 

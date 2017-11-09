@@ -1,15 +1,15 @@
-#Install
+# Install
 
 Clone `git@github.com:DigitalGeographyLab/Car-Routing.git`
 
-##Libraries required
+## Libraries required
 
 * OWSLib
 
   Also require: Microsoft Visual C++ 9.0 is required. Get it from [here][microsoft-vistual-c++].
   
   
-#Run
+# Run
 
 ```{r, engine='sh', count_lines}
 ../Car-Routing/src$ python -m digiroad -c <../testPoints.geojson> -s <../outputFolder/> -i <IMPEDANCE/COST ATTRIBUTE>
