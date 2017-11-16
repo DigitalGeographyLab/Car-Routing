@@ -293,7 +293,8 @@
                     $scope.startMarker = null;
                     return;
                 }
-                var latlng = proj4('EPSG:4326', 'EPSG:3857').inverse([featureLayer.getLayers()[0].getLatLng().lng, featureLayer.getLayers()[0].getLatLng().lat]); //[lng, lat]
+                // var latlng = proj4('EPSG:4326', 'EPSG:3857').inverse([featureLayer.getLayers()[0].getLatLng().lng, featureLayer.getLayers()[0].getLatLng().lat]); //[lng, lat]
+                var latlng = proj4('EPSG:4326', 'EPSG:3857').inverse([featureLayer.getLayers()[0].feature.geometry.coordinates[0][0], featureLayer.getLayers()[0].feature.geometry.coordinates[0][1]]); //[lng, lat]
                 latlng = L.latLng(latlng[1], latlng[0]);// [lat, lng]
 
                 $scope.startMarker.options["id"] = featureLayer.getLayers()[0].feature.id.split('.')[1];
@@ -304,7 +305,8 @@
                     return;
                 }
 
-                var latlng = proj4('EPSG:4326', 'EPSG:3857').inverse([featureLayer.getLayers()[0].getLatLng().lng, featureLayer.getLayers()[0].getLatLng().lat]); //[lng, lat]
+                //var latlng = proj4('EPSG:4326', 'EPSG:3857').inverse([featureLayer.getLayers()[0].getLatLng().lng, featureLayer.getLayers()[0].getLatLng().lat]); //[lng, lat]
+                var latlng = proj4('EPSG:4326', 'EPSG:3857').inverse([featureLayer.getLayers()[0].feature.geometry.coordinates[0][0], featureLayer.getLayers()[0].feature.geometry.coordinates[0][1]]); //[lng, lat]
                 latlng = L.latLng(latlng[1], latlng[0]);// [lat, lng]
 
                 $scope.endMarker.options["id"] = featureLayer.getLayers()[0].feature.id.split('.')[1];
