@@ -57,7 +57,7 @@ def main():
     config = configparser.ConfigParser()
     dir = os.getcwd()
 
-    config.read('../src/resources/configuration.properties')
+    config.read('../DigiroadPreDataAnalysis/resources/configuration.properties')
 
     starter = MetropAccessDigiroadApplication()
     wfsServiceProvider = WFSServiceProvider(wfs_url=config["WFS_CONFIG"]["wfs_url"],
