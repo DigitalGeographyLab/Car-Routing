@@ -2,11 +2,11 @@ import unittest
 
 import os
 
-from src.digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
-from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
-from src.digiroad.connection import WFSServiceProvider
+from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
+from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
+from digiroad.connection import WFSServiceProvider
 
-from src.digiroad.connection import FileActions
+from digiroad.connection import FileActions
 
 
 class MetropAccessDigiroadTest(unittest.TestCase):
@@ -31,8 +31,8 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                           outputFolderFeaturesURL)
 
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
-        inputCoordinatesURL = self.dir + '/src/test/data/geojson/testPoints.geojson'
-        outputFolderFeaturesURL = self.dir + '/src/test/data/outputFolder/'
+        inputCoordinatesURL = self.dir + '/digiroad/test/data/geojson/testPoints.geojson'
+        outputFolderFeaturesURL = self.dir + '/digiroad/test/data/outputFolder/'
         self.metroAccessDigiroad.calculateTotalTimeTravel(wfsServiceProvider=self.wfsServiceProvider,
                                                           inputCoordinatesGeojsonFilename=inputCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL)
@@ -46,8 +46,8 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
     def test_givenAListOfGeojson_then_createSummary(self):
         self.maxDiff = None
-        dir = self.dir + '/src/test/data/geojson/metroAccessDigiroadSummaryResult.geojson'
-        outputFolderFeaturesURL = self.dir + '/src/test/data/outputFolder/'
+        dir = self.dir + '/digiroad/test/data/geojson/metroAccessDigiroadSummaryResult.geojson'
+        outputFolderFeaturesURL = self.dir + '/digiroad/test/data/outputFolder/'
 
         expecterResult = self.fileActions.readJson(dir)
         self.metroAccessDigiroad.createSummary(outputFolderFeaturesURL, "metroAccessDigiroadSummary.geojson")

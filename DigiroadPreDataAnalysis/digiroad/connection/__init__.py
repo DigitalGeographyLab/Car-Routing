@@ -5,7 +5,7 @@ import os
 import shutil
 from owslib.util import openURL
 
-# import src.digiroad.carRoutingExceptions as exc  # ONLY test purposes
+# import DigiroadPreDataAnalysis.digiroad.carRoutingExceptions as exc  # ONLY test purposes
 import digiroad.carRoutingExceptions as exc
 from digiroad.enumerations import GeometryType
 
