@@ -34,7 +34,7 @@ def main():
     bottom = 0
 
     for opt, arg in opts:
-        print "options: %s, arg: %s" % (opt, arg)
+        print("options: %s, arg: %s" % (opt, arg))
 
         if opt in ("-i", "--osmurl"):
             osmURL = arg
@@ -64,7 +64,7 @@ def main():
 
     if outputfolder and not outputfolder.endswith(os.sep):
         outputfolder = outputfolder + os.sep
-        print "new folder: %s" % outputfolder
+        print("new folder: %s" % outputfolder)
 
     connection = DigiroadOSMConnection()
     downloadedfile = connection.download(osmURL=osmURL, outputPath=outputfolder)

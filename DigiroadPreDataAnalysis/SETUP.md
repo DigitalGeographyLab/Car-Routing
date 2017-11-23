@@ -8,11 +8,13 @@ Clone `git@github.com:DigitalGeographyLab/Car-Routing.git`
 
   Also require: Microsoft Visual C++ 9.0 is required. Get it from [here][microsoft-vistual-c++].
   
+
+    $ sudo ./conda install -c conda-forge owslib
   
 # Run
 
 ```{r, engine='sh', count_lines}
-../Car-Routing/src$ python -m digiroad -c <../testPoints.geojson> -s <../outputFolder/> -i <IMPEDANCE/COST ATTRIBUTE>
+../Car-Routing/DigiroadPreDataAnalysis$ python -m digiroad -c <../testPoints.geojson> -s <../outputFolder/> -i <IMPEDANCE/COST ATTRIBUTE>
 ```
 
 Input testPoints.geojson is in the format:

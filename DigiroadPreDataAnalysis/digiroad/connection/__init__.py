@@ -113,7 +113,7 @@ class FileActions:
             json.dump(data, outfile, sort_keys=True)
 
     def deleteFolder(self, path):
-        print "Deleting FOLDER %s" % path
+        print("Deleting FOLDER %s" % path)
         if os.path.exists(path):
             shutil.rmtree(path)
-        print "The FOLDER %s was deleted" % path
+        print("The FOLDER %s was deleted" % path)

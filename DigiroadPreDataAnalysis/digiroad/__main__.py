@@ -1,3 +1,3 @@
-from digiroadInit import main
+import digiroad.digiroadInit as digiroad
 
-main()
+digiroad.main()

@@ -20,7 +20,7 @@ class DigiroadOSMConnectionTest(unittest.TestCase):
     def test_givenNoneOutputPath_then_ThrowException(self):
         self.assertRaises(NotPathException, self.osmConnection.download, ".osm", None)
 
-    # @unittest.skip("Skipping to do not spend time downloading the file")
+    @unittest.skip("Skipping to do not spend time downloading the file")
     def test_givenOSMFileURL_then_downloadOSMFile(self):
         URL = "http://download.geofabrik.de/europe/finland-latest.osm.pbf"
         outputPath = self.dir + "/edu/test/data/"
@@ -37,10 +37,11 @@ class DigiroadOSMConnectionTest(unittest.TestCase):
         # pbfFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\sample_osmosis.osm.pbf"
         # styleURL = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\default.style"
 
-        pbfFile = self.dir + "/edu/test/data/sample_osmosis.osm.pbf"
+        # pbfFile = self.dir + "/edu/test/data/sample_osmosis.osm.pbf"
+        pbfFile = self.dir + "/edu/test/data/sub-region-of-finland-latest.osm.pbf"
         styleURL = self.dir + "/edu/test/data/default.style"
 
         self.assertEqual(True, self.osmConnection.uploadOSMFile2PgSQLDatabase(username="postgres", password="hmaa",
-                                                                              databaseName="osm_test",
+                                                                              databaseName="osm_helsinki",
                                                                               styleURL=styleURL, inputFile=pbfFile,
                                                                               fileFormat=OsmosisCommands.PBF))
