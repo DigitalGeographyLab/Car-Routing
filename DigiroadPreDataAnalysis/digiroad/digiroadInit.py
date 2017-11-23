@@ -40,7 +40,7 @@ def main():
     }
 
     for opt, arg in opts:
-        print "options: %s, arg: %s" % (opt, arg)
+        print("options: %s, arg: %s" % (opt, arg))
 
         if opt in ("-c", "--coordinates"):
             inputCoordinatesGeojsonFilename = arg

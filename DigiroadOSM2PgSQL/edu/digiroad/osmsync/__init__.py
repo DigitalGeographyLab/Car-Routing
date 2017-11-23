@@ -51,7 +51,7 @@ class DigiroadOsmosis:
 
             # This makes the wait possible
             p_status = p.wait()
-            print "subRegionSplitter command output: " + output
+            print("subRegionSplitter command output: " + output)
 
         except Exception as err:
             # traceback.print_exc(file=sys.stdout)

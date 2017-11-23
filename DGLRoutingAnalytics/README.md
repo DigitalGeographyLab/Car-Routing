@@ -18,6 +18,7 @@ Install dependencies:
 
 Install bower components:
 
+    $ npm install -g bower
     $ bower install
 
 ## Run it:

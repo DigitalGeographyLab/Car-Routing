@@ -13,7 +13,7 @@ class DigiroadOsmosisTest(unittest.TestCase):
     def test_givenEmptyURL_then_throwException(self):
         self.assertRaises(NotOSMURLGivenException, self.digiroadOsmosis.subRegionSplitter, None, None)
 
-    # @unittest.skip("Skipping to do not spend time splitting the feature")
+    @unittest.skip("Skipping to do not spend time splitting the feature")
     def test_givenOSMURL_then_splitToTheSubRegion(self):
         # pbfInputFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\\geo-finland-latest.osm.pbf"
         # pbfOutputFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\\"

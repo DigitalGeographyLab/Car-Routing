@@ -93,7 +93,7 @@ class MetropAccessDigiroadApplication:
 
                 filemetadata = file.split("_")
                 if len(filemetadata) < 2:
-                    print filemetadata
+                    print(filemetadata)
 
                 shortestPath = self.fileActions.readJson(url=folderPath + file)
 

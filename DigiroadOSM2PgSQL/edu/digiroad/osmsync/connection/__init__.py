@@ -66,7 +66,7 @@ class DigiroadOSMConnection:
 
         try:
             p = subprocess.Popen(split_command,
-                                 shell=True,
+                                 # shell=True,
                                  stdin=subprocess.PIPE,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
@@ -81,7 +81,7 @@ class DigiroadOSMConnection:
             # This makes the wait possible
             p_status = p.wait()
 
-            print "uploadOSMFile2PgSQLDatabase command output: " + output
+            print("uploadOSMFile2PgSQLDatabase command output: %s" % output)
 
         except Exception as err:  # traceback.print_exc(file=sys.stdout)
             raise err
