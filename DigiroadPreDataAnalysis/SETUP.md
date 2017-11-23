@@ -8,8 +8,10 @@ Clone `git@github.com:DigitalGeographyLab/Car-Routing.git`
 
   Also require: Microsoft Visual C++ 9.0 is required. Get it from [here][microsoft-vistual-c++].
   
-
-    $ sudo ./conda install -c conda-forge owslib
+    
+    $ cd ../anaconda3/bin
+    $ source ./activate
+    $ pip install -u owslib
   
 # Run
 

@@ -43,7 +43,8 @@ class WFSServiceProvider:
         #                         filter="viewparams=x:" + str(coordinates["lng"]) + ';y:' + str(coordinates["lat"]))
 
         u = openURL(url)
-        return json.loads(u.read())
+        # return json.loads(u.read())
+        return json.loads(u.read().decode('utf-8'))
 
     def getShortestPath(self, startVertexId, endVertexId, cost):
         """
@@ -60,7 +61,8 @@ class WFSServiceProvider:
             startVertexId, endVertexId, cost)
 
         u = openURL(url)
-        return json.loads(u.read())
+        # return json.loads(u.read())
+        return json.loads(u.read().decode('utf-8'))
 
 
 class FileActions:
