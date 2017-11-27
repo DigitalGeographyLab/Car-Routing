@@ -77,12 +77,12 @@ def main():
                                            top=top,
                                            bottom=bottom)
 
-    connection.uploadOSMFile2PgSQLDatabase(username=config["OSM2PGSQL_CONFIG"]["username"],
-                                           password=config["OSM2PGSQL_CONFIG"]["password"],
-                                           databaseName=databaseName,
-                                           styleURL=config["OSM2PGSQL_CONFIG"]["osm2pgsqlStyle"],
-                                           inputFile=outputfile,
-                                           fileFormat=OsmosisCommands.PBF)
+    # connection.uploadOSMFile2PgSQLDatabase(username=config["OSM2PGSQL_CONFIG"]["username"],
+    #                                        password=config["OSM2PGSQL_CONFIG"]["password"],
+    #                                        databaseName=databaseName,
+    #                                        styleURL=config["OSM2PGSQL_CONFIG"]["osm2pgsqlStyle"],
+    #                                        inputFile=outputfile,
+    #                                        fileFormat=OsmosisCommands.PBF)
 
     connection.imposmFile2PgSQLDatabase(username=config["OSM2PGSQL_CONFIG"]["username"],
                                         password=config["OSM2PGSQL_CONFIG"]["password"],
