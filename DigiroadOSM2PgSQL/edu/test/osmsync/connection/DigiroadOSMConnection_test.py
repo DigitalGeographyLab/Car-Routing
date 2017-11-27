@@ -32,7 +32,7 @@ class DigiroadOSMConnectionTest(unittest.TestCase):
         self.assertRaises(NotOSMURLGivenException, self.osmConnection.uploadOSMFile2PgSQLDatabase, None, None,
                           None, None, None, None)
 
-    # @unittest.skip("")
+    @unittest.skip("Skipping to do not spend time uploading the data into the pg database")
     def test_givenOSMFileURL_then_uploadData2PgSQL(self):
         # pbfFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\sample_osmosis.osm.pbf"
         # styleURL = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\default.style"

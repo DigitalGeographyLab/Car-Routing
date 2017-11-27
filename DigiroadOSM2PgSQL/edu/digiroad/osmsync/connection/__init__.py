@@ -88,3 +88,62 @@ class DigiroadOSMConnection:
 
         completed = True
         return completed
+
+    def imposmFile2PgSQLDatabase(self, username, password, databaseName, inputFile, mappingFile, hostname, port):
+        """
+        Use the osm2pgsql tool to upload the data from the OSM/PBF file to a posgreSQL database.
+
+        :param username:
+        :param password:
+        :param databaseName:
+        :param styleURL:
+        :param inputFile:
+        :param fileFormat:
+        :return:
+        """
+        if not inputFile:
+            raise NotOSMURLGivenException()
+
+        # command = 'osm2pgsql -c -d osm_test --username postgres --password --slim -C 4000 -S "%s" "%w" -r pbf -C 6000' % (
+        #     styleURL, outputFile)
+
+        # format = outputFile.split(".")[-1]# "pbf"
+        # if format == "osm":
+        #     format == "xml"
+
+        split_command = [
+            "/opt/codes/imposm3/./imposm3",
+            "import",
+            "-connection",
+            "postgis://%s:%s@%s:%s/%s" % (
+                username, password, hostname, port, databaseName),
+            "-mapping", mappingFile,
+            "-read", inputFile,
+            "-write",
+            "-overwritecache"
+        ]
+
+        try:
+            p = subprocess.Popen(split_command,
+                                 # shell=True,
+                                 stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE)
+
+            # p.stdin.write(b'%s\n' % password)
+            # p.stdin.flush()
+
+            (output, err) = p.communicate()
+
+            # if err:
+            #     raise BaseException(err)
+            # This makes the wait possible
+            p_status = p.wait()
+
+            print("uploadOSMFile2PgSQLDatabase command output: %s" % output)
+
+        except Exception as err:  # traceback.print_exc(file=sys.stdout)
+            raise err
+
+        completed = True
+        return completed

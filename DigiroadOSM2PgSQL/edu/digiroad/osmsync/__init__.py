@@ -1,7 +1,6 @@
 import os
 import subprocess
 
-
 # from DigiroadOSM2PgSQL.edu.digiroadExceptions import NotOSMURLGivenException
 # from DigiroadOSM2PgSQL.edu.enumerations import OsmosisCommands
 from edu.digiroad.digiroadExceptions import NotOSMURLGivenException
@@ -30,15 +29,26 @@ class DigiroadOsmosis:
 
         local_filename = osmFilePath.split(os.sep)[-1]
 
-        command = 'osmosis --read-%s "%s" --tf accept-ways highway=* railway=* --used-node --bb left=%s right=%s top=%s bottom=%s --write-%s "%s"' % (
-            inputFormat, osmFilePath, left, right, top, bottom, outputFormat, osmSubregionPath)
+        # command = 'osmosis --read-%s "%s" --tf accept-ways highway=* railway=* --used-node --bb left=%s right=%s top=%s bottom=%s --write-%s "%s"' % (
+        #     inputFormat, osmFilePath, left, right, top, bottom, outputFormat, osmSubregionPath)
 
         output_filename = "%ssub-region-of-%s" % (osmSubregionPath, local_filename)
-        split_command = ["C:\HYapp\osmosis\\bin\osmosis.bat", "--read-%s" % inputFormat, '%s' % osmFilePath, "--bb",
-                         "left=%s" % left, "right=%s" % right,
-                         "top=%s" % top, "bottom=%s" % bottom,
-                         "--write-%s" % outputFormat,
-                         output_filename]
+        split_command = [
+            # "C:\HYapp\osmosis\\bin\osmosis.bat",
+            "/opt/codes/osmosis/bin/osmosis",
+            "--read-%s" % inputFormat,
+            '%s' % osmFilePath,
+            "--tf",
+            "accept-ways",
+            "highway=*",
+            "railway=*",
+            "--used-node",
+            "--bb",
+            "left=%s" % left, "right=%s" % right,
+            "top=%s" % top, "bottom=%s" % bottom,
+            "--write-%s" % outputFormat,
+            output_filename
+        ]
 
         try:
             # os.system(command)
@@ -51,7 +61,7 @@ class DigiroadOsmosis:
 
             # This makes the wait possible
             p_status = p.wait()
-            print("subRegionSplitter command output: " + output)
+            print("subRegionSplitter command output: %s" % output)
 
         except Exception as err:
             # traceback.print_exc(file=sys.stdout)
