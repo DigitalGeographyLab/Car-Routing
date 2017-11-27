@@ -1,0 +1,236 @@
+{
+  "tags": {
+    "load_all": true
+  },
+  "generalized_tables": {
+     "roads_gen0": {
+      "source": "roads_gen1",
+      "sql_filter": null,
+      "tolerance": 200.0
+    },
+    "roads_gen1": {
+      "source": "roads",
+      "sql_filter": "type IN ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link') OR class IN('railway')",
+      "tolerance": 50.0
+    }
+  },
+  "tables": {
+    "transport_points": {
+      "fields": [
+        {
+          "type": "id",
+          "name": "osm_id",
+          "key": null
+        },
+        {
+          "type": "geometry",
+          "name": "geometry",
+          "key": null
+        },
+        {
+          "type": "string",
+          "name": "name",
+          "key": "name"
+        },
+        {
+          "type": "mapping_value",
+          "name": "type",
+          "key": null
+        },
+        {
+          "type": "string",
+          "name": "ref",
+          "key": "ref"
+        },
+        {
+          "type": "string",
+          "name": "highway",
+          "key": "highway"
+        },
+        {
+          "type": "string",
+          "name": "traffic_signal",
+          "key": "traffic_signals"
+        },
+        {
+          "type": "string",
+          "name": "traffic_signal_direction",
+          "key": "traffic_signals:direction"
+        }
+      ],
+      "type": "point",
+      "mapping": {
+		"amenity": [
+		  "bus_station"
+		],
+		"public_transport": [
+		  "station",
+		  "platform"
+		],
+        "railway": [
+          "station",
+          "halt",
+          "tram_stop",
+          "crossing",
+          "level_crossing",
+          "subway_entrance",
+		  "buffer_stop"
+        ],
+        "aeroway": [
+          "aerodrome",
+          "terminal",
+          "helipad",
+          "gate"
+        ],
+        "highway": [
+          "motorway_junction",
+          "turning_circle",
+          "bus_stop",
+		  "traffic_signals"
+        ],
+        "traffic_signals:direction":[
+          "forward",
+          "backward"
+        ]
+      }
+    },
+    "roads": {
+      "fields": [
+        {
+          "type": "id",
+          "name": "osm_id",
+          "key": null
+        },
+        {
+          "type": "geometry",
+          "name": "geometry",
+          "key": null
+        },
+        {
+          "type": "mapping_value",
+          "name": "type",
+          "key": null
+        },
+        {
+          "type": "string",
+          "name": "name",
+          "key": "name"
+        },
+        {
+          "type": "boolint",
+          "name": "tunnel",
+          "key": "tunnel"
+        },
+        {
+          "type": "boolint",
+          "name": "bridge",
+          "key": "bridge"
+        },
+        {
+          "type": "direction",
+          "name": "oneway",
+          "key": "oneway"
+        },
+        {
+          "type": "integer",
+          "name": "layer",
+          "key": "layer"
+        },
+        {
+          "type": "string",
+          "name": "ref",
+          "key": "ref"
+        },
+        {
+          "type": "wayzorder",
+          "name": "z_order",
+          "key": "layer"
+        },
+        {
+          "type": "string",
+          "name": "access",
+          "key": "access"
+        },
+        {
+          "type": "string",
+          "name": "service",
+          "key": "service"
+        },
+        {
+          "type": "mapping_key",
+          "name": "class",
+          "key": null
+        },
+        {
+          "type": "string",
+          "name": "maxspeed",
+          "key": "maxspeed"
+        }
+      ],
+      "type": "linestring",
+      "filters": {
+        "exclude_tags": [
+          [
+            "area",
+            "yes"
+          ]
+        ]
+      },
+      "mappings": {
+        "railway": {
+          "mapping": {
+            "railway": [
+              "rail",
+              "tram",
+              "light_rail",
+              "subway",
+              "narrow_gauge",
+              "preserved",
+              "funicular",
+              "monorail",
+              "disused",
+              "abandoned",
+			  "funicular"
+            ]
+          }
+        },
+        "roads": {
+          "mapping": {
+            "man_made": [
+              "pier",
+              "groyne"
+            ],
+            "highway": [
+              "motorway",
+              "motorway_link",
+              "trunk",
+              "trunk_link",
+              "primary",
+              "primary_link",
+              "secondary",
+              "secondary_link",
+              "tertiary",
+              "tertiary_link",
+              "road",
+              "path",
+              "track",
+              "service",
+              "footway",
+              "bridleway",
+              "cycleway",
+              "steps",
+              "pedestrian",
+              "living_street",
+              "unclassified",
+              "residential",
+              "raceway"
+            ],
+            "maxspeed": [
+              "Speed"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

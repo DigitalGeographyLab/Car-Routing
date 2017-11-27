@@ -1,0 +1,5 @@
+{
+	"cachedir": "/home/osm/.imposm3-cache",
+	"connection": "postgis://osm:1NM7IxAz8OX4GtZCD&3eEqykMEVDabAP@localhost/osm",
+	"mapping": "/home/osm/.imposm3-mapping.json"
+}

@@ -83,3 +83,11 @@ def main():
                                            styleURL=config["OSM2PGSQL_CONFIG"]["osm2pgsqlStyle"],
                                            inputFile=outputfile,
                                            fileFormat=OsmosisCommands.PBF)
+
+    connection.imposmFile2PgSQLDatabase(username=config["OSM2PGSQL_CONFIG"]["username"],
+                                        password=config["OSM2PGSQL_CONFIG"]["password"],
+                                        hostname=config["OSM2PGSQL_CONFIG"]["hostname"],
+                                        port=config["OSM2PGSQL_CONFIG"]["port"],
+                                        databaseName=databaseName,
+                                        inputFile=outputfile,
+                                        mappingFile=config["OSM2PGSQL_CONFIG"]["mapping"])
