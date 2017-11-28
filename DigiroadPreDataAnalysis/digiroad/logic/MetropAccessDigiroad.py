@@ -120,8 +120,10 @@ class MetropAccessDigiroadApplication:
                 for segmentFeature in shortestPath["features"]:
                     for key in segmentFeature["properties"]:
                         if key == "seq" and segmentFeature["properties"][key] == 1:
+                            # Sequence one is the first linestring geometry in the path
                             startPoints = segmentFeature["geometry"]["coordinates"]
                         if key == "seq" and segmentFeature["properties"][key] == shortestPath["totalFeatures"]:
+                            # The last sequence is the last linestring geometry in the path
                             endPoints = segmentFeature["geometry"]["coordinates"]
 
                         if key not in ["id", "direction", "seq"]:
