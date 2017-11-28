@@ -120,7 +120,8 @@ class DigiroadOSMConnection:
             "-mapping", mappingFile,
             "-read", inputFile,
             "-write",
-            "-overwritecache"
+            "-overwritecache",
+            "-deployproduction"
         ]
 
         try:
