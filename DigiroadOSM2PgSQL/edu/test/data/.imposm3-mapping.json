@@ -165,7 +165,17 @@
           "type": "string",
           "name": "maxspeed",
           "key": "maxspeed"
-        }
+        },
+        {
+          "type": "string",
+          "name": "highway",
+          "key": "highway"
+        },
+        {
+          "type": "string",
+          "name": "traffic_signal",
+          "key": "traffic_signals"
+        },
       ],
       "type": "linestring",
       "filters": {
@@ -223,7 +233,8 @@
               "living_street",
               "unclassified",
               "residential",
-              "raceway"
+              "raceway",
+              "traffic_signals"
             ],
             "maxspeed": [
               "Speed"
