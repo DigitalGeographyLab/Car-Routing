@@ -161,6 +161,13 @@
         }
 
         $scope.impedanceFilter = "pituus";
+        var impedance_attributes = {
+            "pituus": "Distance",
+            "digiroa_aa": "Speed limit time",
+            "kokopva_aa": "Day average delay time",
+            "keskpva_aa": "Midday delay time",
+            "ruuhka_aa": "Rush hour delay time"
+        };
 
         L.Control.SelectionBox = L.Control.extend({
             onAdd: function (map) {
@@ -168,14 +175,6 @@
 
                 var selection = L.DomUtil.create('select', 'impedance-selector', div);
                 L.DomEvent.addListener(selection, 'change', $scope.changeImpedance);
-
-                var impedance_attributes = {
-                    "pituus": "Distance",
-                    "digiroa_aa": "Speed limit time",
-                    "kokopva_aa": "Day average delay time",
-                    "keskpva_aa": "Midday delay time",
-                    "ruuhka_aa": "Rush hour delay time"
-                };
 
                 for (var key in impedance_attributes) {
                     var option = L.DomUtil.create('option', 'impedance-option', selection);
@@ -396,7 +395,7 @@
 
             var div = L.DomUtil.create('div', 'route-popup-box');
 
-            var impedance_attributes = {
+            var impedance_attributes_english = {
                 "distance": "Total Distance",
                 "speed_limit_time": "Total speed limit time",
                 "day_avg_delay_time": "Total day average delay time",
@@ -406,7 +405,7 @@
 
             for (var key in totalTimes) {
                 var option = L.DomUtil.create('span', '', div);
-                option.innerHTML = impedance_attributes[key] + ": " + Math.round(totalTimes[key]);
+                option.innerHTML = impedance_attributes_english[key] + ": " + Math.round(totalTimes[key]);
             }
 
             $scope.routeLayer.bindPopup(div);
@@ -418,6 +417,7 @@
                 this.closePopup();
             });*/
             $scope.routeLayer.addTo($scope.map);
+            $scope.ctrl.addOverlay($scope.routeLayer, impedance_attributes[$scope.impedanceFilter]);
         }
 
         $scope.startMarker = undefined;
