@@ -403,6 +403,9 @@
                 "rush_hour_delay_time": "Total rush hour delay time"
             };
 
+            var title = L.DomUtil.create('span', '', div);
+            title.innerHTML = "<b>" + impedance_attributes[$scope.impedanceFilter] + ":</b><br/><br/>";
+
             for (var key in totalTimes) {
                 var option = L.DomUtil.create('span', '', div);
                 option.innerHTML = impedance_attributes_english[key] + ": " + Math.round(totalTimes[key]);
