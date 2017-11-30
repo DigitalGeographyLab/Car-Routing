@@ -3,7 +3,7 @@ import os
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
 from digiroad.connection import FileActions
-from digiroad.enumerations import CostAttributes, GeometryType
+from digiroad.util import CostAttributes, GeometryType, getEnglishMeaning
 
 
 class MetropAccessDigiroadApplication:
@@ -27,6 +27,8 @@ class MetropAccessDigiroadApplication:
             raise NotWFSDefinedException()
         if not inputCoordinatesGeojsonFilename or not outputFolderPath:
             raise NotURLDefinedException()
+
+        outputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
 
         self.fileActions.deleteFolder(path=outputFolderPath)
 
@@ -66,13 +68,14 @@ class MetropAccessDigiroadApplication:
 
             shortestPath["overallProperties"] = {
                 "startCoordinates": startPoint["geometry"]["coordinates"],
-                "endCoordinates": endPoint["geometry"]["coordinates"]
+                "endCoordinates": endPoint["geometry"]["coordinates"],
             }
 
-            completeFilename = "%s_%s_%s.%s" % (filename, startVertexId, endVertexId, extension)
+            completeFilename = "%s_%s_%s_%s.%s" % (
+            filename, getEnglishMeaning(costAttribute), startVertexId, endVertexId, extension)
             self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename, data=shortestPath)
 
-    def createSummary(self, folderPath, outputFilename):
+    def createSummary(self, folderPath, costAttribute, outputFilename):
         """
         Given a set of Geojson (Geometry type: LineString) files, read all the files from the given ``folderPath`` and
         sum all the attribute values (distance, speed_limit_time, day_avg_delay_time, midday_delay_time and
@@ -83,19 +86,26 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the summary information in the folderPath with the name given in outputFilename.
         """
+        if not folderPath.endswith(os.sep ):
+            attributeFolderPath = folderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
+            summaryFolderPath = folderPath + os.sep + "summary" + os.sep
+        else:
+            attributeFolderPath = folderPath + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
+            summaryFolderPath = folderPath + "summary" + os.sep
+
         totals = {
             "features": [],
             "totalFeatures": 0,
             "type": "FeatureCollection"
         }
-        for file in os.listdir(folderPath):
+        for file in os.listdir(attributeFolderPath):
             if file.endswith(".geojson") and file != "metroAccessDigiroadSummary.geojson":
 
                 filemetadata = file.split("_")
                 if len(filemetadata) < 2:
                     print(filemetadata)
 
-                shortestPath = self.fileActions.readJson(url=folderPath + file)
+                shortestPath = self.fileActions.readJson(url=attributeFolderPath + file)
 
                 if "crs" not in totals:
                     totals["crs"] = shortestPath["crs"]
@@ -107,8 +117,9 @@ class MetropAccessDigiroadApplication:
                         "type": GeometryType.LINE_STRING
                     },
                     "properties": {
-                        "startVertexId": filemetadata[1],
-                        "endVertexId": filemetadata[2].replace(".geojson", ""),
+                        "startVertexId": filemetadata[2],
+                        "endVertexId": filemetadata[3].replace(".geojson", ""),
+                        "costAttribute": filemetadata[1],
                         "startCoordinates": shortestPath["overallProperties"]["startCoordinates"],
                         "endCoordinates": shortestPath["overallProperties"]["endCoordinates"]
                     }
@@ -140,4 +151,5 @@ class MetropAccessDigiroadApplication:
                 totals["features"].append(newSummaryFeature)
 
         totals["totalFeatures"] = len(totals["features"])
-        self.fileActions.writeFile(folderPath=folderPath, filename=outputFilename, data=totals)
+        outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
+        self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)

@@ -3,6 +3,7 @@ import os
 
 from digiroad.carRoutingExceptions import IncorrectGeometryTypeException
 from digiroad.connection import WFSServiceProvider, FileActions
+from digiroad.util import CostAttributes
 
 
 class WFSServiceProviderTest(unittest.TestCase):
@@ -62,7 +63,7 @@ class WFSServiceProviderTest(unittest.TestCase):
             if feature["id"]:
                 del feature["id"]
 
-        shortestPathResult = self.wfsServiceProvider.getShortestPath(startVertexId=106290, endVertexId=96275, cost="pituus")
+        shortestPathResult = self.wfsServiceProvider.getShortestPath(startVertexId=106290, endVertexId=96275, cost=CostAttributes.DISTANCE)
         for feature in shortestPathResult["features"]:
             if feature["id"]:
                 del feature["id"]

@@ -7,7 +7,7 @@ from owslib.util import openURL
 
 # import DigiroadPreDataAnalysis.digiroad.carRoutingExceptions as exc  # ONLY test purposes
 import digiroad.carRoutingExceptions as exc
-from digiroad.enumerations import GeometryType
+from digiroad.util import GeometryType
 
 
 class WFSServiceProvider:
