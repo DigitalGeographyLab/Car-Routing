@@ -7,6 +7,7 @@ from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedE
 from digiroad.connection import WFSServiceProvider
 
 from digiroad.connection import FileActions
+from digiroad.util import CostAttributes, getEnglishMeaning
 
 
 class MetropAccessDigiroadTest(unittest.TestCase):
@@ -31,14 +32,22 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                           outputFolderFeaturesURL)
 
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
-        inputCoordinatesURL = self.dir + '/digiroad/test/data/geojson/testPoints.geojson'
-        outputFolderFeaturesURL = self.dir + '/digiroad/test/data/outputFolder/'
+        inputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%testPoints.geojson'.replace("%", os.sep)
+        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
+        distanceCostAttribute = CostAttributes.DISTANCE
         self.metroAccessDigiroad.calculateTotalTimeTravel(wfsServiceProvider=self.wfsServiceProvider,
                                                           inputCoordinatesGeojsonFilename=inputCoordinatesURL,
-                                                          outputFolderPath=outputFolderFeaturesURL)
+                                                          outputFolderPath=outputFolderFeaturesURL,
+                                                          costAttribute=distanceCostAttribute)
 
         inputCoordinatesGeojson = self.fileActions.readJson(inputCoordinatesURL)
-        outputFileList = self.readOutputFolderFiles(outputFolderFeaturesURL)
+        if not outputFolderFeaturesURL.endswith(os.sep):
+            geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + \
+                                           "geoms" + os.sep + getEnglishMeaning(distanceCostAttribute) + os.sep
+        else:
+            geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + "geoms" + os.sep + getEnglishMeaning(distanceCostAttribute) + os.sep
+
+        outputFileList = self.readOutputFolderFiles(geomsOutputFolderFeaturesURL)
 
         self.assertEqual(len(inputCoordinatesGeojson["data"]["features"]), len(outputFileList))
         # outputFeaturesGeojson = self.readData.readJson(outputFeaturesURL)
@@ -46,13 +55,16 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
     def test_givenAListOfGeojson_then_createSummary(self):
         self.maxDiff = None
-        dir = self.dir + '/digiroad/test/data/geojson/metroAccessDigiroadSummaryResult.geojson'
-        outputFolderFeaturesURL = self.dir + '/digiroad/test/data/outputFolder/'
+        dir = self.dir + '%digiroad%test%data%geojson%metroAccessDigiroadSummaryResult.geojson'.replace("%", os.sep)
+        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
 
         expecterResult = self.fileActions.readJson(dir)
-        self.metroAccessDigiroad.createSummary(outputFolderFeaturesURL, "metroAccessDigiroadSummary.geojson")
+        self.metroAccessDigiroad.createSummary(outputFolderFeaturesURL,
+                                               CostAttributes.DISTANCE, "metroAccessDigiroadSummary.geojson")
 
-        summaryResult = self.fileActions.readJson(outputFolderFeaturesURL + "metroAccessDigiroadSummary.geojson")
+        summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
+        summaryResult = self.fileActions.readJson(
+            summaryOutputFolderFeaturesURL + getEnglishMeaning(CostAttributes.DISTANCE) + "_metroAccessDigiroadSummary.geojson")
 
         self.assertEqual(expecterResult, summaryResult)
 
