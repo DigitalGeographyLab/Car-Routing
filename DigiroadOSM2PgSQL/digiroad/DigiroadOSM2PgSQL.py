@@ -4,9 +4,35 @@ import sys
 
 import configparser
 
-from edu.digiroad.enumerations import OsmosisCommands
-from edu.digiroad.osmsync import DigiroadOsmosis
-from edu.digiroad.osmsync.connection import DigiroadOSMConnection
+from digiroad.digiroadExceptions import NotParameterGivenException
+from digiroad.osmsync import DigiroadOsmosis
+from digiroad.osmsync.connection import DigiroadOSMConnection
+
+from digiroad.enumerations import OsmosisCommands
+
+
+def printHelp():
+    print (
+        "DigiroadOSM2PgSQL tool\n"
+        "\n\t[--help]: Print information about the parameters necessary to run the tool."
+        "\n\t[-i, --osmurl]: URL to download the OSM/PBF file."
+        "\n\t[-o, --outputfolder]: The final destination where the downloaded file and clipped OSM/PBF file will be located."
+        "\n\t[-d, --databasename]: Database name to store the exported OSM/PBF data."
+        "\n\t[-l, --left]: Left latitude coordinate to clip the OSM/PBF file."
+        "\n\t[-r, --right]: Right latitude coordinate to clip the OSM/PBF file."
+        "\n\t[-t, --top]: Top latitude coordinate to clip the OSM/PBF file."
+        "\n\t[-b, --bottom]: Bottom latitude coordinate to clip the OSM/PBF file."
+        "\n\nConfiguration file:"
+        "\n\tLocated in ./resources/configuration.properties.\n"
+        "\n\t[OSM2PGSQL_CONFIG]"
+        "\n\tosm2pgsqlStyle=<default.style> (in case you are using osm2pgsql instead of imposm)"
+        "\n\tmapping=<.imposm3-mapping.json> (in case you are using imposm instead of osm2pgsql)"
+        "\n\tdatabasename=<databasename> (this parameter replace the -d and --databasename parameters)"
+        "\n\tusername=<username> (Database username)"
+        "\n\tpassword=<password> (Database password)"
+        "\n\thostname=localhost (Database URL)"
+        "\n\tport=5432 (Database port)"
+    )
 
 
 def main():
@@ -22,7 +48,7 @@ def main():
     opts, args = getopt.getopt(argv, "i:d:o:l:r:t:b:",
                                [
                                    "osmurl=", "databasename=", "outputfolder=",
-                                   "left=", "right=", "top=", "bottom="
+                                   "left=", "right=", "top=", "bottom=", "help"
                                ])
 
     osmURL = None
@@ -34,6 +60,9 @@ def main():
     bottom = 0
 
     for opt, arg in opts:
+        if opt in "--help":
+            printHelp()
+            return
         print("options: %s, arg: %s" % (opt, arg))
 
         if opt in ("-i", "--osmurl"):
@@ -57,10 +86,13 @@ def main():
         if opt in ("-b", "--bottom"):
             bottom = arg
 
+    if not osmURL or not outputfolder or not left or not right or not top or not bottom:
+        raise NotParameterGivenException("Type --help for more information.")
+
     config = configparser.ConfigParser()
     dir = os.getcwd()
 
-    config.read('edu/resources/configuration.properties')
+    config.read('resources%configuration.properties'.replace("%", os.sep))
 
     if outputfolder and not outputfolder.endswith(os.sep):
         outputfolder = outputfolder + os.sep
@@ -76,6 +108,12 @@ def main():
                                            right=right,
                                            top=top,
                                            bottom=bottom)
+
+    if not databaseName and not config["OSM2PGSQL_CONFIG"]["databasename"]:
+        NotParameterGivenException("Type --help for more information.")
+    else:
+        if not databaseName:
+            databaseName = config["OSM2PGSQL_CONFIG"]["databasename"]
 
     # connection.uploadOSMFile2PgSQLDatabase(username=config["OSM2PGSQL_CONFIG"]["username"],
     #                                        password=config["OSM2PGSQL_CONFIG"]["password"],

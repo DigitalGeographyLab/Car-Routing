@@ -1,8 +1,8 @@
 import os
 import unittest
 
-from edu.digiroad.digiroadExceptions import NotOSMURLGivenException
-from edu.digiroad.osmsync import DigiroadOsmosis
+from digiroad.digiroadExceptions import NotOSMURLGivenException
+from digiroad.osmsync import DigiroadOsmosis
 
 
 class DigiroadOsmosisTest(unittest.TestCase):
@@ -15,11 +15,8 @@ class DigiroadOsmosisTest(unittest.TestCase):
 
     # @unittest.skip("Skipping to do not spend time splitting the feature")
     def test_givenOSMURL_then_splitToTheSubRegion(self):
-        # pbfInputFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\\geo-finland-latest.osm.pbf"
-        # pbfOutputFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\\"
-
-        pbfInputFile = self.dir + "%edu%test%data%finland-latest.osm.pbf".replace("%", os.sep)
-        pbfOutputFile = self.dir + "%edu%test%data%".replace("%", os.sep)
+        pbfInputFile = self.dir + "%digiroad%test%data%finland-latest.osm.pbf".replace("%", os.sep)
+        pbfOutputFile = self.dir + "%digiroad%test%data%".replace("%", os.sep)
 
         outputfile = self.digiroadOsmosis.subRegionSplitter(osmFilePath=pbfInputFile,
                                                             osmSubregionPath=pbfOutputFile,

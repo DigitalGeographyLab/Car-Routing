@@ -15,7 +15,7 @@
     }
   },
   "tables": {
-    "transport_points": {
+    "street_elements": {
       "fields": [
         {
           "type": "id",
@@ -56,6 +56,11 @@
           "type": "string",
           "name": "traffic_signal_direction",
           "key": "traffic_signals:direction"
+        },
+        {
+          "type": "string",
+          "name": "motorway_junction",
+          "key": "motorway_junction"
         }
       ],
       "type": "point",
@@ -176,6 +181,11 @@
           "name": "traffic_signal",
           "key": "traffic_signals"
         },
+        {
+          "type": "string",
+          "name": "motorway_junction",
+          "key": "motorway_junction"
+        }
       ],
       "type": "linestring",
       "filters": {
@@ -234,7 +244,11 @@
               "unclassified",
               "residential",
               "raceway",
-              "traffic_signals"
+              "traffic_signals",
+              "motorway_junction"
+            ],
+            "junction": [
+              "	roundabout"
             ],
             "maxspeed": [
               "Speed"
