@@ -1,10 +1,8 @@
 import os
 import subprocess
 
-# from DigiroadOSM2PgSQL.edu.digiroadExceptions import NotOSMURLGivenException
-# from DigiroadOSM2PgSQL.edu.enumerations import OsmosisCommands
-from edu.digiroad.digiroadExceptions import NotOSMURLGivenException
-from edu.digiroad.enumerations import OsmosisCommands
+from digiroad.digiroadExceptions import NotOSMURLGivenException
+from digiroad.enumerations import OsmosisCommands
 
 
 class DigiroadOsmosis:
@@ -34,8 +32,8 @@ class DigiroadOsmosis:
 
         output_filename = "%ssub-region-of-%s" % (osmSubregionPath, local_filename)
         split_command = [
-            # "C:\HYapp\osmosis\\bin\osmosis.bat",
-            "/opt/codes/osmosis/bin/osmosis",
+            "C:\HYapp\osmosis\\bin\osmosis.bat",
+            # "/opt/codes/osmosis/bin/osmosis",
             "--read-%s" % inputFormat,
             '%s' % osmFilePath,
             "--tf",
@@ -51,6 +49,8 @@ class DigiroadOsmosis:
         ]
 
         try:
+            print("Clipping %s in %s" % (osmFilePath, output_filename))
+
             # os.system(command)
 
             p = subprocess.Popen(split_command,
@@ -61,8 +61,8 @@ class DigiroadOsmosis:
 
             # This makes the wait possible
             p_status = p.wait()
-            print("subRegionSplitter command output: %s" % output)
-
+            print(output)
+            print("Clipped %s in %s" % (osmFilePath, output_filename))
         except Exception as err:
             # traceback.print_exc(file=sys.stdout)
             raise err

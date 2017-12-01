@@ -1,9 +1,9 @@
 import os
 import unittest
 
-from edu.digiroad.digiroadExceptions import NotOSMURLGivenException, NotPathException
-from edu.digiroad.enumerations import OsmosisCommands
-from edu.digiroad.osmsync.connection import DigiroadOSMConnection
+from digiroad.digiroadExceptions import NotOSMURLGivenException, NotPathException
+from digiroad.enumerations import OsmosisCommands
+from digiroad.osmsync.connection import DigiroadOSMConnection
 
 
 class DigiroadOSMConnectionTest(unittest.TestCase):
@@ -20,10 +20,10 @@ class DigiroadOSMConnectionTest(unittest.TestCase):
     def test_givenNoneOutputPath_then_ThrowException(self):
         self.assertRaises(NotPathException, self.osmConnection.download, ".osm", None)
 
-    @unittest.skip("Skipping to do not spend time downloading the file")
+    # @unittest.skip("Skipping to do not spend time downloading the file")
     def test_givenOSMFileURL_then_downloadOSMFile(self):
         URL = "http://download.geofabrik.de/europe/finland-latest.osm.pbf"
-        outputPath = self.dir + "/edu/test/data/"
+        outputPath = self.dir + "%digiroad%test%data%".replace("%", os.sep)
 
         self.assertIsNotNone(self.osmConnection.download(osmURL=URL,
                                                          outputPath=outputPath))
@@ -32,14 +32,11 @@ class DigiroadOSMConnectionTest(unittest.TestCase):
         self.assertRaises(NotOSMURLGivenException, self.osmConnection.uploadOSMFile2PgSQLDatabase, None, None,
                           None, None, None, None)
 
-    @unittest.skip("Skipping to do not spend time uploading the data into the pg database")
+    # @unittest.skip("Skipping to do not spend time uploading the data into the pg database")
     def test_givenOSMFileURL_then_uploadData2PgSQL(self):
-        # pbfFile = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\sample_osmosis.osm.pbf"
-        # styleURL = "C:\Users\jeisonle\Documents\Digital Geography Lab\Osmosis temp\default.style"
-
-        # pbfFile = self.dir + "/edu/test/data/sample_osmosis.osm.pbf"
-        pbfFile = self.dir + "/edu/test/data/sub-region-of-finland-latest.osm.pbf"
-        styleURL = self.dir + "/edu/test/data/default.style"
+        # pbfFile = self.dir + "%edu%test%data%sample_osmosis.osm.pbf"
+        pbfFile = self.dir + "%digiroad%test%data%sub-region-of-finland-latest.osm.pbf".replace("%", os.sep)
+        styleURL = self.dir + "%digiroad%test%data%default.style".replace("%", os.sep)
 
         self.assertEqual(True, self.osmConnection.uploadOSMFile2PgSQLDatabase(username="postgres", password="hmaa",
                                                                               databaseName="osm_helsinki",

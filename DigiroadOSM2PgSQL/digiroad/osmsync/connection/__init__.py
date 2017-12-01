@@ -2,10 +2,9 @@ import shutil
 import subprocess
 
 import requests
-# from DigiroadOSM2PgSQL.edu.digiroadExceptions import NotOSMURLGivenException, NotPathException
-# from DigiroadOSM2PgSQL.edu.enumerations import OsmosisCommands
-from edu.digiroad.digiroadExceptions import NotOSMURLGivenException, NotPathException
-from edu.digiroad.enumerations import OsmosisCommands
+
+from digiroad.digiroadExceptions import NotOSMURLGivenException, NotPathException
+from digiroad.enumerations import OsmosisCommands
 
 
 class DigiroadOSMConnection:
@@ -24,14 +23,15 @@ class DigiroadOSMConnection:
             raise NotPathException()
 
         # Taken from https://stackoverflow.com/questions/16694907/how-to-download-large-file-in-python-with-requests-py
+        print("Downloading %s" % osmURL)
         local_filename = osmURL.split('/')[-1]
         r = requests.get(osmURL, stream=True)
         filename = outputPath + local_filename
         with open(filename, 'wb') as f:
             shutil.copyfileobj(r.raw, f)
 
+        print("Downloaded %s" % filename)
         return filename
-        # End
 
     def uploadOSMFile2PgSQLDatabase(self, username, password, databaseName, styleURL, inputFile,
                                     fileFormat=OsmosisCommands.PBF):
@@ -65,6 +65,8 @@ class DigiroadOSMConnection:
                          ]
 
         try:
+            print("Uploading %s to %s" % (inputFile, databaseName))
+
             p = subprocess.Popen(split_command,
                                  # shell=True,
                                  stdin=subprocess.PIPE,
@@ -81,7 +83,8 @@ class DigiroadOSMConnection:
             # This makes the wait possible
             p_status = p.wait()
 
-            print("uploadOSMFile2PgSQLDatabase command output: %s" % output)
+            print(output)
+            print("Uploaded %s in %s" % (inputFile, databaseName))
 
         except Exception as err:  # traceback.print_exc(file=sys.stdout)
             raise err
@@ -125,6 +128,8 @@ class DigiroadOSMConnection:
         ]
 
         try:
+            print("Uploading %s to %s" % (inputFile, databaseName))
+
             p = subprocess.Popen(split_command,
                                  # shell=True,
                                  stdin=subprocess.PIPE,
@@ -141,8 +146,8 @@ class DigiroadOSMConnection:
             # This makes the wait possible
             p_status = p.wait()
 
-            print("uploadOSMFile2PgSQLDatabase command output: %s" % output)
-
+            print(output)
+            print("Uploaded %s in %s" % (inputFile, databaseName))
         except Exception as err:  # traceback.print_exc(file=sys.stdout)
             raise err
 

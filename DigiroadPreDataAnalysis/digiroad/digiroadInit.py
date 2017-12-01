@@ -13,7 +13,7 @@ from digiroad.util import CostAttributes
 def printHelp():
     print (
         "DigiroadPreDataAnalysis tool\n"
-        "\n\t[--help]: print information about the parameters necessary to run the tool."
+        "\n\t[--help]: Print information about the parameters necessary to run the tool."
         "\n\t[-c, --coordinates]: Geojson file containing all the pair of points to calculate the shortest path between them."
         "\n\t[-s, --shortestPathFolder]: The final destination where the output geojson and summary files will be located."
         "\n\t[-i, --impedance]: The impedance/cost attribute to calculate the shortest path."
