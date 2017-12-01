@@ -1,22 +1,26 @@
-# Install
+# Installation
 
-Clone `git@github.com:DigitalGeographyLab/Car-Routing.git`
+```
+    $ git clone git@github.com:DigitalGeographyLab/Car-Routing.git
+    $ cd DigiroadPreDataAnalysis
+```
 
 ## Libraries required
 
 * OWSLib
-
-  Also require: Microsoft Visual C++ 9.0 is required. Get it from [here][microsoft-vistual-c++].
-  
-    
-    $ cd ../anaconda3/bin
+```
+    $ cd /opt/anaconda3/bin/
+    $ ./conda install -c conda-forge owslib
     $ source ./activate
-    $ pip install -u owslib
-  
+    $ pip install --upgrade owslib
+```
+
+  For windows, also required: Microsoft Visual C++ 9.0 is required. Get it from [here][microsoft-vistual-c++].
+    
 # Run
 
 ```{r, engine='sh', count_lines}
-../Car-Routing/DigiroadPreDataAnalysis$ python -m digiroad -c <../testPoints.geojson> -s <../outputFolder/> -i <IMPEDANCE/COST ATTRIBUTE>
+    $ ../Car-Routing/DigiroadPreDataAnalysis$ python -m digiroad -c <../testPoints.geojson> -s <../outputFolder/> -i <IMPEDANCE/COST ATTRIBUTE>
 ```
 
 Input testPoints.geojson is in the format:
