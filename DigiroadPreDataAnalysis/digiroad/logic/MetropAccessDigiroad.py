@@ -1,8 +1,12 @@
+import numpy as np
+import nvector as nv
 import os
+from pyproj import Proj, transform
 
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
 from digiroad.connection import FileActions
+from digiroad.entities import Point
 from digiroad.util import CostAttributes, GeometryType, getEnglishMeaning
 
 
@@ -36,22 +40,25 @@ class MetropAccessDigiroadApplication:
 
         filename = "shortestPath"
         extension = "geojson"
-        for feature in inputCoordinates["data"]["features"]:
+
+        epsgCode = inputCoordinates["crs"]["properties"]["name"].split(":")[-3] + ":" + \
+                   inputCoordinates["crs"]["properties"]["name"].split(":")[-1]
+
+        for feature in inputCoordinates["features"]:
             startPoint = feature["geometry"]["coordinates"][0]
             endPoint = feature["geometry"]["coordinates"][1]
-            lat = startPoint[0]
-            lng = startPoint[1]
-            startPointNearestVertexCoordinates = wfsServiceProvider.getNearestVertextFromAPoint({
-                "lat": lat,
-                "lng": lng
-            })
 
-            lat = endPoint[0]
-            lng = endPoint[1]
-            endPointNearestVertexCoordinates = wfsServiceProvider.getNearestVertextFromAPoint({
-                "lat": lat,
-                "lng": lng
-            })
+            coordinates = Point(latitute=startPoint[0],
+                                longitude=startPoint[1],
+                                crs=epsgCode)
+
+            startPointNearestVertexCoordinates = wfsServiceProvider.getNearestVertextFromAPoint(coordinates)
+
+            coordinates = Point(latitute=endPoint[0],
+                                longitude=endPoint[1],
+                                crs=epsgCode)
+
+            endPointNearestVertexCoordinates = wfsServiceProvider.getNearestVertextFromAPoint(coordinates)
 
             startPoint = startPointNearestVertexCoordinates["features"][0]
             # lat = startPoint["geometry"]["coordinates"][1]
@@ -72,8 +79,54 @@ class MetropAccessDigiroadApplication:
             }
 
             completeFilename = "%s_%s_%s_%s.%s" % (
-            filename, getEnglishMeaning(costAttribute), startVertexId, endVertexId, extension)
+                filename, getEnglishMeaning(costAttribute), startVertexId, endVertexId, extension)
             self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename, data=shortestPath)
+
+    def calculateEuclideanDistance(self, startPoint=Point, endPoint=Point):
+        """
+        Calculate the distances between two points in meters.
+
+        :param startPoint: latitude and longitud of the first point, must contain the CRS in which is given the coordinates
+        :param endPoint: latitude and longitud of the second point, must contain the CRS in which is given the coordinates
+        :return: Euclidean distance between the two points in meters.
+        """
+
+        startPointTransformed = self.transformPoint(startPoint)
+        endPointTransformed = self.transformPoint(endPoint)
+
+        wgs84 = nv.FrameE(name='WGS84')
+        point1 = wgs84.GeoPoint(latitude=startPointTransformed["lat"],
+                                longitude=startPointTransformed["lng"],
+                                degrees=True)
+        point2 = wgs84.GeoPoint(latitude=endPointTransformed["lat"],
+                                longitude=endPointTransformed["lng"],
+                                degrees=True)
+        ellipsoidalDistance, _azi1, _azi2 = point1.distance_and_azimuth(point2)
+        p_12_E = point2.to_ecef_vector() - point1.to_ecef_vector()
+        euclideanDistance = np.linalg.norm(p_12_E.pvector, axis=0)[0]
+
+        return euclideanDistance
+
+    def transformPoint(self, point, targetEPSGCode="epsg:4326"):
+        """
+        Coordinates Transform from one CRS to another CRS.
+         
+        :param point: 
+        :param targetEPSGCode:
+        :return:
+        """
+
+        inProj = Proj(init=point.getCRS())
+        outProj = Proj(init=targetEPSGCode)
+
+        lng, lat = transform(inProj, outProj, point.getLongitude(), point.getLatitude())
+
+        newPoint = {
+            "lat": lat,
+            "lng": lng
+        }
+
+        return newPoint
 
     def createSummary(self, folderPath, costAttribute, outputFilename):
         """
@@ -86,7 +139,7 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the summary information in the folderPath with the name given in outputFilename.
         """
-        if not folderPath.endswith(os.sep ):
+        if not folderPath.endswith(os.sep):
             attributeFolderPath = folderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
             summaryFolderPath = folderPath + os.sep + "summary" + os.sep
         else:

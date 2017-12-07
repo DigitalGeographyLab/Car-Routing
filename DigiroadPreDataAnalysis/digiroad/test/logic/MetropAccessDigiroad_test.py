@@ -1,12 +1,11 @@
+import os
 import unittest
 
-import os
-
-from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
-from digiroad.connection import WFSServiceProvider
-
 from digiroad.connection import FileActions
+from digiroad.connection import WFSServiceProvider
+from digiroad.entities import Point
+from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.util import CostAttributes, getEnglishMeaning
 
 
@@ -31,6 +30,34 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                           inputCoordinatesURL,
                           outputFolderFeaturesURL)
 
+    def test_givenAPoint_retrieveEuclideanDistanceToTheNearestVertex(self):
+        euclideanDistanceExpected = 1.4044170756169843  # meters
+        # startPoint = {
+        #     "lat": 8443095.452975733,
+        #     "lng": 2770620.87667954,
+        #     "crs": "EPSG:3857"
+        # }
+        startPoint = Point(latitute=8443095.452975733,
+                           longitude=2770620.87667954,
+                           crs="EPSG:3857")
+
+        nearestVertex = self.wfsServiceProvider.getNearestVertextFromAPoint(startPoint)
+        epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
+                   nearestVertex["crs"]["properties"]["name"].split(":")[-1]
+
+        # endPoint = {
+        #     "lat": nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
+        #     "lng": nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
+        #     "crs": epsgCode
+        # }
+
+        endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
+                         longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
+                         crs=epsgCode)
+
+        self.assertEqual(euclideanDistanceExpected,
+                         self.metroAccessDigiroad.calculateEuclideanDistance(startPoint, endPoint))
+
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
         inputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%testPoints.geojson'.replace("%", os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
@@ -45,11 +72,12 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + \
                                            "geoms" + os.sep + getEnglishMeaning(distanceCostAttribute) + os.sep
         else:
-            geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + "geoms" + os.sep + getEnglishMeaning(distanceCostAttribute) + os.sep
+            geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + "geoms" + os.sep + getEnglishMeaning(
+                distanceCostAttribute) + os.sep
 
         outputFileList = self.readOutputFolderFiles(geomsOutputFolderFeaturesURL)
 
-        self.assertEqual(len(inputCoordinatesGeojson["data"]["features"]), len(outputFileList))
+        self.assertEqual(len(inputCoordinatesGeojson["features"]), len(outputFileList))
         # outputFeaturesGeojson = self.readData.readJson(outputFeaturesURL)
         # self.assertEqual(, outputFeaturesGeojson)
 
@@ -64,7 +92,8 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
         summaryResult = self.fileActions.readJson(
-            summaryOutputFolderFeaturesURL + getEnglishMeaning(CostAttributes.DISTANCE) + "_metroAccessDigiroadSummary.geojson")
+            summaryOutputFolderFeaturesURL + getEnglishMeaning(
+                CostAttributes.DISTANCE) + "_metroAccessDigiroadSummary.geojson")
 
         self.assertEqual(expecterResult, summaryResult)
 

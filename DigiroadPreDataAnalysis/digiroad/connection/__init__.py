@@ -35,7 +35,7 @@ class WFSServiceProvider:
         """
         url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
             self.typeName, self.outputFormat, str(
-                coordinates["lng"]), str(coordinates["lat"]))
+                coordinates.getLongitude()), str(coordinates.getLatitude()))
 
         # wfs11 = WebFeatureService(url="http://localhost:8080/geoserver/wfs", version="1.1.0")
         # return wfs11.getfeature(typename='tutorial:dgl_nearest_vertex',
@@ -101,7 +101,7 @@ class FileActions:
         :param geometryType: Geometry type (i.e. MultiPoint, LineString)
         :return: None
         """
-        for feature in data["data"]["features"]:
+        for feature in data["features"]:
             if feature["geometry"]["type"] != geometryType:
                 raise exc.IncorrectGeometryTypeException("Expected %s" % geometryType)
 
