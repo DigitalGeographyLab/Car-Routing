@@ -1,16 +1,13 @@
 {
   "crs": {
-    "type": "name",
     "properties": {
       "name": "urn:ogc:def:crs:EPSG::3857"
-    }
+    },
+    "type": "name"
   },
-  "totalFeatures": 2,
-  "type": "FeatureCollection",
   "features": [
     {
       "geometry": {
-        "type": "LineString",
         "coordinates": [
           [
             2770726.00945619,
@@ -28,34 +25,40 @@
             2776088.97885966,
             8436493.83965954
           ]
-        ]
+        ],
+        "type": "LineString"
       },
       "properties": {
-        "startVertexId": "106290",
+        "costAttribute": "distance",
+        "day_avg_delay_time": 14.342859373479994,
         "distance": 4994.035870943289,
         "endVertexId": "96275",
-        "endCoordinates": [
-          [
-            2776090.62126614,
-            8436494.99190766
-          ]
-        ],
-        "startCoordinates": [
-          [
-            2770620.75925106,
-            8443092.63242954
-          ]
-        ],
+        "euclideanDistanceEndPoint": 35.46222035232416,
+        "euclideanDistanceStartPoint": 28.905987345680714,
         "midday_delay_time": 12.765021873449998,
-        "day_avg_delay_time": 14.342859373479994,
+        "nearestEndCoordinates": [
+          2776090.62126614,
+          8436494.99190766
+        ],
+        "nearestStartCoordinates": [
+          2770620.75925106,
+          8443092.63242954
+        ],
         "rush_hour_delay_time": 15.479871873420004,
+        "selectedEndCoordinates": [
+          2776131.3593964037,
+          8436436.62334174
+        ],
+        "selectedStartCoordinates": [
+          2770625.5047027366,
+          8443150.541380882
+        ],
         "speed_limit_time": 6.834330206800001,
-        "costAttribute": "distance"
+        "startVertexId": "106290"
       }
     },
     {
       "geometry": {
-        "type": "LineString",
         "coordinates": [
           [
             2783799.80177817,
@@ -101,30 +104,39 @@
             2779059.32507545,
             8446070.08441384
           ]
-        ]
+        ],
+        "type": "LineString"
       },
       "properties": {
-        "startVertexId": "109762",
+        "costAttribute": "distance",
+        "day_avg_delay_time": 16.969731226649994,
         "distance": 5744.657153461679,
         "endVertexId": "110884",
-        "endCoordinates": [
-          [
-            2778860.82393506,
-            8445607.56539851
-          ]
-        ],
-        "startCoordinates": [
-          [
-            2783304.26739049,
-            8452680.24421245
-          ]
-        ],
+        "euclideanDistanceEndPoint": 39.19345707418345,
+        "euclideanDistanceStartPoint": 62.33023548636416,
         "midday_delay_time": 14.887840941280002,
-        "day_avg_delay_time": 16.969731226649994,
+        "nearestEndCoordinates": [
+          2778860.82393506,
+          8445607.56539851
+        ],
+        "nearestStartCoordinates": [
+          2783304.26739049,
+          8452680.24421245
+        ],
         "rush_hour_delay_time": 18.33835484529,
+        "selectedEndCoordinates": [
+          2778867.5661432995,
+          8445529.046721973
+        ],
+        "selectedStartCoordinates": [
+          2783396.1614870545,
+          8452765.483509162
+        ],
         "speed_limit_time": 6.907324274560002,
-        "costAttribute": "distance"
+        "startVertexId": "109762"
       }
     }
-  ]
+  ],
+  "totalFeatures": 2,
+  "type": "FeatureCollection"
 }

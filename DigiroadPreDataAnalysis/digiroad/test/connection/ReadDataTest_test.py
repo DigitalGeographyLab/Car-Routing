@@ -3,13 +3,14 @@ import os
 
 from digiroad.carRoutingExceptions import IncorrectGeometryTypeException
 from digiroad.connection import WFSServiceProvider, FileActions
+from digiroad.entities import Point
 from digiroad.util import CostAttributes
 
 
 class WFSServiceProviderTest(unittest.TestCase):
     def setUp(self):
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
-                                                     nearestVertexTypeName="tutorial:dgl_nearest_vertex",
+                                                     nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
         self.fileActions = FileActions()
@@ -22,38 +23,46 @@ class WFSServiceProviderTest(unittest.TestCase):
     def test_givenAGeoJson_then_attributeDataMustExist(self):
         dir = self.dir + '/digiroad/test/data/geojson/testPoints.geojson'
         multiPoints = self.fileActions.readMultiPointJson(dir)
-        self.assertIsNotNone(multiPoints["data"])
+        self.assertIsNotNone(multiPoints["features"])
 
     def test_givenAGeoJsonWithAttributeData_then_attributeFeaturesMustExist(self):
         dir = self.dir + '/digiroad/test/data/geojson/testPoints.geojson'
         multiPoints = self.fileActions.readMultiPointJson(dir)
-        self.assertIsNotNone(multiPoints["data"]["features"])
+        self.assertIsNotNone(multiPoints["features"])
 
     def test_givenAnEmptyGeoJson_then_allowed(self):
         dir = self.dir + '/digiroad/test/data/geojson/testEmpty.geojson'
         multiPoints = self.fileActions.readMultiPointJson(dir)
-        self.assertEquals(0, len(multiPoints["data"]["features"]))
+        self.assertEquals(0, len(multiPoints["features"]))
 
     def test_eachFeatureMustBeMultiPointType_IfNot_then_throwNotMultiPointGeometryError(self):
         dir = self.dir + '/digiroad/test/data/geojson/testNotMultiPointGeometry.geojson'
         self.assertRaises(IncorrectGeometryTypeException, self.fileActions.readMultiPointJson, dir)
 
     def test_givenAPairOfPoints_retrieveSomething(self):
-        point_coordinates = {
-            "lat": 60.1836272547957,
-            "lng": 24.929379456878265
-        }
-        self.assertIsNotNone(self.wfsServiceProvider.getNearestVertextFromAPoint(point_coordinates))
+        # point_coordinates = {
+        #     "lat": 60.1836272547957,
+        #     "lng": 24.929379456878265
+        # }
+        coordinates = Point(latitute=60.1836272547957,
+                           longitude=24.929379456878265,
+                           crs="EPSG:4326")
+
+        self.assertIsNotNone(self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
 
     def test_givenAPoint_retrieveNearestVertexGeojson(self):
-        point_coordinates = {  # EPSG:3857
-            "lat": 8443095.452975733,
-            "lng": 2770620.87667954
-        }
+        # point_coordinates = {  # EPSG:3857
+        #     "lat": 8443095.452975733,
+        #     "lng": 2770620.87667954
+        # }
 
-        nearestVertexGeojson = self.readNearestVertextGeojsonExpectedResponse()
+        coordinates = Point(latitute=8443095.452975733,
+                            longitude=2770620.87667954,
+                            crs="EPSG:3857")
 
-        self.assertEqual(nearestVertexGeojson, self.wfsServiceProvider.getNearestVertextFromAPoint(point_coordinates))
+        nearestVertexExpectedGeojson = self.readNearestVertextGeojsonExpectedResponse()
+
+        self.assertEqual(nearestVertexExpectedGeojson, self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
 
     def test_givenAPairOfPoints_then_retrieveTheShortestPath(self):
         self.maxDiff = None
