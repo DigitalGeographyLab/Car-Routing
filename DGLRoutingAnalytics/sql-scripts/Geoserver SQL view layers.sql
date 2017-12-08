@@ -35,7 +35,7 @@ GROUP BY
 SELECT
   v.id,
   v.the_geom,
-  string_agg(distinct(e.name),',') AS name
+  string_agg(distinct(e.old_id ),',') AS name
 FROM
   edges_noded_vertices_pgr AS v,
   edges_noded AS e

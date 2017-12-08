@@ -11,12 +11,14 @@ from digiroad.util import GeometryType
 
 
 class WFSServiceProvider:
-    def __init__(self, wfs_url="http://localhost:8080/geoserver/wfs?", nearestCarRoutingVertexTypeName="",
+    def __init__(self, wfs_url="http://localhost:8080/geoserver/wfs?",
+                 nearestVertexTypeName="", nearestCarRoutingVertexTypeName="",
                  shortestPathTypeName="", outputFormat=""):
         self.shortestPathTypeName = shortestPathTypeName
         self.__geoJson = None
         self.wfs_url = wfs_url
-        self.typeName = nearestCarRoutingVertexTypeName
+        self.nearestVertexTypeName = nearestVertexTypeName
+        self.nearestCarRoutingVertexTypeName = nearestCarRoutingVertexTypeName
         self.outputFormat = outputFormat
 
     # def getGeoJson(self):
@@ -25,8 +27,7 @@ class WFSServiceProvider:
     # def setGeoJson(self, geojson):
     #     self.__geoJson = geojson
 
-
-    def getNearestCarRoutableVertexFromAPoint(self, coordinates):
+    def getNearestVertexFromAPoint(self, coordinates):
         """
         From the WFS Service retrieve the nearest vertex from a given point coordinates.
 
@@ -34,12 +35,28 @@ class WFSServiceProvider:
         :return: Geojson (Geometry type: Point) with the nearest point coordinates.
         """
         url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
-            self.typeName, self.outputFormat, str(
+            self.nearestVertexTypeName, self.outputFormat, str(
                 coordinates.getLongitude()), str(coordinates.getLatitude()))
 
+        return self.requestFeatures(url)
+
+    def requestFeatures(self, url):
         u = openURL(url)
         # return json.loads(u.read())
         return json.loads(u.read().decode('utf-8'))
+
+    def getNearestCarRoutableVertexFromAPoint(self, coordinates):
+        """
+        From the WFS Service retrieve the nearest car routing vertex from a given point coordinates.
+
+        :param coordinates: Point coordinates. e.g [889213124.3123, 231234.2341]
+        :return: Geojson (Geometry type: Point) with the nearest point coordinates.
+        """
+        url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
+            self.nearestCarRoutingVertexTypeName, self.outputFormat, str(
+                coordinates.getLongitude()), str(coordinates.getLatitude()))
+
+        return self.requestFeatures(url)
 
     def getShortestPath(self, startVertexId, endVertexId, cost):
         """
@@ -55,9 +72,7 @@ class WFSServiceProvider:
             self.shortestPathTypeName, self.outputFormat,
             startVertexId, endVertexId, cost)
 
-        u = openURL(url)
-        # return json.loads(u.read())
-        return json.loads(u.read().decode('utf-8'))
+        return self.requestFeatures(url)
 
 
 class FileActions:
