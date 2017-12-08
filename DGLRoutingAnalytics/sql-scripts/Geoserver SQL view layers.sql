@@ -1,3 +1,6 @@
+
+--Shortest path
+
 SELECT
   min(r.seq) AS seq,
   e.old_id AS id,
@@ -26,7 +29,9 @@ GROUP BY
   e.old_id, e.name, e.type, e.oneway
   
 --------------------------------------------------------------------------------------------------
-  
+
+-- Nearest Vertex
+
 SELECT
   v.id,
   v.the_geom,
@@ -41,3 +46,21 @@ WHERE
           ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint(%x%, %y%), 3857) LIMIT 1)
   AND (e.source = v.id OR e.target = v.id)
 GROUP BY v.id, v.the_geom
+
+-------------------------------------------------------------------------------------------------
+
+-- Nearest Car Routing Vertex
+
+SELECT
+  v.id,
+  v.the_geom,
+  string_agg(distinct(e.old_id || ''),',') AS name
+FROM
+  edges_noded_vertices_pgr AS v,
+  edges_noded AS e
+WHERE
+(e.source = v.id OR e.target = v.id)
+AND e.TOIMINNALL <> 10
+GROUP BY v.id, v.the_geom
+ORDER BY v.the_geom <-> ST_SetSRID(ST_MakePoint(%x%, %y%), 3857)
+LIMIT 1

@@ -13,7 +13,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
     def setUp(self):
         self.metroAccessDigiroad = MetropAccessDigiroadApplication()
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
-                                                     nearestVertexTypeName="tutorial:dgl_nearest_vertex",
+                                                     nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
         self.fileActions = FileActions()
@@ -41,7 +41,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                            longitude=2770620.87667954,
                            crs="EPSG:3857")
 
-        nearestVertex = self.wfsServiceProvider.getNearestVertextFromAPoint(startPoint)
+        nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(startPoint)
         epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
                    nearestVertex["crs"]["properties"]["name"].split(":")[-1]
 
@@ -104,3 +104,32 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                 outputFileList.append(file)
 
         return outputFileList
+
+    def test_calculateEuclideanDistanceToTheNearestVertex(self):
+        euclideanDistanceExpected = 307.99402311696525  # meters
+        # startPoint = {
+        #     "lat": 8443095.452975733,
+        #     "lng": 2770620.87667954,
+        #     "crs": "EPSG:3857"
+        # }
+        startPoint = Point(latitute=60.19602778395168,
+                           longitude=24.916477203369144,
+                           crs="EPSG:4326")
+        newStartPoint = self.metroAccessDigiroad.transformPoint(startPoint, targetEPSGCode="epsg:3857")
+
+        nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(newStartPoint)
+        epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
+                   nearestVertex["crs"]["properties"]["name"].split(":")[-1]
+
+        # endPoint = {
+        #     "lat": nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
+        #     "lng": nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
+        #     "crs": epsgCode
+        # }
+
+        endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
+                         longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
+                         crs=epsgCode)
+
+        self.assertEqual(euclideanDistanceExpected,
+                         self.metroAccessDigiroad.calculateEuclideanDistance(newStartPoint, endPoint))

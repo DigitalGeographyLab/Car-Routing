@@ -11,12 +11,12 @@ from digiroad.util import GeometryType
 
 
 class WFSServiceProvider:
-    def __init__(self, wfs_url="http://localhost:8080/geoserver/wfs?", nearestVertexTypeName="",
+    def __init__(self, wfs_url="http://localhost:8080/geoserver/wfs?", nearestCarRoutingVertexTypeName="",
                  shortestPathTypeName="", outputFormat=""):
         self.shortestPathTypeName = shortestPathTypeName
         self.__geoJson = None
         self.wfs_url = wfs_url
-        self.typeName = nearestVertexTypeName
+        self.typeName = nearestCarRoutingVertexTypeName
         self.outputFormat = outputFormat
 
     # def getGeoJson(self):
@@ -26,7 +26,7 @@ class WFSServiceProvider:
     #     self.__geoJson = geojson
 
 
-    def getNearestVertextFromAPoint(self, coordinates):
+    def getNearestCarRoutableVertexFromAPoint(self, coordinates):
         """
         From the WFS Service retrieve the nearest vertex from a given point coordinates.
 
@@ -36,11 +36,6 @@ class WFSServiceProvider:
         url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
             self.typeName, self.outputFormat, str(
                 coordinates.getLongitude()), str(coordinates.getLatitude()))
-
-        # wfs11 = WebFeatureService(url="http://localhost:8080/geoserver/wfs", version="1.1.0")
-        # return wfs11.getfeature(typename='tutorial:dgl_nearest_vertex',
-        #                         outputFormat="application/json",
-        #                         filter="viewparams=x:" + str(coordinates["lng"]) + ';y:' + str(coordinates["lat"]))
 
         u = openURL(url)
         # return json.loads(u.read())

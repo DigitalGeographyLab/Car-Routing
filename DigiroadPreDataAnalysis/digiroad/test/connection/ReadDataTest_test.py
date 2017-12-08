@@ -10,7 +10,7 @@ from digiroad.util import CostAttributes
 class WFSServiceProviderTest(unittest.TestCase):
     def setUp(self):
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
-                                                     nearestVertexTypeName="tutorial:dgl_nearest_vertex",
+                                                     nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
         self.fileActions = FileActions()
@@ -48,7 +48,7 @@ class WFSServiceProviderTest(unittest.TestCase):
                            longitude=24.929379456878265,
                            crs="EPSG:4326")
 
-        self.assertIsNotNone(self.wfsServiceProvider.getNearestVertextFromAPoint(coordinates))
+        self.assertIsNotNone(self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
 
     def test_givenAPoint_retrieveNearestVertexGeojson(self):
         # point_coordinates = {  # EPSG:3857
@@ -62,7 +62,7 @@ class WFSServiceProviderTest(unittest.TestCase):
 
         nearestVertexExpectedGeojson = self.readNearestVertextGeojsonExpectedResponse()
 
-        self.assertEqual(nearestVertexExpectedGeojson, self.wfsServiceProvider.getNearestVertextFromAPoint(coordinates))
+        self.assertEqual(nearestVertexExpectedGeojson, self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
 
     def test_givenAPairOfPoints_then_retrieveTheShortestPath(self):
         self.maxDiff = None

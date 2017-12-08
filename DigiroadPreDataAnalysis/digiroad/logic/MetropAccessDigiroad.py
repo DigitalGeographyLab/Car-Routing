@@ -44,38 +44,54 @@ class MetropAccessDigiroadApplication:
         epsgCode = inputCoordinates["crs"]["properties"]["name"].split(":")[-3] + ":" + \
                    inputCoordinates["crs"]["properties"]["name"].split(":")[-1]
 
-        for feature in inputCoordinates["features"]:
-            startPoint = feature["geometry"]["coordinates"][0]
-            endPoint = feature["geometry"]["coordinates"][1]
+        for startPointfeature in inputCoordinates["features"]:
+            startCoordinates = startPointfeature["geometry"]["coordinates"][0]
+            endCoordinates = startPointfeature["geometry"]["coordinates"][1]
 
-            coordinates = Point(latitute=startPoint[0],
-                                longitude=startPoint[1],
-                                crs=epsgCode)
+            startPoint = Point(latitute=startCoordinates[0],
+                               longitude=startCoordinates[1],
+                               crs=epsgCode)
+            endPoint = Point(latitute=endCoordinates[0],
+                             longitude=endCoordinates[1],
+                             crs=epsgCode)
 
-            startPointNearestVertexCoordinates = wfsServiceProvider.getNearestVertextFromAPoint(coordinates)
+            startPointNearestVertexGeojson = wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(startPoint)
+            endPointNearestVertexGeojson = wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(endPoint)
 
-            coordinates = Point(latitute=endPoint[0],
-                                longitude=endPoint[1],
-                                crs=epsgCode)
+            startPointfeature = startPointNearestVertexGeojson["features"][0]
+            startNearestVertexCoordinates = startPointfeature["geometry"]["coordinates"][0]
+            epsgCodeNearestVertexCoordinates = startPointNearestVertexGeojson["crs"]["properties"]["name"].split(":")[
+                                                   -3] + ":" + \
+                                               startPointNearestVertexGeojson["crs"]["properties"]["name"].split(":")[
+                                                   -1]
+            nearestStartPoint = Point(latitute=startNearestVertexCoordinates[1],
+                                      longitude=startNearestVertexCoordinates[0],
+                                      crs=epsgCodeNearestVertexCoordinates)
+            startVertexId = startPointfeature["id"].split(".")[1]
 
-            endPointNearestVertexCoordinates = wfsServiceProvider.getNearestVertextFromAPoint(coordinates)
-
-            startPoint = startPointNearestVertexCoordinates["features"][0]
-            # lat = startPoint["geometry"]["coordinates"][1]
-            # lng = startPoint["geometry"]["coordinates"][0]
-            startVertexId = startPoint["id"].split(".")[1]
-
-            endPoint = endPointNearestVertexCoordinates["features"][0]
-            # lat = endPoint["geometry"]["coordinates"][1]
-            # lng = endPoint["geometry"]["coordinates"][0]
-            endVertexId = endPoint["id"].split(".")[1]
+            endPointFeature = endPointNearestVertexGeojson["features"][0]
+            endNearestVertexCoordinates = endPointFeature["geometry"]["coordinates"][0]
+            epsgCodeNearestVertexCoordinates = endPointNearestVertexGeojson["crs"]["properties"]["name"].split(":")[
+                                                   -3] + ":" + \
+                                               endPointNearestVertexGeojson["crs"]["properties"]["name"].split(":")[-1]
+            nearestEndPoint = Point(latitute=endNearestVertexCoordinates[1],
+                                    longitude=endNearestVertexCoordinates[0],
+                                    crs=epsgCodeNearestVertexCoordinates)
+            endVertexId = endPointFeature["id"].split(".")[1]
 
             shortestPath = wfsServiceProvider.getShortestPath(startVertexId=startVertexId, endVertexId=endVertexId,
                                                               cost=costAttribute)
 
+            euclideanDistanceStartPoint = self.calculateEuclideanDistance(startPoint, nearestStartPoint)
+            euclideanDistanceEndPoint = self.calculateEuclideanDistance(endPoint, nearestEndPoint)
+
             shortestPath["overallProperties"] = {
-                "startCoordinates": startPoint["geometry"]["coordinates"],
-                "endCoordinates": endPoint["geometry"]["coordinates"],
+                "selectedStartCoordinates": [startPoint.getLongitude(), startPoint.getLatitude()],
+                "selectedEndCoordinates": [endPoint.getLongitude(), endPoint.getLatitude()],
+                "euclideanDistanceStartPoint": euclideanDistanceStartPoint,
+                "nearestStartCoordinates": [nearestStartPoint.getLongitude(), nearestStartPoint.getLatitude()],
+                "nearestEndCoordinates": [nearestEndPoint.getLongitude(), nearestEndPoint.getLatitude()],
+                "euclideanDistanceEndPoint": euclideanDistanceEndPoint
             }
 
             completeFilename = "%s_%s_%s_%s.%s" % (
@@ -95,11 +111,11 @@ class MetropAccessDigiroadApplication:
         endPointTransformed = self.transformPoint(endPoint)
 
         wgs84 = nv.FrameE(name='WGS84')
-        point1 = wgs84.GeoPoint(latitude=startPointTransformed["lat"],
-                                longitude=startPointTransformed["lng"],
+        point1 = wgs84.GeoPoint(latitude=startPointTransformed.getLatitude(),
+                                longitude=startPointTransformed.getLongitude(),
                                 degrees=True)
-        point2 = wgs84.GeoPoint(latitude=endPointTransformed["lat"],
-                                longitude=endPointTransformed["lng"],
+        point2 = wgs84.GeoPoint(latitude=endPointTransformed.getLatitude(),
+                                longitude=endPointTransformed.getLongitude(),
                                 degrees=True)
         ellipsoidalDistance, _azi1, _azi2 = point1.distance_and_azimuth(point2)
         p_12_E = point2.to_ecef_vector() - point1.to_ecef_vector()
@@ -121,12 +137,7 @@ class MetropAccessDigiroadApplication:
 
         lng, lat = transform(inProj, outProj, point.getLongitude(), point.getLatitude())
 
-        newPoint = {
-            "lat": lat,
-            "lng": lng
-        }
-
-        return newPoint
+        return Point(latitute=lat, longitude=lng, crs=targetEPSGCode)
 
     def createSummary(self, folderPath, costAttribute, outputFilename):
         """
@@ -173,8 +184,12 @@ class MetropAccessDigiroadApplication:
                         "startVertexId": filemetadata[2],
                         "endVertexId": filemetadata[3].replace(".geojson", ""),
                         "costAttribute": filemetadata[1],
-                        "startCoordinates": shortestPath["overallProperties"]["startCoordinates"],
-                        "endCoordinates": shortestPath["overallProperties"]["endCoordinates"]
+                        "selectedStartCoordinates": shortestPath["overallProperties"]["selectedStartCoordinates"],
+                        "selectedEndCoordinates": shortestPath["overallProperties"]["selectedEndCoordinates"],
+                        "nearestStartCoordinates": shortestPath["overallProperties"]["nearestStartCoordinates"],
+                        "nearestEndCoordinates": shortestPath["overallProperties"]["nearestEndCoordinates"],
+                        "euclideanDistanceStartPoint": shortestPath["overallProperties"]["euclideanDistanceStartPoint"],
+                        "euclideanDistanceEndPoint": shortestPath["overallProperties"]["euclideanDistanceEndPoint"]
                     }
                 }
 

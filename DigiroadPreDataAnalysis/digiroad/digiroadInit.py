@@ -96,7 +96,7 @@ def main():
 
     starter = MetropAccessDigiroadApplication()
     wfsServiceProvider = WFSServiceProvider(wfs_url=config["WFS_CONFIG"]["wfs_url"],
-                                            nearestVertexTypeName=config["WFS_CONFIG"]["nearestVertexTypeName"],
+                                            nearestCarRoutingVertexTypeName=config["WFS_CONFIG"]["nearestCarRoutingVertexTypeName"],
                                             shortestPathTypeName=config["WFS_CONFIG"]["shortestPathTypeName"],
                                             outputFormat=config["WFS_CONFIG"]["outputFormat"])
 
