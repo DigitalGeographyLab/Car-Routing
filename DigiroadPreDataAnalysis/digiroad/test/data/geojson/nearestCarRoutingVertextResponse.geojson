@@ -4,7 +4,7 @@
   "features": [
     {
       "type": "Feature",
-      "id": "dgl_nearest_vertex.106290",
+      "id": "dgl_nearest_car_routable_vertex.106290",
       "geometry": {
         "type": "MultiPoint",
         "coordinates": [

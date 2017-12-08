@@ -13,6 +13,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
     def setUp(self):
         self.metroAccessDigiroad = MetropAccessDigiroadApplication()
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
+                                                     nearestVertexTypeName="tutorial:dgl_nearest_vertex",
                                                      nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")

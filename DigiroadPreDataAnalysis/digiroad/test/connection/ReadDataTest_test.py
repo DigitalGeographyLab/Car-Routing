@@ -10,6 +10,7 @@ from digiroad.util import CostAttributes
 class WFSServiceProviderTest(unittest.TestCase):
     def setUp(self):
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
+                                                     nearestVertexTypeName="tutorial:dgl_nearest_vertex",
                                                      nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
@@ -45,10 +46,25 @@ class WFSServiceProviderTest(unittest.TestCase):
         #     "lng": 24.929379456878265
         # }
         coordinates = Point(latitute=60.1836272547957,
-                           longitude=24.929379456878265,
-                           crs="EPSG:4326")
+                            longitude=24.929379456878265,
+                            crs="EPSG:4326")
 
         self.assertIsNotNone(self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
+
+    def test_givenAPoint_retrieveNearestCarRoutingVertexGeojson(self):
+        # point_coordinates = {  # EPSG:3857
+        #     "lat": 8443095.452975733,
+        #     "lng": 2770620.87667954
+        # }
+
+        coordinates = Point(latitute=8443095.452975733,
+                            longitude=2770620.87667954,
+                            crs="EPSG:3857")
+
+        nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse('/digiroad/test/data/geojson/nearestCarRoutingVertextResponse.geojson')
+
+        self.assertEqual(nearestVertexExpectedGeojson,
+                         self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
 
     def test_givenAPoint_retrieveNearestVertexGeojson(self):
         # point_coordinates = {  # EPSG:3857
@@ -60,9 +76,9 @@ class WFSServiceProviderTest(unittest.TestCase):
                             longitude=2770620.87667954,
                             crs="EPSG:3857")
 
-        nearestVertexExpectedGeojson = self.readNearestVertextGeojsonExpectedResponse()
+        nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse('/digiroad/test/data/geojson/nearestVertextResponse.geojson')
 
-        self.assertEqual(nearestVertexExpectedGeojson, self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
+        self.assertEqual(nearestVertexExpectedGeojson, self.wfsServiceProvider.getNearestVertexFromAPoint(coordinates))
 
     def test_givenAPairOfPoints_then_retrieveTheShortestPath(self):
         self.maxDiff = None
@@ -72,7 +88,8 @@ class WFSServiceProviderTest(unittest.TestCase):
             if feature["id"]:
                 del feature["id"]
 
-        shortestPathResult = self.wfsServiceProvider.getShortestPath(startVertexId=106290, endVertexId=96275, cost=CostAttributes.DISTANCE)
+        shortestPathResult = self.wfsServiceProvider.getShortestPath(startVertexId=106290, endVertexId=96275,
+                                                                     cost=CostAttributes.DISTANCE)
         for feature in shortestPathResult["features"]:
             if feature["id"]:
                 del feature["id"]
@@ -80,8 +97,11 @@ class WFSServiceProviderTest(unittest.TestCase):
         self.assertDictEqual(shortestPathGeojson,
                              shortestPathResult)
 
-    def readNearestVertextGeojsonExpectedResponse(self):
-        fileDir = self.dir + '/digiroad/test/data/geojson/nearestVertextResponse.geojson'
+    def readGeojsonExpectedResponse(
+            self,
+            geojsonPath):
+
+        fileDir = self.dir + geojsonPath
         nearestVertexGeojson = self.fileActions.readJson(fileDir)
         return nearestVertexGeojson
 
