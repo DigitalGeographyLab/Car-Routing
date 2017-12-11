@@ -1,8 +1,8 @@
 class Point:
-    def __init__(self, latitute, longitude, crs):
+    def __init__(self, latitute, longitude, epsgCode):
         self.__latitude = latitute
         self.__longitude = longitude
-        self.__crs = crs
+        self.__epsgCode = epsgCode
 
     def getLatitude(self):
         return self.__latitude
@@ -10,8 +10,8 @@ class Point:
     def getLongitude(self):
         return self.__longitude
 
-    def getCRS(self):
-        return self.__crs
+    def getEPSGCode(self):
+        return self.__epsgCode
 
     def setLatitude(self, latitute):
         self.__latitude = latitute
@@ -19,5 +19,10 @@ class Point:
     def setLongitude(self, longitude):
         self.__longitude = longitude
 
-    def setCRS(self, crs):
-        self.__crs = crs
+    def setEPSGCode(self, epsgCode):
+        self.__epsgCode = epsgCode
+
+    def equals(self, endPoint):
+        if not endPoint:
+            return False
+        return self.getLongitude() == endPoint.getLongitude() and self.getLatitude() == endPoint.getLatitude() and self.getEPSGCode() == endPoint.getEPSGCode()

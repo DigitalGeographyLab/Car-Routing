@@ -31,6 +31,11 @@ class WFSServiceProviderTest(unittest.TestCase):
         multiPoints = self.fileActions.readMultiPointJson(dir)
         self.assertIsNotNone(multiPoints["features"])
 
+    def test_givenAGeoJsonWithPointData_then_FeaturesPointMustExist(self):
+        dir = self.dir + '/digiroad/test/data/geojson/reititinTestPoints.geojson'
+        multiPoints = self.fileActions.readPointJson(dir)
+        self.assertIsNotNone(multiPoints["features"])
+
     def test_givenAnEmptyGeoJson_then_allowed(self):
         dir = self.dir + '/digiroad/test/data/geojson/testEmpty.geojson'
         multiPoints = self.fileActions.readMultiPointJson(dir)
@@ -47,7 +52,7 @@ class WFSServiceProviderTest(unittest.TestCase):
         # }
         coordinates = Point(latitute=60.1836272547957,
                             longitude=24.929379456878265,
-                            crs="EPSG:4326")
+                            epsgCode="EPSG:4326")
 
         self.assertIsNotNone(self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
 
@@ -59,7 +64,7 @@ class WFSServiceProviderTest(unittest.TestCase):
 
         coordinates = Point(latitute=8443095.452975733,
                             longitude=2770620.87667954,
-                            crs="EPSG:3857")
+                            epsgCode="EPSG:3857")
 
         nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse('/digiroad/test/data/geojson/nearestCarRoutingVertextResponse.geojson')
 
@@ -74,7 +79,7 @@ class WFSServiceProviderTest(unittest.TestCase):
 
         coordinates = Point(latitute=8443095.452975733,
                             longitude=2770620.87667954,
-                            crs="EPSG:3857")
+                            epsgCode="EPSG:3857")
 
         nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse('/digiroad/test/data/geojson/nearestVertextResponse.geojson')
 

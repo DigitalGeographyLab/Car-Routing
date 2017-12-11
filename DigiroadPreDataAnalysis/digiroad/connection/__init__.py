@@ -7,19 +7,20 @@ from owslib.util import openURL
 
 # import DigiroadPreDataAnalysis.digiroad.carRoutingExceptions as exc  # ONLY test purposes
 import digiroad.carRoutingExceptions as exc
-from digiroad.util import GeometryType
+from digiroad.util import GeometryType, transformPoint
 
 
 class WFSServiceProvider:
     def __init__(self, wfs_url="http://localhost:8080/geoserver/wfs?",
                  nearestVertexTypeName="", nearestCarRoutingVertexTypeName="",
-                 shortestPathTypeName="", outputFormat=""):
+                 shortestPathTypeName="", outputFormat="", epsgCode="EPSG:3857"):
         self.shortestPathTypeName = shortestPathTypeName
         self.__geoJson = None
         self.wfs_url = wfs_url
         self.nearestVertexTypeName = nearestVertexTypeName
         self.nearestCarRoutingVertexTypeName = nearestCarRoutingVertexTypeName
         self.outputFormat = outputFormat
+        self.epsgCode = epsgCode
 
     # def getGeoJson(self):
     #     return self.__geoJson
@@ -34,6 +35,8 @@ class WFSServiceProvider:
         :param coordinates: Point coordinates. e.g [889213124.3123, 231234.2341]
         :return: Geojson (Geometry type: Point) with the nearest point coordinates.
         """
+        coordinates = transformPoint(coordinates, self.epsgCode)
+
         url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
             self.nearestVertexTypeName, self.outputFormat, str(
                 coordinates.getLongitude()), str(coordinates.getLatitude()))
@@ -74,6 +77,8 @@ class WFSServiceProvider:
 
         return self.requestFeatures(url)
 
+    def getEPSGCode(self):
+        return self.epsgCode
 
 class FileActions:
     def readJson(self, url):
@@ -99,6 +104,22 @@ class FileActions:
             data = json.load(f)
 
         self.checkGeometry(data, GeometryType.MULTI_POINT)
+
+        return data
+
+    def readPointJson(self, url):
+        """
+        Read a MultiPoint geometry geojson file, in case the file do not be a MultiPoint
+        geometry, then an NotMultiPointGeometryException is thrown.
+
+        :param url: URL for the Json file
+        :return: json dictionary data
+        """
+        data = None
+        with open(url) as f:
+            data = json.load(f)
+
+        self.checkGeometry(data, GeometryType.POINT)
 
         return data
 
