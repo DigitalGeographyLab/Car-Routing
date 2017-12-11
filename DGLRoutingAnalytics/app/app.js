@@ -86,7 +86,7 @@
             zoom: 12, //Default Zoom, Higher = Closer)
             layers: [streets], // Default basemaplayer on startrup, can also give another layer here to show by default)
             maxZoom: 22,
-            minZoom: 12,
+            minZoom: 1,
         });
 
         $scope.ctrl = L.control.layers(baseLayers, $scope.overlays);

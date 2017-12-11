@@ -103,7 +103,7 @@ def main():
 
     if impedances and not allImpedanceAttribute:
         starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
-                                         inputCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
+                                         startCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
                                          outputFolderPath=outputShortestGeojsonPathLayerFilename,
                                          costAttribute=impedance)
         starter.createSummary(outputShortestGeojsonPathLayerFilename, impedance, "metroAccessDigiroadSummary.geojson")
@@ -111,6 +111,6 @@ def main():
     if allImpedanceAttribute:
         for key in impedances:
             starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
-                                             inputCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
+                                             startCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
                                              outputFolderPath=outputShortestGeojsonPathLayerFilename,
                                              costAttribute=impedances[key])

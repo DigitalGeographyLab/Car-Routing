@@ -6,7 +6,7 @@ from digiroad.connection import FileActions
 from digiroad.connection import WFSServiceProvider
 from digiroad.entities import Point
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
-from digiroad.util import CostAttributes, getEnglishMeaning
+from digiroad.util import CostAttributes, getEnglishMeaning, transformPoint
 
 
 class MetropAccessDigiroadTest(unittest.TestCase):
@@ -40,7 +40,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         # }
         startPoint = Point(latitute=8443095.452975733,
                            longitude=2770620.87667954,
-                           crs="EPSG:3857")
+                           epsgCode="EPSG:3857")
 
         nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(startPoint)
         epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
@@ -54,17 +54,19 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
         endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
                          longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
-                         crs=epsgCode)
+                         epsgCode=epsgCode)
 
         self.assertEqual(euclideanDistanceExpected,
                          self.metroAccessDigiroad.calculateEuclideanDistance(startPoint, endPoint))
 
+    @unittest.skip("")
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
-        inputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%testPoints.geojson'.replace("%", os.sep)
+        inputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
         distanceCostAttribute = CostAttributes.DISTANCE
         self.metroAccessDigiroad.calculateTotalTimeTravel(wfsServiceProvider=self.wfsServiceProvider,
-                                                          inputCoordinatesGeojsonFilename=inputCoordinatesURL,
+                                                          startCoordinatesGeojsonFilename=inputCoordinatesURL,
+                                                          endCoordinatesGeojsonFilename=inputCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,
                                                           costAttribute=distanceCostAttribute)
 
@@ -78,7 +80,8 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
         outputFileList = self.readOutputFolderFiles(geomsOutputFolderFeaturesURL)
 
-        self.assertEqual(len(inputCoordinatesGeojson["features"]), len(outputFileList))
+        totalCombinatory = len(inputCoordinatesGeojson["features"]) * len(inputCoordinatesGeojson["features"]) - len(inputCoordinatesGeojson["features"])
+        self.assertEqual(totalCombinatory, len(outputFileList))
         # outputFeaturesGeojson = self.readData.readJson(outputFeaturesURL)
         # self.assertEqual(, outputFeaturesGeojson)
 
@@ -115,8 +118,8 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         # }
         startPoint = Point(latitute=60.19602778395168,
                            longitude=24.916477203369144,
-                           crs="EPSG:4326")
-        newStartPoint = self.metroAccessDigiroad.transformPoint(startPoint, targetEPSGCode="epsg:3857")
+                           epsgCode="EPSG:4326")
+        newStartPoint = transformPoint(startPoint, targetEPSGCode="epsg:3857")
 
         nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(newStartPoint)
         epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
@@ -130,7 +133,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
         endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
                          longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
-                         crs=epsgCode)
+                         epsgCode=epsgCode)
 
         self.assertEqual(euclideanDistanceExpected,
                          self.metroAccessDigiroad.calculateEuclideanDistance(newStartPoint, endPoint))
