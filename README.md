@@ -51,6 +51,6 @@ Repository for developing the car routing using OS GIS.
 * Constraint satisfaction solver
 * Written in Java
 
-## Digiroad Pre-analysis Tool
+## Digiroad Pre-data analysis Tool
 
-[How to use](./src/SETUP.md). 
+[How to use](./DigiroadPreDataAnalysis/SETUP.md). 

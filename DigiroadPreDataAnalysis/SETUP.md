@@ -93,4 +93,4 @@ See: [Additional Layers Operations][additional-layers]
 
 
 [microsoft-vistual-c++]: https://www.microsoft.com/en-us/download/details.aspx?id=44266
-[additional-layers]: https://github.com/DigitalGeographyLab/Car-Routing/tree/master/DigiroadPreDataAnalysis/digiroad/additionalOperations/additionalLayers.md
+[additional-layers]: digiroad/additionalOperations/ADDITIONAL_LAYERS.md

@@ -30,12 +30,16 @@ You must override the function:
 def runOperation(self, featureJson, prefix=""):
     # add your own operation here
     return {
-        "your_result_1": <any_result>,
-        "your_result_2": <any_result>
+        prefix + "your_result_1": <any_result>,
+        prefix + "your_result_2": <any_result>
     } 
 ```
 
-Your results (string, int, float, boolean or collections of any of the previous attributes type) will add/overwrite the attributes in the original featuresProperties so they will be available for future uses.
+Your results (string, int, float, boolean or collections of any of the previous attributes type) will add/overwrite the attributes in the original features properties so they will be available for future uses.
 
-[conf-prop]: https://github.com/DigitalGeographyLab/Car-Routing/blob/master/DigiroadPreDataAnalysis/resources/configuration.properties
-[layers-img]: https://github.com/DigitalGeographyLab/Car-Routing/blob/master/img/additional-layers.png
+___
+
+The parameter `walkingSpeed` define de walking speed that will be use to calculate the walking time, by default is in `70` m/m (meters/minute). 
+
+[conf-prop]: ../../resources/configuration.properties
+[layers-img]: ../../../img/additional-layers.png
