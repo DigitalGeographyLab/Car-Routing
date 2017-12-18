@@ -1,5 +1,12 @@
 class Point:
     def __init__(self, latitute, longitude, epsgCode):
+        """
+        Defines a point with latitute and longitude in a specific coordinate reference system.
+
+        :param latitute: latitude.
+        :param longitude: longitude.
+        :param epsgCode: Coordinate Reference System code.
+        """
         self.__latitude = latitute
         self.__longitude = longitude
         self.__epsgCode = epsgCode
