@@ -33,7 +33,7 @@
 # Run
 
 ```{r, engine='sh', count_lines}
-    $ ../Car-Routing/DigiroadPreDataAnalysis$ python -m digiroad -c <../testPoints.geojson> -s <../outputFolder/> -i <IMPEDANCE/COST ATTRIBUTE>
+    $ ../Car-Routing/DigiroadPreDataAnalysis$ python -m digiroad -s <../startPoints.geojson> -e <../endPoints.geojson> -o <../outputFolder/> -c <IMPEDANCE/COST ATTRIBUTE>
 ```
 
 Input testPoints.geojson is in the format:
