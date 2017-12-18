@@ -25,6 +25,10 @@
 ```
     $ conda install -c conda-forge pyproj
 ```
+* geopandas
+```
+    $ conda install -c conda-forge geopandas
+```
 
 # Run
 
@@ -80,4 +84,13 @@ Impedance/Cost attribute values accepted:
 * MIDDAY_DELAY_TIME
 * RUSH_HOUR_DELAY
 
+# Additonal Layers 
+
+You are allowed to add new attributes coming from a polygon layer and attach them to the selected points (start and end point to calculate the shortpath).
+
+See: [Additional Layers Operations][additional-layers]
+
+
+
 [microsoft-vistual-c++]: https://www.microsoft.com/en-us/download/details.aspx?id=44266
+[additional-layers]: https://github.com/DigitalGeographyLab/Car-Routing/tree/master/DigiroadPreDataAnalysis/digiroad/additionalOperations/additionalLayers.md

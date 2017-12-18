@@ -324,7 +324,7 @@
                 'viewparams=x:' + coordinates.lng + ';y:' + coordinates.lat;
 
             url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                'request=GetFeature&typeName=tutorial:dgl_nearest_vertex&' +
+                'request=GetFeature&typeName=tutorial:dgl_nearest_car_routable_vertex&' +
                 'outputformat=application/json&' +
                 'viewparams=x:' + coordinates.lng + ';y:' + coordinates.lat;
 

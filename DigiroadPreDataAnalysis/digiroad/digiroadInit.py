@@ -1,24 +1,22 @@
 import getopt
-import os
 import sys
-
-import configparser
 
 from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException
 from digiroad.connection import WFSServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
-from digiroad.util import CostAttributes
+from digiroad.util import CostAttributes, getConfigurationProperties
 
 
 def printHelp():
     print (
         "DigiroadPreDataAnalysis tool\n"
         "\n\t[--help]: Print information about the parameters necessary to run the tool."
-        "\n\t[-c, --coordinates]: Geojson file containing all the pair of points to calculate the shortest path between them."
-        "\n\t[-s, --shortestPathFolder]: The final destination where the output geojson and summary files will be located."
-        "\n\t[-i, --impedance]: The impedance/cost attribute to calculate the shortest path."
+        "\n\t[-s, --start_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
+        "\n\t[-e, --end_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
+        "\n\t[-o, --outputFolder]: The final destination where the output geojson and summary files will be located."
+        "\n\t[-c, --cost]: The impedance/cost attribute to calculate the shortest path."
         "\n\t[--all]: Calculate the shortest path to all the impedance/cost attributes."
-        "\n\nImpedance values allowed:"
+        "\n\nImpedance/cost values allowed:"
         "\n\tDISTANCE"
         "\n\tSPEED_LIMIT_TIME"
         "\n\tDAY_AVG_DELAY_TIME"
@@ -43,10 +41,10 @@ def main():
     :return: None. All the information is stored in the ``shortestPathOutput`` URL.
     """
     argv = sys.argv[1:]
-    opts, args = getopt.getopt(argv, "c:s:i:", ["coordinates=", "shortestPathFolder=", "impedance", "all", "help"])
+    opts, args = getopt.getopt(argv, "s:e:o:c:", ["start_point=", "end_point=", "outputFolder=", "cost", "all", "help"])
 
-    inputCoordinatesGeojsonFilename = None
-    outputShortestGeojsonPathLayerFilename = None
+    startPointsGeojsonFilename = None
+    outputFolder = None
     # impedance = CostAttributes.DISTANCE
     impedance = None
     impedances = {
@@ -59,6 +57,8 @@ def main():
 
     allImpedanceAttribute = False
 
+    impedanceErrorMessage = "Use the paramenter -c or --cost.\nValues allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY.\nThe parameter --all enable the analysis for all the impedance attributes."
+
     for opt, arg in opts:
         if opt in "--help":
             printHelp()
@@ -66,51 +66,53 @@ def main():
 
         print("options: %s, arg: %s" % (opt, arg))
 
-        if opt in ("-c", "--coordinates"):
-            inputCoordinatesGeojsonFilename = arg
+        if opt in ("-s", "--start_point"):
+            startPointsGeojsonFilename = arg
 
-        if opt in ("-s", "--shortestPathFolder"):
-            outputShortestGeojsonPathLayerFilename = arg
+        if opt in ("-e", "--end_point"):
+            endPointsGeojsonFilename = arg
+
+        if opt in ("-o", "--outputFolder"):
+            outputFolder = arg
 
         if opt in "--all":
             allImpedanceAttribute = True
         else:
-            if opt in ("-i", "--impedance"):
+            if opt in ("-c", "--cost"):
                 if arg not in impedances:
                     raise ImpedanceAttributeNotDefinedException(
-                        "Use the paramenter -i or --impedance.\nValues allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY.\nThe parameter --all enable the analysis for all the impedance attributes.")
+                        impedanceErrorMessage)
 
                 impedance = impedances[arg]
 
-    if not inputCoordinatesGeojsonFilename or not outputShortestGeojsonPathLayerFilename:
+    if not startPointsGeojsonFilename or not endPointsGeojsonFilename or not outputFolder:
         raise NotParameterGivenException("Type --help for more information.")
 
     if not allImpedanceAttribute and not impedance:
         raise ImpedanceAttributeNotDefinedException(
-            "Use the paramenter -i or --impedance.\nValues allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY.\nThe parameter --all enable the analysis for all the impedance attributes.")
+            impedanceErrorMessage)
 
-    config = configparser.ConfigParser()
-    dir = os.getcwd()
-
-    config.read('../DigiroadPreDataAnalysis/resources/configuration.properties')
+    config = getConfigurationProperties()
 
     starter = MetropAccessDigiroadApplication()
-    wfsServiceProvider = WFSServiceProvider(wfs_url=config["WFS_CONFIG"]["wfs_url"],
-                                            nearestVertexTypeName=config["WFS_CONFIG"]["nearestVertexTypeName"],
-                                            nearestCarRoutingVertexTypeName=config["WFS_CONFIG"]["nearestCarRoutingVertexTypeName"],
-                                            shortestPathTypeName=config["WFS_CONFIG"]["shortestPathTypeName"],
-                                            outputFormat=config["WFS_CONFIG"]["outputFormat"])
+    wfsServiceProvider = WFSServiceProvider(wfs_url=config["wfs_url"],
+                                            nearestVertexTypeName=config["nearestVertexTypeName"],
+                                            nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
+                                            shortestPathTypeName=config["shortestPathTypeName"],
+                                            outputFormat=config["outputFormat"])
 
     if impedances and not allImpedanceAttribute:
         starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
-                                         startCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
-                                         outputFolderPath=outputShortestGeojsonPathLayerFilename,
+                                         startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                                         endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                                         outputFolderPath=outputFolder,
                                          costAttribute=impedance)
-        starter.createSummary(outputShortestGeojsonPathLayerFilename, impedance, "metroAccessDigiroadSummary.geojson")
+        starter.createSummary(outputFolder, impedance, "metroAccessDigiroadSummary.geojson")
 
     if allImpedanceAttribute:
         for key in impedances:
             starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
-                                             startCoordinatesGeojsonFilename=inputCoordinatesGeojsonFilename,
-                                             outputFolderPath=outputShortestGeojsonPathLayerFilename,
+                                             startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                                             endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                                             outputFolderPath=outputFolder,
                                              costAttribute=impedances[key])

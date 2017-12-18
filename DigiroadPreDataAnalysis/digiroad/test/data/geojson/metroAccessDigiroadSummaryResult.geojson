@@ -36,9 +36,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 19.515005163120012,
         "distance": 7238.255201161402,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 17.128093402019992,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -58,6 +60,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 8.596128124149994,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -95,9 +101,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.70528963039,
         "distance": 9433.258002782703,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 21.08942023544,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -117,6 +125,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 11.015078568820007,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -154,9 +166,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 12.13687996402,
         "distance": 6151.408168478841,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 10.970047160070006,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -176,6 +190,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 6.052426326689998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -225,9 +243,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 29.772255226329996,
         "distance": 11693.709025283219,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 26.532151420649992,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -247,6 +267,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 13.524522253979997,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -276,9 +300,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 32.75191460240999,
         "distance": 14432.502010566048,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 28.48172645435,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -298,6 +324,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 14.409649846660017,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -331,9 +361,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.14991113238998,
         "distance": 14122.470202435117,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 33.55226165871002,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -353,6 +385,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 16.91581713338001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -402,9 +438,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 33.05702283513,
         "distance": 13283.488355815956,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 29.34371805935,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -417,13 +455,17 @@
         "rush_hour_delay_time": 35.545854417270014,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2771504.1973838215,
           8447709.271244923
         ],
         "speed_limit_time": 14.92208485458,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -457,9 +499,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 53.652813043689974,
         "distance": 19615.8374820235,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 46.78251993525001,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -479,6 +523,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 24.10929215745001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -528,9 +576,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 19.48133909053,
         "distance": 7126.658042747119,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 17.330115681089996,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -550,6 +600,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 9.173076665860005,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -591,9 +645,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 48.089540455630015,
         "distance": 17270.975244522982,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 41.11996545567996,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -613,6 +669,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 21.46145712233001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -646,9 +706,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 25.81076153839999,
         "distance": 9558.5838526902,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 58.34361931932836,
         "midday_delay_time": 22.68436922179998,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -668,6 +730,10 @@
           8447709.271244923
         ],
         "speed_limit_time": 11.374076166169996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 58.34361931932836,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "106993"
       }
     },
@@ -701,9 +767,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 19.515005163120012,
         "distance": 7238.255201161402,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 17.128093402019992,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -723,6 +791,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 8.596128124149994,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -760,9 +832,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 27.768891757220015,
         "distance": 15853.390620835937,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 24.507067372319995,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -782,6 +856,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 14.935478483410005,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -815,9 +893,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 6.311231016530001,
         "distance": 2044.2521494878997,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 5.498325460989999,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -837,6 +917,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 2.6686976831799996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -882,9 +966,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 24.264815263379997,
         "distance": 9282.389909564443,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 21.638570270129993,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -904,6 +990,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 10.175166751869996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -933,9 +1023,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.51642889926998,
         "distance": 15484.17690229974,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 35.44175659383997,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -955,6 +1047,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 17.043092558350004,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -988,9 +1084,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 56.40895659306999,
         "distance": 18466.83100654339,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 49.51060730448001,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -1010,6 +1108,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 23.30969063773001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -1055,9 +1157,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 27.549582872180007,
         "distance": 10872.169240097177,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 24.45013690883,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -1070,13 +1174,17 @@
         "rush_hour_delay_time": 30.013110623630006,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2773479.5601236573,
           8435835.919735571
         ],
         "speed_limit_time": 11.572729352470002,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -1110,9 +1218,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 47.88162645386,
         "distance": 17537.664018465886,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 42.26598743492998,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -1132,6 +1242,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 19.885518767519994,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -1169,9 +1283,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.299164376920004,
         "distance": 11223.3380330256,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 20.50936296916999,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -1191,6 +1307,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 11.507917004420001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -1228,9 +1348,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 28.299252940579986,
         "distance": 15201.037351762128,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 25.64978457004,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -1250,6 +1372,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 14.57389407847,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -1279,9 +1405,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 9.057619911629997,
         "distance": 2845.27346440362,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 59.147036952301065,
         "midday_delay_time": 8.047144911640002,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -1301,6 +1429,10 @@
           8435835.919735571
         ],
         "speed_limit_time": 3.557444911660001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 59.147036952301065,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "110372"
       }
     },
@@ -1362,9 +1494,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.70528963039,
         "distance": 9433.258002782703,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 21.08942023544,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -1384,6 +1518,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 11.015078568820007,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1421,9 +1559,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 27.768891757220015,
         "distance": 15853.390620835937,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 24.507067372319995,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -1443,6 +1583,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 14.935478483410005,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1484,9 +1628,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.39076655812,
         "distance": 14766.543588153385,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 18.349021130369998,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -1506,6 +1652,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 12.391776685950001,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1559,9 +1709,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.05962791840003,
         "distance": 19467.318072418166,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 34.680604565399996,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -1581,6 +1733,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 19.70253801568,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1618,9 +1774,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 41.72940786668997,
         "distance": 19278.04320668748,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 37.907332545829995,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -1640,6 +1798,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 22.804661087529993,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1681,9 +1843,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 35.16609398285001,
         "distance": 15198.502214189593,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 31.586332871620012,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -1703,6 +1867,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 20.44758287168,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1740,9 +1908,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 46.261612903840025,
         "distance": 20900.691646403306,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 40.43143785062002,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -1755,13 +1925,17 @@
         "rush_hour_delay_time": 50.34630064937006,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2769756.3547563823,
           8461697.742219279
         ],
         "speed_limit_time": 22.313665745279998,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1803,9 +1977,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 54.70148777268001,
         "distance": 24812.167675516983,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 49.26576125833996,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -1825,6 +2001,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 28.907775151690004,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1878,9 +2058,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 32.12775130615002,
         "distance": 11479.01498487284,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 28.912726306050015,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -1900,6 +2082,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 15.322342972730006,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -1945,9 +2131,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 64.41070361069,
         "distance": 25337.238360129213,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 56.901709238969985,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -1967,6 +2155,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 33.341123270769984,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -2004,9 +2196,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 34.06464813250004,
         "distance": 18173.719272364746,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 44.16615965628731,
         "midday_delay_time": 30.063343192099993,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -2026,6 +2220,10 @@
           8461697.742219279
         ],
         "speed_limit_time": 17.713426525430005,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 44.16615965628731,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "startPoint_ParkingTime": null,
         "startVertexId": "127209"
       }
     },
@@ -2067,9 +2265,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 12.13687996402,
         "distance": 6151.408168478841,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 10.970047160070006,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -2089,6 +2289,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 6.052426326689998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2126,9 +2330,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 6.311231016530001,
         "distance": 2044.2521494878997,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 5.498325460989999,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -2148,6 +2354,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 2.6686976831799996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2193,9 +2403,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.39076655812,
         "distance": 14766.543588153385,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 18.349021130369998,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -2215,6 +2427,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 12.391776685950001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2268,9 +2484,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.646004414649997,
         "distance": 8334.17015704374,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 18.379853865890002,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -2290,6 +2508,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 8.932092014309996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2327,9 +2549,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 35.897618050540004,
         "distance": 14535.957149779042,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 32.18304018959999,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -2349,6 +2573,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 15.80001782078999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2390,9 +2618,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 47.49966794256003,
         "distance": 17210.77242346013,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 41.174551570670026,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -2412,6 +2642,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 21.019684903850006,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2465,9 +2699,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.93077202345,
         "distance": 9923.94948757648,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 21.191420504590006,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -2480,13 +2716,17 @@
         "rush_hour_delay_time": 26.069806719330007,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2775440.3837325294,
           8438064.287070163
         ],
         "speed_limit_time": 10.329654614910003,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2528,9 +2768,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 44.26281560513,
         "distance": 16589.444265945203,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 39.00727103069,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -2550,6 +2792,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 18.642444029959993,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2595,9 +2841,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 19.91972082247001,
         "distance": 10361.120336150001,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 17.86845413696,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -2617,6 +2865,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 10.801894283369998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2662,9 +2914,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 31.848620420759993,
         "distance": 16720.34468837521,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 28.657240939169988,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -2684,6 +2938,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 16.46309489200999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2721,9 +2979,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 12.606987391809998,
         "distance": 4364.580801016699,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 28.017996541898277,
         "midday_delay_time": 11.05460128077,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -2743,6 +3003,10 @@
           8438064.287070163
         ],
         "speed_limit_time": 5.4466457252000025,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 28.017996541898277,
+        "startPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "140220"
       }
     },
@@ -2776,9 +3040,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 29.772255226329996,
         "distance": 11693.709025283219,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 26.532151420649992,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -2798,6 +3064,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 13.524522253979997,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -2827,9 +3097,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 24.264815263379997,
         "distance": 9282.389909564443,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 21.638570270129993,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -2849,6 +3121,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 10.175166751869996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -2886,9 +3162,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.05962791840003,
         "distance": 19467.318072418166,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 34.680604565399996,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -2908,6 +3186,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 19.70253801568,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -2941,9 +3223,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.646004414649997,
         "distance": 8334.17015704374,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 18.379853865890002,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -2963,6 +3247,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 8.932092014309996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -2992,9 +3280,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 21.969527085349977,
         "distance": 7432.913382522882,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 19.52047048292998,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -3014,6 +3304,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 9.188544853549997,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3047,9 +3341,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.55615889235,
         "distance": 13472.505035086673,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 35.00967451221001,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -3069,6 +3365,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 17.371298882770006,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3114,9 +3414,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 7.456894495380001,
         "distance": 2572.41080985636,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 6.693094495389998,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -3129,13 +3431,17 @@
         "rush_hour_delay_time": 8.0451444954,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2786687.559154002,
           8441358.574181823
         ],
         "speed_limit_time": 3.24142782872,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3169,9 +3475,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 27.788938077060003,
         "distance": 9237.905588225076,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 24.50894502149,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -3191,6 +3499,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 11.554217243769997,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3228,9 +3540,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 35.23165519454001,
         "distance": 15990.992474284705,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 31.206919308490008,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -3250,6 +3564,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 16.861734454879993,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3287,9 +3605,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 50.31649555433,
         "distance": 24040.12012228526,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 45.151641912740025,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -3309,6 +3629,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 23.93100068070999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3338,9 +3662,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 31.07486252538,
         "distance": 11684.35623492675,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 30.59419476446446,
         "midday_delay_time": 27.549002254339996,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -3360,6 +3686,10 @@
           8441358.574181823
         ],
         "speed_limit_time": 12.914551513899998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 30.59419476446446,
+        "startPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "33861"
       }
     },
@@ -3413,9 +3743,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 32.75191460240999,
         "distance": 14432.502010566048,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 28.48172645435,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -3435,6 +3767,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 14.409649846660017,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3464,9 +3800,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.51642889926998,
         "distance": 15484.17690229974,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 35.44175659383997,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -3486,6 +3824,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 17.043092558350004,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3523,9 +3865,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 41.72940786668997,
         "distance": 19278.04320668748,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 37.907332545829995,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -3545,6 +3889,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 22.804661087529993,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3578,9 +3926,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 35.897618050540004,
         "distance": 14535.957149779042,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 32.18304018959999,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -3600,6 +3950,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 15.80001782078999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3629,9 +3983,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 21.969527085349977,
         "distance": 7432.913382522882,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 19.52047048292998,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -3651,6 +4007,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 9.188544853549997,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3684,9 +4044,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 21.04502437395999,
         "distance": 7045.794600638351,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 18.571929929540005,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -3706,6 +4068,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 9.456679929479998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3735,9 +4101,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 15.564173080130004,
         "distance": 5178.235492850749,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 14.015028296959995,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -3750,13 +4118,17 @@
         "rush_hour_delay_time": 16.76827694644,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2792609.5322769675,
           8451523.716084275
         ],
         "speed_limit_time": 6.368485812439999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3790,9 +4162,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.0266384135,
         "distance": 7283.815522532528,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 17.54839400868,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -3812,6 +4186,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 8.786748746430002,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3857,9 +4235,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 52.80097844497996,
         "distance": 21249.182970010635,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 46.12796272072,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -3879,6 +4259,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 22.952805431189994,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3916,9 +4300,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 65.56810919021996,
         "distance": 30241.907115020593,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 58.95482823645003,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -3938,6 +4324,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 30.798926487190013,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -3967,9 +4357,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 46.32647616126997,
         "distance": 17886.143227662054,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 56.58576043505879,
         "midday_delay_time": 41.35218857804999,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -3989,6 +4381,10 @@
           8451523.716084275
         ],
         "speed_limit_time": 19.782477320379996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 56.58576043505879,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "44823"
       }
     },
@@ -4050,9 +4446,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.14991113238998,
         "distance": 14122.470202435117,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 33.55226165871002,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -4072,6 +4470,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 16.91581713338001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4109,9 +4511,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 56.40895659306999,
         "distance": 18466.83100654339,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 49.51060730448001,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -4131,6 +4535,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 23.30969063773001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4176,9 +4584,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 35.16609398285001,
         "distance": 15198.502214189593,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 31.586332871620012,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -4198,6 +4608,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 20.44758287168,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4239,9 +4653,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 47.49966794256003,
         "distance": 17210.77242346013,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 41.174551570670026,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -4261,6 +4677,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 21.019684903850006,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4298,9 +4718,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 39.55615889235,
         "distance": 13472.505035086673,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 35.00967451221001,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -4320,6 +4742,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 17.371298882770006,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4357,9 +4783,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 21.04502437395999,
         "distance": 7045.794600638351,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 18.571929929540005,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -4379,6 +4807,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 9.456679929479998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4416,9 +4848,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 33.60019177216995,
         "distance": 11509.833685132784,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 29.730086558669985,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -4431,13 +4865,17 @@
         "rush_hour_delay_time": 36.43192858219002,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2790417.125546917,
           8459592.448746705
         ],
         "speed_limit_time": 14.888035929239992,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4479,9 +4917,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 36.74110378349001,
         "distance": 12429.266147511664,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 32.55132322793001,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -4501,6 +4941,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 16.77657322786,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4554,9 +4998,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 49.24456113685,
         "distance": 20515.172767303986,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 43.06981528280997,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -4576,6 +5022,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 22.660127151919998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4621,9 +5071,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 78.68333612272994,
         "distance": 31070.781838252762,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 67.79621073596999,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -4643,6 +5095,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 36.511417643219986,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4680,9 +5136,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 63.21900385506992,
         "distance": 20868.79733190572,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 43.50118657597757,
         "midday_delay_time": 55.421039288690025,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -4702,6 +5160,10 @@
           8459592.448746705
         ],
         "speed_limit_time": 26.04907539976,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 43.50118657597757,
+        "startPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "45174"
       }
     },
@@ -4735,9 +5197,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 33.05702283513,
         "distance": 13283.488355815956,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 29.34371805935,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -4754,9 +5218,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 14.92208485458,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -4786,9 +5254,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 27.549582872180007,
         "distance": 10872.169240097177,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 24.45013690883,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -4805,9 +5275,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 11.572729352470002,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -4845,9 +5319,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 46.261612903840025,
         "distance": 20900.691646403306,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 40.43143785062002,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -4864,9 +5340,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 22.313665745279998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -4900,9 +5380,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.93077202345,
         "distance": 9923.94948757648,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 21.191420504590006,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -4919,9 +5401,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 10.329654614910003,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -4951,9 +5437,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 7.456894495380001,
         "distance": 2572.41080985636,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 6.693094495389998,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -4970,9 +5458,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 3.24142782872,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5002,9 +5494,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 15.564173080130004,
         "distance": 5178.235492850749,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 14.015028296959995,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -5021,9 +5515,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 6.368485812439999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5057,9 +5555,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 33.60019177216995,
         "distance": 11509.833685132784,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 29.730086558669985,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -5076,9 +5576,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 14.888035929239992,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5112,9 +5616,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.332043581680004,
         "distance": 6665.494778368716,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 17.8158505261,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -5131,9 +5637,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 8.312789415049998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5171,9 +5681,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 38.516422803339985,
         "distance": 17580.77180481744,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 34.01848594719,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -5190,9 +5702,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 18.25929705547999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5230,9 +5746,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 53.60126316313001,
         "distance": 25629.899452818005,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 47.96320855144002,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -5249,9 +5767,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 25.32856328130999,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5281,9 +5803,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 34.35963013417999,
         "distance": 13274.135565459483,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 106.96198040795512,
         "midday_delay_time": 30.36056889304,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -5300,9 +5824,13 @@
         ],
         "selectedStartCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "speed_limit_time": 14.312114114499998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 106.96198040815726,
+        "startPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "46020"
       }
     },
@@ -5356,9 +5884,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 53.652813043689974,
         "distance": 19615.8374820235,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 46.78251993525001,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -5378,6 +5908,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 24.10929215745001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5407,9 +5941,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 47.88162645386,
         "distance": 17537.664018465886,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 42.26598743492998,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -5429,6 +5965,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 19.885518767519994,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5466,9 +6006,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 54.70148777268001,
         "distance": 24812.167675516983,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 49.26576125833996,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -5488,6 +6030,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 28.907775151690004,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5521,9 +6067,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 44.26281560513,
         "distance": 16589.444265945203,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 39.00727103069,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -5543,6 +6091,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 18.642444029959993,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5572,9 +6124,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 27.788938077060003,
         "distance": 9237.905588225076,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 24.50894502149,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -5594,6 +6148,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 11.554217243769997,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5623,9 +6181,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.0266384135,
         "distance": 7283.815522532528,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 17.54839400868,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -5645,6 +6205,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 8.786748746430002,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5678,9 +6242,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 36.74110378349001,
         "distance": 12429.266147511664,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 32.55132322793001,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -5700,6 +6266,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 16.77657322786,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5729,9 +6299,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.332043581680004,
         "distance": 6665.494778368716,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 17.8158505261,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -5744,13 +6316,17 @@
         "rush_hour_delay_time": 21.90253941502,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2800052.5206671655,
           8444973.65214464
         ],
         "speed_limit_time": 8.312789415049998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5788,9 +6364,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 58.848466385019954,
         "distance": 24246.266583186167,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 51.83433647328999,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -5810,6 +6388,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 26.572086470530017,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5847,9 +6429,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 73.93330674481003,
         "distance": 32295.394231186736,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 65.77905907754005,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -5869,6 +6453,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 33.64135269635998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5898,9 +6486,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 54.691673715859984,
         "distance": 19939.63034382822,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 27.699190884900116,
         "midday_delay_time": 48.17641941913997,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -5920,6 +6510,10 @@
           8444973.65214464
         ],
         "speed_limit_time": 22.624903529549982,
+        "startPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "startPoint_EuclideanDistance": 27.699190884900116,
+        "startPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "startPoint_ParkingTime": 0.22,
         "startVertexId": "49020"
       }
     },
@@ -5965,9 +6559,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 19.48133909053,
         "distance": 7126.658042747119,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 17.330115681089996,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -5987,6 +6583,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 9.173076665860005,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6016,9 +6616,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.299164376920004,
         "distance": 11223.3380330256,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 20.50936296916999,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -6038,6 +6640,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 11.507917004420001,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6087,9 +6693,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 32.12775130615002,
         "distance": 11479.01498487284,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 28.912726306050015,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -6109,6 +6717,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 15.322342972730006,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6142,9 +6754,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 19.91972082247001,
         "distance": 10361.120336150001,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 17.86845413696,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -6164,6 +6778,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 10.801894283369998,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6209,9 +6827,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 35.23165519454001,
         "distance": 15990.992474284705,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 31.206919308490008,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -6231,6 +6851,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 16.861734454879993,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6272,9 +6896,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 52.80097844497996,
         "distance": 21249.182970010635,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 46.12796272072,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -6294,6 +6920,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 22.952805431189994,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6339,9 +6969,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 49.24456113685,
         "distance": 20515.172767303986,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 43.06981528280997,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -6361,6 +6993,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 22.660127151919998,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6406,9 +7042,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 38.516422803339985,
         "distance": 17580.77180481744,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 34.01848594719,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -6421,13 +7059,17 @@
         "rush_hour_delay_time": 41.879085128759996,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2761478.4050078,
           8448105.620278992
         ],
         "speed_limit_time": 18.25929705547999,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6461,9 +7103,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 58.848466385019954,
         "distance": 24246.266583186167,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 51.83433647328999,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -6483,6 +7127,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 26.572086470530017,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6520,9 +7168,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 33.70983097319999,
         "distance": 14793.928390982343,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 29.575549266830013,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -6542,6 +7192,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 16.494770043360003,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6571,9 +7225,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.838091511999977,
         "distance": 11394.095732806014,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 52.27789525899286,
         "midday_delay_time": 18.75310470071999,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -6593,6 +7249,10 @@
           8448105.620278992
         ],
         "speed_limit_time": 10.85387568432,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 52.27789525899286,
+        "startPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78317"
       }
     },
@@ -6626,9 +7286,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 48.089540455630015,
         "distance": 17270.975244522982,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 41.11996545567996,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -6648,6 +7310,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 21.46145712233001,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -6677,9 +7343,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 28.299252940579986,
         "distance": 15201.037351762128,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 25.64978457004,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -6699,6 +7367,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 14.57389407847,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -6736,9 +7408,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 64.41070361069,
         "distance": 25337.238360129213,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 56.901709238969985,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -6758,6 +7432,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 33.341123270769984,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -6791,9 +7469,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 31.848620420759993,
         "distance": 16720.34468837521,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 28.657240939169988,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -6813,6 +7493,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 16.46309489200999,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -6858,9 +7542,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 50.31649555433,
         "distance": 24040.12012228526,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 45.151641912740025,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -6880,6 +7566,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 23.93100068070999,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -6909,9 +7599,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 65.56810919021996,
         "distance": 30241.907115020593,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 58.95482823645003,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -6931,6 +7623,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 30.798926487190013,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -6964,9 +7660,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 78.68333612272994,
         "distance": 31070.781838252762,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 67.79621073596999,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -6986,6 +7684,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 36.511417643219986,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -7031,9 +7733,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 53.60126316313001,
         "distance": 25629.899452818005,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 47.96320855144002,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -7046,13 +7750,17 @@
         "rush_hour_delay_time": 57.853468191709936,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2748964.940329783,
           8433009.858588137
         ],
         "speed_limit_time": 25.32856328130999,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -7086,9 +7794,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 73.93330674481003,
         "distance": 32295.394231186736,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 65.77905907754005,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -7108,6 +7818,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 33.64135269635998,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -7145,9 +7859,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 33.70983097319999,
         "distance": 14793.928390982343,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 29.575549266830013,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -7167,6 +7883,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 16.494770043360003,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -7196,9 +7916,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.34831911854,
         "distance": 13566.12653061107,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 14.400293949047034,
+        "endPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "99080",
-        "euclideanDistanceEndPoint": 14.400293949047034,
-        "euclideanDistanceStartPoint": 58.262791820123645,
         "midday_delay_time": 21.242225748079996,
         "nearestEndCoordinates": [
           2769601.39981775,
@@ -7218,6 +7940,10 @@
           8433009.858588137
         ],
         "speed_limit_time": 12.78263525648,
+        "startPoint_AVGWalkingDistanceWalkingTime": null,
+        "startPoint_EuclideanDistance": 58.262791820123645,
+        "startPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "startPoint_ParkingTime": null,
         "startVertexId": "78618"
       }
     },
@@ -7251,9 +7977,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 25.81076153839999,
         "distance": 9558.5838526902,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 58.34361931932836,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8334802759904052,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "106993",
-        "euclideanDistanceEndPoint": 58.34361931932836,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 22.68436922179998,
         "nearestEndCoordinates": [
           2771427.73347441,
@@ -7273,6 +8001,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 11.374076166169996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7302,9 +8034,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 9.057619911629997,
         "distance": 2845.27346440362,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 59.147036952301065,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8449576707471581,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "110372",
-        "euclideanDistanceEndPoint": 59.147036952301065,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 8.047144911640002,
         "nearestEndCoordinates": [
           2773598.093804,
@@ -7324,6 +8058,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 3.557444911660001,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7361,9 +8099,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 34.06464813250004,
         "distance": 18173.719272364746,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 44.16615965628731,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6309451379469616,
+        "endPoint_ParkingTime": null,
         "endVertexId": "127209",
-        "euclideanDistanceEndPoint": 44.16615965628731,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 30.063343192099993,
         "nearestEndCoordinates": [
           2769725.21809981,
@@ -7383,6 +8123,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 17.713426525430005,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7416,9 +8160,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 12.606987391809998,
         "distance": 4364.580801016699,
+        "endPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "endPoint_EuclideanDistance": 28.017996541898277,
+        "endPoint_EuclideanDistanceWalkingTime": 0.40025709345568966,
+        "endPoint_ParkingTime": 0.73,
         "endVertexId": "140220",
-        "euclideanDistanceEndPoint": 28.017996541898277,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 11.05460128077,
         "nearestEndCoordinates": [
           2775438.47542168,
@@ -7438,6 +8184,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 5.4466457252000025,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7483,9 +8233,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 31.07486252538,
         "distance": 11684.35623492675,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 30.59419476446446,
+        "endPoint_EuclideanDistanceWalkingTime": 0.43705992520663517,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "33861",
-        "euclideanDistanceEndPoint": 30.59419476446446,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 27.549002254339996,
         "nearestEndCoordinates": [
           2786743.70973152,
@@ -7505,6 +8257,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 12.914551513899998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7534,9 +8290,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 46.32647616126997,
         "distance": 17886.143227662054,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 56.58576043505879,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8083680062151255,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "44823",
-        "euclideanDistanceEndPoint": 56.58576043505879,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 41.35218857804999,
         "nearestEndCoordinates": [
           2792694.63843852,
@@ -7556,6 +8314,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 19.782477320379996,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7589,9 +8351,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 63.21900385506992,
         "distance": 20868.79733190572,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 43.50118657597757,
+        "endPoint_EuclideanDistanceWalkingTime": 0.6214455225139653,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "45174",
-        "euclideanDistanceEndPoint": 43.50118657597757,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 55.421039288690025,
         "nearestEndCoordinates": [
           2790440.02602173,
@@ -7611,6 +8375,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 26.04907539976,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7656,9 +8424,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 34.35963013417999,
         "distance": 13274.135565459483,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 106.96198040815726,
+        "endPoint_EuclideanDistanceWalkingTime": 1.5280282915451038,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "46020",
-        "euclideanDistanceEndPoint": 106.96198040795512,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 30.36056889304,
         "nearestEndCoordinates": [
           2789605.62406822,
@@ -7671,13 +8441,17 @@
         "rush_hour_delay_time": 37.319191218989985,
         "selectedEndCoordinates": [
           2789391.632571995,
-          8444468.319311406
+          8444468.3193114
         ],
         "selectedStartCoordinates": [
           2769586.4292452433,
           8434066.14291409
         ],
         "speed_limit_time": 14.312114114499998,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7711,9 +8485,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 54.691673715859984,
         "distance": 19939.63034382822,
+        "endPoint_AVGWalkingDistanceWalkingTime": 1.9285714285714286,
+        "endPoint_EuclideanDistance": 27.699190884900116,
+        "endPoint_EuclideanDistanceWalkingTime": 0.39570272692714453,
+        "endPoint_ParkingTime": 0.22,
         "endVertexId": "49020",
-        "euclideanDistanceEndPoint": 27.699190884900116,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 48.17641941913997,
         "nearestEndCoordinates": [
           2800081.70992653,
@@ -7733,6 +8509,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 22.624903529549982,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7770,9 +8550,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 20.838091511999977,
         "distance": 11394.095732806014,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 52.27789525899286,
+        "endPoint_EuclideanDistanceWalkingTime": 0.7468270751284694,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78317",
-        "euclideanDistanceEndPoint": 52.27789525899286,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 18.75310470071999,
         "nearestEndCoordinates": [
           2761512.9775392,
@@ -7792,6 +8574,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 10.85387568432,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     },
@@ -7829,9 +8615,11 @@
         "costAttribute": "distance",
         "day_avg_delay_time": 23.34831911854,
         "distance": 13566.12653061107,
+        "endPoint_AVGWalkingDistanceWalkingTime": null,
+        "endPoint_EuclideanDistance": 58.262791820123645,
+        "endPoint_EuclideanDistanceWalkingTime": 0.8323255974303377,
+        "endPoint_ParkingTime": null,
         "endVertexId": "78618",
-        "euclideanDistanceEndPoint": 58.262791820123645,
-        "euclideanDistanceStartPoint": 14.400293949047034,
         "midday_delay_time": 21.242225748079996,
         "nearestEndCoordinates": [
           2749060.64662334,
@@ -7851,6 +8639,10 @@
           8434066.14291409
         ],
         "speed_limit_time": 12.78263525648,
+        "startPoint_AVGWalkingDistanceWalkingTime": 2.5714285714285716,
+        "startPoint_EuclideanDistance": 14.400293949047034,
+        "startPoint_EuclideanDistanceWalkingTime": 0.2057184849863862,
+        "startPoint_ParkingTime": 0.73,
         "startVertexId": "99080"
       }
     }
