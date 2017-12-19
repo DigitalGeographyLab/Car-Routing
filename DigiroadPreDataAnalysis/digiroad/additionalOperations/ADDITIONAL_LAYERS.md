@@ -39,7 +39,7 @@ Your results (string, int, float, boolean or collections of any of the previous 
 
 ___
 
-The parameter `walkingSpeed` define de walking speed that will be use to calculate the walking time, by default is in `70` m/m (meters/minute). 
+The parameter `walkingSpeed` define the walking speed that will be use to calculate the walking time, taking into account the euclidean and average walking distance from the selected point to the nearest routable vertex, by default is `70` m/m (meters/minute). 
 
 [conf-prop]: ../../resources/configuration.properties
 [layers-img]: ../../../img/additional-layers.png
