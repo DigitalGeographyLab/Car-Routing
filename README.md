@@ -51,6 +51,10 @@ Repository for developing the car routing using OS GIS.
 * Constraint satisfaction solver
 * Written in Java
 
+## Digiroad OSM2PgSQL
+
+[How to use](./DigiroadOSM2PgSQL/SETUP.md).
+
 ## Digiroad Pre-data analysis Tool
 
 [How to use](./DigiroadPreDataAnalysis/SETUP.md). 
