@@ -27,7 +27,7 @@ To be able to upload the data from OSM/PBF files it is necessary that the databa
 
 Follow the instructions given in [here][osm2pgsql]
 
-##Installation
+## Installation
 
 ```
     $ git clone git@github.com:DigitalGeographyLab/Car-Routing.git
