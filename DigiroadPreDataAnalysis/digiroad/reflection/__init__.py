@@ -9,7 +9,13 @@ from digiroad.util import LinkedList
 
 class Reflection:
     def getLinkedAbstractAdditionalLayerOperation(self):
+        """
+        Create a linked list of all the Additional Layers operations pre-defined.
+        The linked list is used to give a specific order to the operations execution just in case that one of them depends from the execution of a previos task.
+        If you define a new operation, then you must to add it to the linked list in the right position of execution.
 
+        :return: The Additional Layers operations linked list.
+        """
         euclideanDistanceAdditionalLayerOperation = EuclideanDistanceOperation()
         walkingAdditionalLayerOperation = WalkingTimeOperation()
         parkingAdditionalLayerOperation = ParkingTimeOperation()

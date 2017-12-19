@@ -35,6 +35,8 @@ def runOperation(self, featureJson, prefix=""):
     } 
 ```
 
+Once the operation specification was defined, then must be added to the linked list of operation execution in the function `getLinkedAbstractAdditionalLayerOperation` that can be found in the class `Reflection` ([here][reflection]) from the module `digiroad.reflection`.
+
 Your results (string, int, float, boolean or collections of any of the previous attributes type) will add/overwrite the attributes in the original features properties so they will be available for future uses.
 
 ___
@@ -43,3 +45,4 @@ The parameter `walkingSpeed` define the walking speed that will be used to calcu
 
 [conf-prop]: ../../resources/configuration.properties
 [layers-img]: ../../../img/additional-layers.png
+[reflection]: ../../digiroad/reflection/__init__.py
