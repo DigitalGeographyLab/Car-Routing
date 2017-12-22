@@ -7,12 +7,11 @@ import nvector as nv
 from pyproj import Proj, transform
 
 from digiroad.entities import Point
-from digiroad.util import getConfigurationProperties
+from digiroad.util import getConfigurationProperties, GPD_CRS
 
 
 class Operations:
     def __init__(self, fileActions):
-        self.crs = {'init': 'epsg:4326'}
         self.fileActions = fileActions
 
     def mergeAdditionalLayers(self, originalJsonURL, outputFolderPath):
@@ -72,8 +71,8 @@ class Operations:
         polygons = polygons[attributes]
 
         originalPointsCRS = points.crs
-        points = points.to_crs(self.crs)
-        polygons = polygons.to_crs(self.crs)
+        points = points.to_crs(GPD_CRS.WGS_84)
+        polygons = polygons.to_crs(GPD_CRS.WGS_84)
 
         pointsWithNewFields = gpd.sjoin(points, polygons, how="left")
         pointsWithNewFields = pointsWithNewFields.to_crs(originalPointsCRS)

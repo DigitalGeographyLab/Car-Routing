@@ -1,85 +1,9 @@
 import json
 
-import os
-
-import shutil
 from owslib.util import openURL
 
-import digiroad.carRoutingExceptions as exc
 from digiroad.logic.Operations import Operations
-from digiroad.util import GeometryType
-
-
-class FileActions:
-    def readJson(self, url):
-        """
-        Read a json file
-        :param url: URL for the Json file
-        :return: json dictionary data
-        """
-        with open(url) as f:
-            data = json.load(f)
-        return data
-
-    def readMultiPointJson(self, url):
-        """
-        Read a MultiPoint geometry geojson file, in case the file do not be a MultiPoint
-        geometry, then an NotMultiPointGeometryException is thrown.
-
-        :param url: URL for the Json file
-        :return: json dictionary data
-        """
-        data = None
-        with open(url) as f:
-            data = json.load(f)
-
-        self.checkGeometry(data, GeometryType.MULTI_POINT)
-
-        return data
-
-    def readPointJson(self, url):
-        """
-        Read a MultiPoint geometry geojson file, in case the file do not be a MultiPoint
-        geometry, then an NotMultiPointGeometryException is thrown.
-
-        :param url: URL for the Json file
-        :return: json dictionary data
-        """
-        data = None
-        with open(url) as f:
-            data = json.load(f)
-
-        self.checkGeometry(data, GeometryType.POINT)
-
-        return data
-
-    def checkGeometry(self, data, geometryType=GeometryType.MULTI_POINT):
-        """
-        Check the content of the Json to verify if it is a specific geoemtry type. By default is MultiPoint.
-        In case the geojson do not be the given geometry type then an
-
-        :param data: json dictionary
-        :param geometryType: Geometry type (i.e. MultiPoint, LineString)
-        :return: None
-        """
-        for feature in data["features"]:
-            if feature["geometry"]["type"] != geometryType:
-                raise exc.IncorrectGeometryTypeException("Expected %s" % geometryType)
-
-    def writeFile(self, folderPath, filename, data):
-        if not os.path.exists(folderPath):
-            os.makedirs(folderPath)
-
-        fileURL = folderPath + "/%s" % filename
-
-        with open(fileURL, 'w+') as outfile:
-            json.dump(data, outfile, sort_keys=True)
-
-    def deleteFolder(self, path):
-        print("Deleting FOLDER %s" % path)
-        if os.path.exists(path):
-            shutil.rmtree(path)
-        print("The FOLDER %s was deleted" % path)
+from digiroad.util import FileActions
 
 
 class WFSServiceProvider:

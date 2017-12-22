@@ -2,9 +2,9 @@ import unittest
 import os
 
 from digiroad.carRoutingExceptions import IncorrectGeometryTypeException
-from digiroad.connection import WFSServiceProvider, FileActions
+from digiroad.connection import WFSServiceProvider
 from digiroad.entities import Point
-from digiroad.util import CostAttributes
+from digiroad.util import CostAttributes, FileActions
 
 
 class WFSServiceProviderTest(unittest.TestCase):
