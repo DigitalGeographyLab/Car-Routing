@@ -1,10 +1,9 @@
 import abc
 
 from digiroad.carRoutingExceptions import deprecated
-from digiroad.connection import FileActions
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
-from digiroad.util import getConfigurationProperties, PostfixAttribute
+from digiroad.util import getConfigurationProperties, PostfixAttribute, FileActions
 
 
 class AbstractAdditionalLayerOperation(object):

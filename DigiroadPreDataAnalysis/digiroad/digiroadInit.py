@@ -3,6 +3,7 @@ import sys
 
 from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException
 from digiroad.connection import WFSServiceProvider
+from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.util import CostAttributes, getConfigurationProperties
 
@@ -94,25 +95,56 @@ def main():
 
     config = getConfigurationProperties()
 
-    starter = MetropAccessDigiroadApplication()
-    wfsServiceProvider = WFSServiceProvider(wfs_url=config["wfs_url"],
-                                            nearestVertexTypeName=config["nearestVertexTypeName"],
-                                            nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
-                                            shortestPathTypeName=config["shortestPathTypeName"],
-                                            outputFormat=config["outputFormat"])
+    wfsServiceProvider = WFSServiceProvider(
+        wfs_url=config["wfs_url"],
+        nearestVertexTypeName=config["nearestVertexTypeName"],
+        nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
+        shortestPathTypeName=config["shortestPathTypeName"],
+        outputFormat=config["outputFormat"]
+    )
+    postgisServiceProvider = PostgisServiceProvider()
+    starter = MetropAccessDigiroadApplication(
+        wfsServiceProvider=wfsServiceProvider,
+        postgisServiceProvider=postgisServiceProvider
+    )
 
-    if impedances and not allImpedanceAttribute:
-        starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
-                                         startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-                                         endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-                                         outputFolderPath=outputFolder,
-                                         costAttribute=impedance)
-        starter.createSummary(outputFolder, impedance, "metroAccessDigiroadSummary.geojson")
+    if impedance and not allImpedanceAttribute:
+        starter.calculateTotalTimeTravel(
+            startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+            endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+            outputFolderPath=outputFolder,
+            costAttribute=impedance
+        )
+        starter.createSummary(
+            folderPath=outputFolder,
+            costAttribute=impedance,
+            outputFilename="metroAccessDigiroadSummary.geojson"
+        )
+        starter.createMultiPointSummary(
+            startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+            endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+            costAttribute=impedance,
+            folderPath=outputFolder,
+            outputFilename="dijsktraCostMetroAccessDigiroadSummary.geojson"
+        )
 
     if allImpedanceAttribute:
         for key in impedances:
-            starter.calculateTotalTimeTravel(wfsServiceProvider=wfsServiceProvider,
-                                             startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-                                             endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-                                             outputFolderPath=outputFolder,
-                                             costAttribute=impedances[key])
+            starter.calculateTotalTimeTravel(
+                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                outputFolderPath=outputFolder,
+                costAttribute=impedances[key]
+            )
+            starter.createSummary(
+                folderPath=outputFolder,
+                costAttribute=impedances[key],
+                outputFilename="metroAccessDigiroadSummary.geojson"
+            )
+            starter.createMultiPointSummary(
+                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                costAttribute=impedances[key],
+                folderPath=outputFolder,
+                outputFilename="dijsktraCostMetroAccessDigiroadSummary.geojson"
+            )

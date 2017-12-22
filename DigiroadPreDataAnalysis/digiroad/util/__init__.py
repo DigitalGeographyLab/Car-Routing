@@ -1,7 +1,11 @@
 import configparser
 import datetime
+import json
 import os
+import shutil
 import time
+
+from digiroad import carRoutingExceptions as exc
 
 
 def enum(**enums):
@@ -23,6 +27,8 @@ GeometryType = enum(POINT="Point", MULTI_POINT='MultiPoint', LINE_STRING='LineSt
 
 PostfixAttribute = enum(EUCLIDEAN_DISTANCE="EuclideanDistance", AVG_WALKING_DISTANCE="AVGWalkingDistance",
                         WALKING_TIME="WalkingTime", PARKING_TIME="ParkingTime")
+
+GPD_CRS = enum(WGS_84={'init': 'epsg:4326'}, PSEUDO_MERCATOR={'init': 'epsg:3857'})
 
 
 def getEnglishMeaning(cost_attribute=None):
@@ -136,3 +142,75 @@ class LinkedList(AbstractLinkedList):
         """
         self._next = self._head
         self._tail = self._head
+
+
+class FileActions:
+    def readJson(self, url):
+        """
+        Read a json file
+        :param url: URL for the Json file
+        :return: json dictionary data
+        """
+        with open(url) as f:
+            data = json.load(f)
+        return data
+
+    def readMultiPointJson(self, url):
+        """
+        Read a MultiPoint geometry geojson file, in case the file do not be a MultiPoint
+        geometry, then an NotMultiPointGeometryException is thrown.
+
+        :param url: URL for the Json file
+        :return: json dictionary data
+        """
+        data = None
+        with open(url) as f:
+            data = json.load(f)
+
+        self.checkGeometry(data, GeometryType.MULTI_POINT)
+
+        return data
+
+    def readPointJson(self, url):
+        """
+        Read a MultiPoint geometry geojson file, in case the file do not be a MultiPoint
+        geometry, then an NotMultiPointGeometryException is thrown.
+
+        :param url: URL for the Json file
+        :return: json dictionary data
+        """
+        data = None
+        with open(url) as f:
+            data = json.load(f)
+
+        self.checkGeometry(data, GeometryType.POINT)
+
+        return data
+
+    def checkGeometry(self, data, geometryType=GeometryType.MULTI_POINT):
+        """
+        Check the content of the Json to verify if it is a specific geoemtry type. By default is MultiPoint.
+        In case the geojson do not be the given geometry type then an
+
+        :param data: json dictionary
+        :param geometryType: Geometry type (i.e. MultiPoint, LineString)
+        :return: None
+        """
+        for feature in data["features"]:
+            if feature["geometry"]["type"] != geometryType:
+                raise exc.IncorrectGeometryTypeException("Expected %s" % geometryType)
+
+    def writeFile(self, folderPath, filename, data):
+        if not os.path.exists(folderPath):
+            os.makedirs(folderPath)
+
+        fileURL = folderPath + "/%s" % filename
+
+        with open(fileURL, 'w+') as outfile:
+            json.dump(data, outfile, sort_keys=True)
+
+    def deleteFolder(self, path):
+        print("Deleting FOLDER %s" % path)
+        if os.path.exists(path):
+            shutil.rmtree(path)
+        print("The FOLDER %s was deleted" % path)

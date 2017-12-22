@@ -1,9 +1,10 @@
 import os
 import unittest
 
-from digiroad.connection import FileActions, WFSServiceProvider
+from digiroad.connection import WFSServiceProvider
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
+from digiroad.util import CostAttributes, FileActions
 
 
 class OperationsTest(unittest.TestCase):
@@ -37,7 +38,8 @@ class OperationsTest(unittest.TestCase):
         testPointsURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
 
-        mergedLayer = self.operations.mergeAdditionalLayers(originalJsonURL=testPointsURL, outputFolderPath=outputFolderFeaturesURL)
+        mergedLayer = self.operations.mergeAdditionalLayers(originalJsonURL=testPointsURL,
+                                                            outputFolderPath=outputFolderFeaturesURL)
 
         expectedMergedLayer = self.fileActions.readJson(expectedMergedLayerURL)
         self.assertEqual(expectedMergedLayer, mergedLayer)
