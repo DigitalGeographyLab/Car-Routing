@@ -11,7 +11,7 @@ class Reflection:
     def getLinkedAbstractAdditionalLayerOperation(self):
         """
         Create a linked list of all the Additional Layers operations pre-defined.
-        The linked list is used to give a specific order to the operations execution just in case that one of them depends from the execution of a previos task.
+        The linked list is used to give a specific order to the operations execution just in case that one of them depends from the execution of a previous task.
         If you define a new operation, then you must to add it to the linked list in the right position of execution.
 
         :return: The Additional Layers operations linked list.
@@ -44,7 +44,7 @@ class Reflection:
 
     def getClasses(self, root_directory, package_name, *classes):
         """
-        Retrive all the instances from a module that are subclasses of the given *classes.
+        Retrieve all the instances from a module that are subclasses of the given *classes.
 
         :param root_directory: Project PYTHONPATH.
         :param package_name: Name of the module to inspect.
@@ -100,7 +100,7 @@ class Reflection:
 
         :param __name__: String name.
         :param param: Any string tuple.
-        :return: True if __name__ is contained in *param, Otherwise, return False.
+        :return: True if __name__ is contained in *param. Otherwise, return False.
         """
         for _class in list(param):
             if __name__ == _class.__name__:
