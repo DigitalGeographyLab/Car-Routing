@@ -129,13 +129,14 @@ def main():
         )
 
     if allImpedanceAttribute:
+        starter.calculateTotalTimeTravel(
+            startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+            endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+            outputFolderPath=outputFolder,
+            costAttribute=impedances
+        )
+        
         for key in impedances:
-            starter.calculateTotalTimeTravel(
-                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-                outputFolderPath=outputFolder,
-                costAttribute=impedances[key]
-            )
             starter.createSummary(
                 folderPath=outputFolder,
                 costAttribute=impedances[key],

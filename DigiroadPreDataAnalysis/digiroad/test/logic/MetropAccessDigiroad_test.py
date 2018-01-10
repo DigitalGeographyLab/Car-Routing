@@ -36,30 +36,38 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                           outputFolderFeaturesURL,
                           testPolygonsURL)
 
-    @unittest.skip("")  # about 13 m for 12 points (132 possible paths)
+    # @unittest.skip("")  # about 13 m for 12 points (132 possible paths)
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
         inputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
 
-        distanceCostAttribute = CostAttributes.DISTANCE
+        # distanceCostAttribute = CostAttributes.DISTANCE
+        distanceCostAttribute = {
+            "DISTANCE": CostAttributes.DISTANCE,
+            "SPEED_LIMIT_TIME": CostAttributes.SPEED_LIMIT_TIME,
+            "DAY_AVG_DELAY_TIME": CostAttributes.DAY_AVG_DELAY_TIME,
+            "MIDDAY_DELAY_TIME": CostAttributes.MIDDAY_DELAY_TIME,
+            "RUSH_HOUR_DELAY": CostAttributes.RUSH_HOUR_DELAY
+        }
         self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputCoordinatesURL,
                                                           endCoordinatesGeojsonFilename=inputCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,
                                                           costAttribute=distanceCostAttribute)
 
         inputCoordinatesGeojson = self.fileActions.readJson(inputCoordinatesURL)
-        if not outputFolderFeaturesURL.endswith(os.sep):
-            geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + \
-                                           "geoms" + os.sep + getEnglishMeaning(distanceCostAttribute) + os.sep
-        else:
-            geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + "geoms" + os.sep + getEnglishMeaning(
-                distanceCostAttribute) + os.sep
+        for key in distanceCostAttribute:
+            if not outputFolderFeaturesURL.endswith(os.sep):
+                geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + \
+                                               "geoms" + os.sep + getEnglishMeaning(distanceCostAttribute[key]) + os.sep
+            else:
+                geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + "geoms" + os.sep + getEnglishMeaning(
+                    distanceCostAttribute[key]) + os.sep
 
-        outputFileList = self.readOutputFolderFiles(geomsOutputFolderFeaturesURL)
+            outputFileList = self.readOutputFolderFiles(geomsOutputFolderFeaturesURL)
 
-        totalCombinatory = len(inputCoordinatesGeojson["features"]) * len(inputCoordinatesGeojson["features"]) - len(
-            inputCoordinatesGeojson["features"])
-        self.assertEqual(totalCombinatory, len(outputFileList))
+            totalCombinatory = len(inputCoordinatesGeojson["features"]) * len(inputCoordinatesGeojson["features"]) - len(
+                inputCoordinatesGeojson["features"])
+            self.assertEqual(totalCombinatory, len(outputFileList))
 
     def test_givenAListOfGeojson_then_createSummary(self):
         self.maxDiff = None

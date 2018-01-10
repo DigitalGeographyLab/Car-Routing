@@ -22,7 +22,7 @@ class MetropAccessDigiroadApplication:
                                  startCoordinatesGeojsonFilename=None,
                                  endCoordinatesGeojsonFilename=None,
                                  outputFolderPath=None,
-                                 costAttribute=CostAttributes.DISTANCE):
+                                 costAttribute=None):
         """
         Given a set of pair points and the ``cost attribute``, calculate the shortest path between each of them and
         store the Shortest Path Geojson file in the ``outputFolderPath``.
@@ -42,12 +42,15 @@ class MetropAccessDigiroadApplication:
         startTime = time.time()
         print("calculateTotalTimeTravel Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
-        outputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
-
-        self.fileActions.deleteFolder(path=outputFolderPath)
-
-        filename = "shortestPath"
-        extension = "geojson"
+        if isinstance(costAttribute, dict):
+            for key in costAttribute:
+                newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
+                    costAttribute[key]) + os.sep
+                self.fileActions.deleteFolder(path=newOutputFolderPath)
+        else:
+            newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
+                costAttribute) + os.sep
+            self.fileActions.deleteFolder(path=newOutputFolderPath)
 
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
             originalJsonURL=startCoordinatesGeojsonFilename,
@@ -60,8 +63,6 @@ class MetropAccessDigiroadApplication:
         )
 
         epsgCode = self.extractCRS(inputStartCoordinates)
-
-        additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
 
         for startPointFeature in inputStartCoordinates["features"]:
             startCoordinates = startPointFeature["geometry"]["coordinates"]
@@ -97,7 +98,6 @@ class MetropAccessDigiroadApplication:
                 endPoint = self.operations.transformPoint(endPoint, self.wfsServiceProvider.getEPSGCode())
 
                 if not startPoint.equals(endPoint):
-
                     endPointNearestVertexGeojson = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(
                         endPoint)
 
@@ -118,50 +118,66 @@ class MetropAccessDigiroadApplication:
                     endPointFeature["properties"]["coordinatesCRS"] = startPoint.getEPSGCode()
                     ########
 
-                    shortestPath = self.wfsServiceProvider.getShortestPath(startVertexId=startVertexId,
-                                                                           endVertexId=endVertexId,
-                                                                           cost=costAttribute)
-
-                    shortestPath["overallProperties"] = {}
-
-                    additionalLayerOperationLinkedList.restart()
-
-                    while additionalLayerOperationLinkedList.hasNext():
-                        additionalLayerOperation = additionalLayerOperationLinkedList.next()
-
-                        newProperties = additionalLayerOperation.runOperation(
-                            featureJson=startPointFeature,
-                            prefix="startPoint_")
-                        for property in newProperties:
-                            startPointFeature["properties"][property] = newProperties[property]
-                            shortestPath["overallProperties"][property] = newProperties[property]
-
-                        newProperties = additionalLayerOperation.runOperation(
-                            featureJson=endPointFeature,
-                            prefix="endPoint_")
-                        for property in newProperties:
-                            endPointFeature["properties"][property] = newProperties[property]
-                            shortestPath["overallProperties"][property] = newProperties[property]
-
-                    shortestPath["overallProperties"]["selectedStartCoordinates"] = [startPoint.getLongitude(),
-                                                                                     startPoint.getLatitude()]
-                    shortestPath["overallProperties"]["selectedEndCoordinates"] = [endPoint.getLongitude(),
-                                                                                   endPoint.getLatitude()]
-                    shortestPath["overallProperties"]["nearestStartCoordinates"] = [nearestStartPoint.getLongitude(),
-                                                                                    nearestStartPoint.getLatitude()]
-                    shortestPath["overallProperties"]["nearestEndCoordinates"] = [nearestEndPoint.getLongitude(),
-                                                                                  nearestEndPoint.getLatitude()]
-
-                    completeFilename = "%s-%s-%s-%s.%s" % (
-                        filename, getEnglishMeaning(costAttribute), startVertexId, endVertexId, extension)
-                    self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
-                                               data=shortestPath)
+                    if isinstance(costAttribute, dict):
+                        for key in costAttribute:
+                            newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
+                                costAttribute[key]) + os.sep
+                            self.createShortestPathFileWithAdditionalProperties(costAttribute[key], startVertexId, endVertexId,
+                                                                                startPoint, startPointFeature, endPoint,
+                                                                                endPointFeature, nearestEndPoint,
+                                                                                nearestStartPoint, newOutputFolderPath)
+                    else:
+                        self.createShortestPathFileWithAdditionalProperties(costAttribute, startVertexId, endVertexId,
+                                                                            startPoint, startPointFeature, endPoint,
+                                                                            endPointFeature, nearestEndPoint,
+                                                                            nearestStartPoint, newOutputFolderPath)
 
         endTime = time.time()
         print("calculateTotalTimeTravel End Time: %s" % getFormattedDatetime(timemilis=endTime))
 
         totalTime = timeDifference(startTime, endTime)
         print("calculateTotalTimeTravel Total Time: %s m" % totalTime)
+
+    def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
+                                                       startPointFeature, endPoint, endPointFeature, nearestEndPoint,
+                                                       nearestStartPoint, outputFolderPath):
+        shortestPath = self.wfsServiceProvider.getShortestPath(startVertexId=startVertexId,
+                                                               endVertexId=endVertexId,
+                                                               cost=costAttribute)
+        shortestPath["overallProperties"] = {}
+        additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
+        while additionalLayerOperationLinkedList.hasNext():
+            additionalLayerOperation = additionalLayerOperationLinkedList.next()
+
+            newProperties = additionalLayerOperation.runOperation(
+                featureJson=startPointFeature,
+                prefix="startPoint_")
+            for property in newProperties:
+                startPointFeature["properties"][property] = newProperties[property]
+                shortestPath["overallProperties"][property] = newProperties[property]
+
+            newProperties = additionalLayerOperation.runOperation(
+                featureJson=endPointFeature,
+                prefix="endPoint_")
+            for property in newProperties:
+                endPointFeature["properties"][property] = newProperties[property]
+                shortestPath["overallProperties"][property] = newProperties[property]
+
+        shortestPath["overallProperties"]["selectedStartCoordinates"] = [startPoint.getLongitude(),
+                                                                         startPoint.getLatitude()]
+        shortestPath["overallProperties"]["selectedEndCoordinates"] = [endPoint.getLongitude(),
+                                                                       endPoint.getLatitude()]
+        shortestPath["overallProperties"]["nearestStartCoordinates"] = [nearestStartPoint.getLongitude(),
+                                                                        nearestStartPoint.getLatitude()]
+        shortestPath["overallProperties"]["nearestEndCoordinates"] = [nearestEndPoint.getLongitude(),
+                                                                      nearestEndPoint.getLatitude()]
+
+        filename = "shortestPath"
+        extension = "geojson"
+        completeFilename = "%s-%s-%s-%s.%s" % (
+            filename, getEnglishMeaning(costAttribute), startVertexId, endVertexId, extension)
+        self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
+                                   data=shortestPath)
 
     def createSummary(self, folderPath, costAttribute, outputFilename):
         """
