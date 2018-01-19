@@ -173,6 +173,10 @@
             onAdd: function (map) {
                 var div = L.DomUtil.create('div', 'impedance-box leaflet-bar');
 
+                var title = L.DomUtil.create('span', 'impedance-box-title', div);
+                title.innerHTML = "Cost Attributes"
+                L.DomEvent.addListener(title, '', $scope.changeImpedance);
+
                 var selection = L.DomUtil.create('select', 'impedance-selector', div);
                 L.DomEvent.addListener(selection, 'change', $scope.changeImpedance);
 
