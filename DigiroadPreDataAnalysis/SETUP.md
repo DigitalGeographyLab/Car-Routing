@@ -29,6 +29,10 @@
 ```
     $ conda install -c conda-forge geopandas
 ```
+* joblib
+```
+    $ conda install -c anaconda joblib
+```
 
 # Run
 

@@ -2,6 +2,8 @@ import os
 import unittest
 
 from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
+from digiroad.entities import Point
+from digiroad.logic.Operations import Operations
 from digiroad.util import CostAttributes, FileActions
 
 
@@ -9,7 +11,39 @@ class PostgisServiceProviderTest(unittest.TestCase):
     def setUp(self):
         self.postgisServiceProvider = PostgisServiceProvider()
         self.fileActions = FileActions()
+        self.operations = Operations(self.fileActions)
         self.dir = os.getcwd()
+
+    def test_givenAPoint_retrieveNearestCarRoutingVertexGeojson(self):
+        # point_coordinates = {  # EPSG:3857
+        #     "lat": 8443095.452975733,
+        #     "lng": 2770620.87667954
+        # }
+        vertexGeojsonURL = self.dir + '/digiroad/test/data/geojson/nearestCarRoutingVertexResponse.geojson'
+        nearestVertexExpectedGeojson = self.fileActions.readJson(vertexGeojsonURL)
+
+        coordinates = Point(latitute=6672380.0,
+                            longitude=385875.0,
+                            epsgCode="EPSG:3047")
+
+        coordinates = self.operations.transformPoint(coordinates, self.postgisServiceProvider.getEPSGCode())
+
+        geoJson = self.postgisServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates)
+
+        for feature in nearestVertexExpectedGeojson["features"]:
+            if "id" in feature:
+                del feature["id"]
+
+        if "totalFeatures" in geoJson:
+            del geoJson["totalFeatures"]
+
+        for feature in geoJson["features"]:
+            if "id" in feature:
+                del feature["id"]
+            if "geometry_name" in feature:
+                del feature["geometry_name"]
+
+        self.assertEqual(nearestVertexExpectedGeojson, geoJson)
 
     def test_givenAPairOfVertex_then_retrieveDijsktraOneToOneCostSummaryGeojson(self):
         dir = self.dir + '%digiroad%test%data%geojson%oneToOneCostSummary.geojson'.replace("%", os.sep)
@@ -27,7 +61,7 @@ class PostgisServiceProviderTest(unittest.TestCase):
 
         expectedSummary = self.fileActions.readJson(dir)
         summaryShortestPathCostManyToOne = self.postgisServiceProvider.getTotalShortestPathCostManyToOne(
-            startVertexesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
+            startVerticesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
             endVertexID=99080,
             costAttribute=CostAttributes.DISTANCE
         )
@@ -39,7 +73,7 @@ class PostgisServiceProviderTest(unittest.TestCase):
         expectedSummary = self.fileActions.readJson(dir)
         summaryShortestPathCostOneToMany = self.postgisServiceProvider.getTotalShortestPathCostOneToMany(
             startVertexID=99080,
-            endVertexesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
+            endVerticesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
             costAttribute=CostAttributes.DISTANCE
         )
         self.assertEqual(expectedSummary, summaryShortestPathCostOneToMany)
@@ -49,8 +83,77 @@ class PostgisServiceProviderTest(unittest.TestCase):
 
         expectedSummary = self.fileActions.readJson(dir)
         summaryShortestPathCostManyToMany = self.postgisServiceProvider.getTotalShortestPathCostManyToMany(
-            startVertexesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
-            endVertexesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
+            startVerticesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
+            endVerticesID=[99080, 78618, 45174, 46020, 44823, 110372, 140220, 78317, 106993, 127209, 33861, 49020],
             costAttribute=CostAttributes.DISTANCE
         )
         self.assertEqual(expectedSummary, summaryShortestPathCostManyToMany)
+
+    def test_createATemporaryTable(self):
+        tableName = "temporalTable"
+        columns = {
+            "uuid": "uuid",
+            "ykr_from_id": "INTEGER",
+            "ykr_to_id": "INTEGER",
+            "travel_time": "DOUBLE PRECISION",
+            "travel_time_difference": "DOUBLE PRECISION",
+            "geometry": "GEOMETRY",
+        }
+        try:
+            connection = self.postgisServiceProvider.getConnection()
+            self.postgisServiceProvider.createTemporaryTable(
+                con=connection,
+                tableName=tableName,
+                columns=columns
+            )
+        finally:
+            connection.close()
+
+    def test_getUUIDCode(self):
+        uuid = self.postgisServiceProvider.getUUID(con=self.postgisServiceProvider.getConnection())
+        print(uuid)
+        self.assertIsNotNone(uuid)
+
+    def test_bucle(self):
+        arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        expected = [[0, 3], [4, 7], [8, 8]]
+
+        jump = 4
+        self.assertEqual(expected, self.getModules(arrayList, jump))
+
+        arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        expected = [[0, 3], [4, 7], [8, 9]]
+
+        self.assertEqual(expected, self.getModules(arrayList, jump))
+
+        arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        expected = [[0, 3], [4, 7], [8, 10]]
+
+        self.assertEqual(expected, self.getModules(arrayList, jump))
+
+        arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        expected = [[0, 3], [4, 7], [8, 11]]
+
+        self.assertEqual(expected, self.getModules(arrayList, jump))
+
+        arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        expected = [[0, 3], [4, 7], [8, 11], [12, 12]]
+
+        self.assertEqual(expected, self.getModules(arrayList, jump))
+
+        arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        expected = [[0, 2], [3, 5], [6, 8], [9, 11], [12, 12]]
+        jump = 3
+        self.assertEqual(expected, self.getModules(arrayList, jump))
+
+    def getModules(self, arrayList, jump):
+        counter = 0
+        intervals = []
+        while counter < len(arrayList):
+            if counter + jump > len(arrayList):
+                jump = len(arrayList) % jump
+
+            intervals.append([counter, counter + jump - 1])
+            counter = counter + jump
+        print(intervals)
+        return intervals

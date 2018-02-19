@@ -46,9 +46,12 @@ FROM
            id::integer,
            source::integer,
            target::integer,
-           %cost%::double precision AS cost,
            (CASE
              WHEN liikennevi = 2 OR liikennevi = 3 THEN %cost%
+             ELSE -1
+           END)::double precision AS cost,
+           (CASE
+             WHEN liikennevi = 2 OR liikennevi = 4 THEN %cost%
              ELSE -1
            END)::double precision AS reverse_cost
          FROM edges_noded', %source%, %target%, true, true) AS r,

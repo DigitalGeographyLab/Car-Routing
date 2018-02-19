@@ -7,7 +7,7 @@
       "properties": {
         "start_vertex_id": 33861,
         "end_vertex_id": 99080,
-        "total_time": 12063.3177067276
+        "total_cost": 12118.4120596092
       },
       "geometry": {
         "type": "LineString",
@@ -29,7 +29,7 @@
       "properties": {
         "start_vertex_id": 44823,
         "end_vertex_id": 99080,
-        "total_time": 18139.0176781591
+        "total_cost": 18194.1120310407
       },
       "geometry": {
         "type": "LineString",
@@ -51,7 +51,7 @@
       "properties": {
         "start_vertex_id": 45174,
         "end_vertex_id": 99080,
-        "total_time": 21283.4602690004
+        "total_cost": 21338.554621882
       },
       "geometry": {
         "type": "LineString",
@@ -73,7 +73,7 @@
       "properties": {
         "start_vertex_id": 46020,
         "end_vertex_id": 99080,
-        "total_time": 13678.7642879835
+        "total_cost": 13733.8586408651
       },
       "geometry": {
         "type": "LineString",
@@ -95,7 +95,7 @@
       "properties": {
         "start_vertex_id": 49020,
         "end_vertex_id": 99080,
-        "total_time": 20419.9504850675
+        "total_cost": 20475.0448379491
       },
       "geometry": {
         "type": "LineString",
@@ -117,7 +117,7 @@
       "properties": {
         "start_vertex_id": 78317,
         "end_vertex_id": 99080,
-        "total_time": 11814.3459827007
+        "total_cost": 11814.3459827007
       },
       "geometry": {
         "type": "LineString",
@@ -139,7 +139,7 @@
       "properties": {
         "start_vertex_id": 78618,
         "end_vertex_id": 99080,
-        "total_time": 13566.1265306111
+        "total_cost": 13566.1265306111
       },
       "geometry": {
         "type": "LineString",
@@ -161,7 +161,7 @@
       "properties": {
         "start_vertex_id": 106993,
         "end_vertex_id": 99080,
-        "total_time": 9599.00405588996
+        "total_cost": 9752.76004893452
       },
       "geometry": {
         "type": "LineString",
@@ -183,7 +183,7 @@
       "properties": {
         "start_vertex_id": 110372,
         "end_vertex_id": 99080,
-        "total_time": 2847.26236825175
+        "total_cost": 2868.25540258226
       },
       "geometry": {
         "type": "LineString",
@@ -205,7 +205,7 @@
       "properties": {
         "start_vertex_id": 127209,
         "end_vertex_id": 99080,
-        "total_time": 18503.0415917053
+        "total_cost": 19027.9450283974
       },
       "geometry": {
         "type": "LineString",
@@ -227,7 +227,7 @@
       "properties": {
         "start_vertex_id": 140220,
         "end_vertex_id": 99080,
-        "total_time": 4502.96635170094
+        "total_cost": 4656.7223447455
       },
       "geometry": {
         "type": "LineString",
@@ -246,7 +246,7 @@
   ],
   "crs": {
     "properties": {
-      "name": "urn:ogc:def:crs:epsg::3857"
+      "name": "urn:ogc:def:crs:EPSG::3857"
     },
     "type": "name"
   }
