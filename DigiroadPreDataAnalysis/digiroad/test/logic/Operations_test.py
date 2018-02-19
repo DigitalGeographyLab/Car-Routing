@@ -1,10 +1,10 @@
 import os
 import unittest
 
-from digiroad.connection import WFSServiceProvider
+from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
-from digiroad.util import CostAttributes, FileActions
+from digiroad.util import FileActions
 
 
 class OperationsTest(unittest.TestCase):
@@ -45,16 +45,16 @@ class OperationsTest(unittest.TestCase):
         self.assertEqual(expectedMergedLayer, mergedLayer)
 
     def test_calculateEuclideanDistanceToTheNearestVertex(self):
-        euclideanDistanceExpected = 307.99402311696525  # meters
-        # startPoint = {
-        #     "lat": 8443095.452975733,
-        #     "lng": 2770620.87667954,
-        #     "crs": "EPSG:3857"
-        # }
-        startPoint = Point(latitute=60.19602778395168,
-                           longitude=24.916477203369144,
-                           epsgCode="EPSG:4326")
-        newStartPoint = self.operations.transformPoint(startPoint, targetEPSGCode="epsg:3857")
+        euclideanDistanceExpected = 54.918796781644275  # 307.99402311696525  # meters
+        startPoint = {
+            "lat": 6672380.0,
+            "lng": 385875.0,
+            "crs": "EPSG:3047"
+        }
+        startPoint = Point(latitute=startPoint["lat"],
+                           longitude=startPoint["lng"],
+                           epsgCode="EPSG:3047")
+        newStartPoint = self.operations.transformPoint(startPoint, targetEPSGCode=self.wfsServiceProvider.getEPSGCode())
 
         nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(newStartPoint)
         epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
@@ -66,8 +66,8 @@ class OperationsTest(unittest.TestCase):
         #     "crs": epsgCode
         # }
 
-        endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
-                         longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
+        endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][1],
+                         longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0],
                          epsgCode=epsgCode)
 
         self.assertEqual(euclideanDistanceExpected,
@@ -94,8 +94,8 @@ class OperationsTest(unittest.TestCase):
         #     "crs": epsgCode
         # }
 
-        endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][0][1],
-                         longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0][0],
+        endPoint = Point(latitute=nearestVertex["features"][0]["geometry"]["coordinates"][1],
+                         longitude=nearestVertex["features"][0]["geometry"]["coordinates"][0],
                          epsgCode=epsgCode)
 
         self.assertEqual(euclideanDistanceExpected,

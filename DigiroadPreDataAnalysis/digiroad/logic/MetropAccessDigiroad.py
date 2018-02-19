@@ -1,22 +1,92 @@
+import copy
 import os
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 import time
+
+from joblib import delayed, Parallel
 
 from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
-from digiroad.util import CostAttributes, GeometryType, getEnglishMeaning, getFormattedDatetime, \
-    timeDifference, FileActions
+from digiroad.util import GeometryType, getEnglishMeaning, getFormattedDatetime, \
+    timeDifference, FileActions, extractCRS, createPointFromPointFeature, getConfigurationProperties
+
+
+def extractFeatureInformation(endEPSGCode, feature, geojsonServiceProvider, operations):
+    coordinates = feature["geometry"]["coordinates"]
+    featurePoint = Point(latitute=coordinates[1],
+                         longitude=coordinates[0],
+                         epsgCode=endEPSGCode)
+    featurePoint = operations.transformPoint(featurePoint, geojsonServiceProvider.getEPSGCode())
+    nearestVertexGeojson = geojsonServiceProvider.getNearestCarRoutableVertexFromAPoint(
+        featurePoint)
+    newFeaturePoint = nearestVertexGeojson["features"][0]
+    vertexID = newFeaturePoint["properties"]["id"]
+    feature["properties"]["vertex_id"] = vertexID
+    ###
+    epsgCodeNearestVertexCoordinates = extractCRS(nearestVertexGeojson)
+    nearestPoint = createPointFromPointFeature(newFeaturePoint, epsgCodeNearestVertexCoordinates)
+    nearestPoint = operations.transformPoint(nearestPoint, geojsonServiceProvider.getEPSGCode())
+    ######## Add new properties to the start point feature
+    feature["properties"]["selectedPointCoordinates"] = [featurePoint.getLongitude(),
+                                                         featurePoint.getLatitude()]
+    feature["properties"]["nearestVertexCoordinates"] = [nearestPoint.getLongitude(),
+                                                         nearestPoint.getLatitude()]
+    feature["properties"]["coordinatesCRS"] = featurePoint.getEPSGCode()
+    ###
+    return vertexID, feature
+
+
+def createCostSummaryWithAdditionalProperties(self, costAttribute, startPointFeature, endPointFeature,
+                                              costSummaryMap):
+    startVertexID = startPointFeature["properties"]["vertex_id"]
+    endVertexID = endPointFeature["properties"]["vertex_id"]
+
+    # if startVertexID == endVertexID:
+    #     return None
+    if startVertexID not in costSummaryMap or endVertexID not in costSummaryMap[startVertexID]:
+        print("Not contained into the costSummaryMap:", startVertexID, endVertexID)
+        return None
+
+    summaryFeature = costSummaryMap[startVertexID][endVertexID]
+    summaryFeature = copy.deepcopy(summaryFeature)
+
+    total_cost = summaryFeature["properties"]["total_cost"]
+
+    del summaryFeature["properties"]["start_vertex_id"]
+    del summaryFeature["properties"]["end_vertex_id"]
+    del summaryFeature["properties"]["total_cost"]
+
+    newProperties = self.insertAdditionalProperties(
+        startPointFeature,
+        endPointFeature
+    )
+
+    # coordinates = summaryFeature["geometry"]["coordinates"]
+    # coordinates[0] = startPointFeature["properties"]["selectedPointCoordinates"]
+    # coordinates[1] = endPointFeature["properties"]["selectedPointCoordinates"]
+
+    newProperties["costAttribute"] = getEnglishMeaning(costAttribute)
+    newProperties[getEnglishMeaning(costAttribute)] = total_cost
+    newProperties["startVertexId"] = startVertexID
+    newProperties["endVertexId"] = endVertexID
+    newProperties["selectedStartCoordinates"] = startPointFeature["properties"]["selectedPointCoordinates"]
+    newProperties["selectedEndCoordinates"] = endPointFeature["properties"]["selectedPointCoordinates"]
+    newProperties["nearestStartCoordinates"] = startPointFeature["properties"]["nearestVertexCoordinates"]
+    newProperties["nearestEndCoordinates"] = endPointFeature["properties"]["nearestVertexCoordinates"]
+    for key in newProperties:
+        summaryFeature["properties"][key] = newProperties[key]
+
+    return summaryFeature
 
 
 class MetropAccessDigiroadApplication:
-    def __init__(self, wfsServiceProvider=None, postgisServiceProvider=None):
+    def __init__(self, geojsonServiceProvider=None):
         self.fileActions = FileActions()
         self.operations = Operations(FileActions())
         self.reflection = Reflection()
-        self.wfsServiceProvider = wfsServiceProvider
-        self.postgisServiceProvider = postgisServiceProvider
+        self.geojsonServiceProvider = geojsonServiceProvider
 
     def calculateTotalTimeTravel(self,
                                  startCoordinatesGeojsonFilename=None,
@@ -34,7 +104,7 @@ class MetropAccessDigiroadApplication:
         :return: None. Store the information in the ``outputFolderPath``.
         """
 
-        if not self.wfsServiceProvider:
+        if not self.geojsonServiceProvider:
             raise NotWFSDefinedException()
         if not startCoordinatesGeojsonFilename or not outputFolderPath:
             raise NotURLDefinedException()
@@ -62,7 +132,7 @@ class MetropAccessDigiroadApplication:
             outputFolderPath=outputFolderPath
         )
 
-        epsgCode = self.extractCRS(inputStartCoordinates)
+        epsgCode = extractCRS(inputStartCoordinates)
 
         for startPointFeature in inputStartCoordinates["features"]:
             startCoordinates = startPointFeature["geometry"]["coordinates"]
@@ -71,16 +141,13 @@ class MetropAccessDigiroadApplication:
                                longitude=startCoordinates[0],
                                epsgCode=epsgCode)
 
-            startPoint = self.operations.transformPoint(startPoint, self.wfsServiceProvider.getEPSGCode())
-            startPointNearestVertexGeojson = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(
+            startPoint = self.operations.transformPoint(startPoint, self.geojsonServiceProvider.getEPSGCode())
+            startPointNearestVertexGeojson = self.geojsonServiceProvider.getNearestCarRoutableVertexFromAPoint(
                 startPoint)
             newFeatureStartPoint = startPointNearestVertexGeojson["features"][0]
-            startNearestVertexCoordinates = newFeatureStartPoint["geometry"]["coordinates"][0]
-            epsgCodeNearestVertexCoordinates = self.extractCRS(startPointNearestVertexGeojson)
-            nearestStartPoint = Point(latitute=startNearestVertexCoordinates[1],
-                                      longitude=startNearestVertexCoordinates[0],
-                                      epsgCode=epsgCodeNearestVertexCoordinates)
-            startVertexId = newFeatureStartPoint["id"].split(".")[1]
+            startPointEPSGCode = extractCRS(startPointNearestVertexGeojson)
+            nearestStartPoint = createPointFromPointFeature(newFeatureStartPoint, startPointEPSGCode)
+            startVertexId = newFeatureStartPoint["properties"]["id"]
 
             ######## Add new properties to the start point feature
             startPointFeature["properties"]["selectedPointCoordinates"] = [startPoint.getLongitude(),
@@ -95,20 +162,18 @@ class MetropAccessDigiroadApplication:
                 endPoint = Point(latitute=endCoordinates[1],
                                  longitude=endCoordinates[0],
                                  epsgCode=epsgCode)
-                endPoint = self.operations.transformPoint(endPoint, self.wfsServiceProvider.getEPSGCode())
+                endPoint = self.operations.transformPoint(endPoint, self.geojsonServiceProvider.getEPSGCode())
 
                 if not startPoint.equals(endPoint):
-                    endPointNearestVertexGeojson = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(
+                    endPointNearestVertexGeojson = self.geojsonServiceProvider.getNearestCarRoutableVertexFromAPoint(
                         endPoint)
 
                     newFeatureEndPoint = endPointNearestVertexGeojson["features"][0]
-                    endNearestVertexCoordinates = newFeatureEndPoint["geometry"]["coordinates"][0]
-                    epsgCodeNearestVertexCoordinates = self.extractCRS(endPointNearestVertexGeojson)
-
-                    nearestEndPoint = Point(latitute=endNearestVertexCoordinates[1],
-                                            longitude=endNearestVertexCoordinates[0],
-                                            epsgCode=epsgCodeNearestVertexCoordinates)
-                    endVertexId = newFeatureEndPoint["id"].split(".")[1]
+                    # endPointEPSGCode = extractCRS(endPointNearestVertexGeojson)
+                    nearestEndPoint = createPointFromPointFeature(newFeatureEndPoint,
+                                                                  startPointEPSGCode  # endPointEPSGCode
+                                                                  )
+                    endVertexId = newFeatureEndPoint["properties"]["id"]
 
                     ######## Add new properties to the end point feature
                     endPointFeature["properties"]["selectedPointCoordinates"] = [endPoint.getLongitude(),
@@ -122,7 +187,8 @@ class MetropAccessDigiroadApplication:
                         for key in costAttribute:
                             newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
                                 costAttribute[key]) + os.sep
-                            self.createShortestPathFileWithAdditionalProperties(costAttribute[key], startVertexId, endVertexId,
+                            self.createShortestPathFileWithAdditionalProperties(costAttribute[key], startVertexId,
+                                                                                endVertexId,
                                                                                 startPoint, startPointFeature, endPoint,
                                                                                 endPointFeature, nearestEndPoint,
                                                                                 nearestStartPoint, newOutputFolderPath)
@@ -141,27 +207,13 @@ class MetropAccessDigiroadApplication:
     def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
                                                        startPointFeature, endPoint, endPointFeature, nearestEndPoint,
                                                        nearestStartPoint, outputFolderPath):
-        shortestPath = self.wfsServiceProvider.getShortestPath(startVertexId=startVertexId,
-                                                               endVertexId=endVertexId,
-                                                               cost=costAttribute)
-        shortestPath["overallProperties"] = {}
-        additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
-        while additionalLayerOperationLinkedList.hasNext():
-            additionalLayerOperation = additionalLayerOperationLinkedList.next()
-
-            newProperties = additionalLayerOperation.runOperation(
-                featureJson=startPointFeature,
-                prefix="startPoint_")
-            for property in newProperties:
-                startPointFeature["properties"][property] = newProperties[property]
-                shortestPath["overallProperties"][property] = newProperties[property]
-
-            newProperties = additionalLayerOperation.runOperation(
-                featureJson=endPointFeature,
-                prefix="endPoint_")
-            for property in newProperties:
-                endPointFeature["properties"][property] = newProperties[property]
-                shortestPath["overallProperties"][property] = newProperties[property]
+        shortestPath = self.geojsonServiceProvider.getShortestPath(startVertexId=startVertexId,
+                                                                   endVertexId=endVertexId,
+                                                                   cost=costAttribute)
+        shortestPath["overallProperties"] = self.insertAdditionalProperties(
+            startPointFeature,
+            endPointFeature
+        )
 
         shortestPath["overallProperties"]["selectedStartCoordinates"] = [startPoint.getLongitude(),
                                                                          startPoint.getLatitude()]
@@ -172,6 +224,9 @@ class MetropAccessDigiroadApplication:
         shortestPath["overallProperties"]["nearestEndCoordinates"] = [nearestEndPoint.getLongitude(),
                                                                       nearestEndPoint.getLatitude()]
 
+        if "totalFeatures" not in shortestPath:
+            shortestPath["totalFeatures"] = len(shortestPath["features"])
+
         filename = "shortestPath"
         extension = "geojson"
         completeFilename = "%s-%s-%s-%s.%s" % (
@@ -179,7 +234,30 @@ class MetropAccessDigiroadApplication:
         self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
                                    data=shortestPath)
 
-    def createSummary(self, folderPath, costAttribute, outputFilename):
+    def insertAdditionalProperties(self, startPointFeature, endPointFeature):
+        featureProperties = {}
+
+        additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
+        while additionalLayerOperationLinkedList.hasNext():
+            additionalLayerOperation = additionalLayerOperationLinkedList.next()
+
+            newProperties = additionalLayerOperation.runOperation(
+                featureJson=startPointFeature,
+                prefix="startPoint_")
+            for property in newProperties:
+                startPointFeature["properties"][property] = newProperties[property]
+                featureProperties[property] = newProperties[property]
+
+            newProperties = additionalLayerOperation.runOperation(
+                featureJson=endPointFeature,
+                prefix="endPoint_")
+            for property in newProperties:
+                endPointFeature["properties"][property] = newProperties[property]
+                featureProperties[property] = newProperties[property]
+
+        return featureProperties
+
+    def createDetailedSummary(self, folderPath, costAttribute, outputFilename):
         """
         Given a set of Geojson (Geometry type: LineString) files, read all the files from the given ``folderPath`` and
         sum all the attribute values (distance, speed_limit_time, day_avg_delay_time, midday_delay_time and
@@ -191,7 +269,7 @@ class MetropAccessDigiroadApplication:
         :return: None. Store the summary information in the folderPath with the name given in outputFilename.
         """
         startTime = time.time()
-        print("createSummary Start Time: %s" % getFormattedDatetime(timemilis=startTime))
+        print("createDetailedSummary Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         if not folderPath.endswith(os.sep):
             attributeFolderPath = folderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
@@ -272,13 +350,13 @@ class MetropAccessDigiroadApplication:
         self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
 
         endTime = time.time()
-        print("createSummary End Time: %s" % getFormattedDatetime(timemilis=endTime))
+        print("createDetailedSummary End Time: %s" % getFormattedDatetime(timemilis=endTime))
 
         totalTime = timeDifference(startTime, endTime)
-        print("createSummary Total Time: %s m" % totalTime)
+        print("createDetailedSummary Total Time: %s m" % totalTime)
 
-    def createMultiPointSummary(self, startCoordinatesGeojsonFilename, endCoordinatesGeojsonFilename, costAttribute,
-                                folderPath, outputFilename):
+    def createGeneralSummary(self, startCoordinatesGeojsonFilename, endCoordinatesGeojsonFilename, costAttribute,
+                             outputFolderPath, outputFilename):
         """
         Using the power of pgr_Dijsktra algorithm this function calculate the total routing cost for a pair of set of points.
         It differentiate if must to use one-to-one, one-to-many, many-to-one or many-to-many specific stored procedures from the pgrouting extension.
@@ -286,81 +364,192 @@ class MetropAccessDigiroadApplication:
         :param startCoordinatesGeojsonFilename: Geojson file (Geometry type: MultiPoint) containing pair of points.
         :param outputFolderPath: URL to store the shortest path geojson features of each pair of points.
         :param costAttribute: Attribute to calculate the impedance of the Shortest Path algorithm.
-        :param folderPath: Folder containing the shortest path geojson features.
+        :param outputFolderPath: Folder containing the shortest path geojson features.
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the information in the ``outputFolderPath``.
         """
 
         startTime = time.time()
-        print("createMultiPointSummary Start Time: %s" % getFormattedDatetime(timemilis=startTime))
+        print("createGeneralSummary Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
-        startCoordinatesJson = self.fileActions.readJson(url=startCoordinatesGeojsonFilename)
-        endCoordinatesJson = self.fileActions.readJson(url=endCoordinatesGeojsonFilename)
+        inputStartCoordinates = self.operations.mergeAdditionalLayers(
+            originalJsonURL=startCoordinatesGeojsonFilename,
+            outputFolderPath=outputFolderPath
+        )
 
-        startVertexesID = self.getVertexesID(startCoordinatesJson)
-        endVertexesID = self.getVertexesID(endCoordinatesJson)
+        inputEndCoordinates = self.operations.mergeAdditionalLayers(
+            originalJsonURL=endCoordinatesGeojsonFilename,
+            outputFolderPath=outputFolderPath
+        )
+
+        startVerticesID, startPointsFeaturesList = self.getVerticesID(inputStartCoordinates)
+        endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates)
 
         totals = None
 
-        if len(startVertexesID) == 1 and len(endVertexesID) == 1:
-            totals = self.postgisServiceProvider.getTotalShortestPathCostOneToOne(
-                startVertexID=startVertexesID[0],
-                endVertexID=endVertexesID[0],
+        if len(startVerticesID) == 1 and len(endVerticesID) == 1:
+            totals = self.geojsonServiceProvider.getTotalShortestPathCostOneToOne(
+                startVertexID=startVerticesID[0],
+                endVertexID=endVerticesID[0],
                 costAttribute=costAttribute
             )
-        elif len(startVertexesID) == 1 and len(endVertexesID) > 1:
-            totals = self.postgisServiceProvider.getTotalShortestPathCostOneToMany(
-                startVertexID=startVertexesID[0],
-                endVertexesID=endVertexesID,
+        elif len(startVerticesID) == 1 and len(endVerticesID) > 1:
+            totals = self.geojsonServiceProvider.getTotalShortestPathCostOneToMany(
+                startVertexID=startVerticesID[0],
+                endVerticesID=endVerticesID,
                 costAttribute=costAttribute
             )
-        elif len(startVertexesID) > 1 and len(endVertexesID) == 1:
-            totals = self.postgisServiceProvider.getTotalShortestPathCostManyToOne(
-                startVertexesID=startVertexesID,
-                endVertexID=endVertexesID[0],
+        elif len(startVerticesID) > 1 and len(endVerticesID) == 1:
+            totals = self.geojsonServiceProvider.getTotalShortestPathCostManyToOne(
+                startVerticesID=startVerticesID,
+                endVertexID=endVerticesID[0],
                 costAttribute=costAttribute
             )
-        elif len(startVertexesID) > 1 and len(endVertexesID) > 1:
-            totals = self.postgisServiceProvider.getTotalShortestPathCostManyToMany(
-                startVertexesID=startVertexesID,
-                endVertexesID=endVertexesID,
+        elif len(startVerticesID) > 1 and len(endVerticesID) > 1:
+            totals = self.geojsonServiceProvider.getTotalShortestPathCostManyToMany(
+                startVerticesID=startVerticesID,
+                endVerticesID=endVerticesID,
                 costAttribute=costAttribute
             )
 
-        if not folderPath.endswith(os.sep):
-            summaryFolderPath = folderPath + os.sep + "summary" + os.sep
+        costSummaryMap = self.createCostSummaryMap(totals)
+        # summaryFeature = costSummaryMap[startVertexID][endVertexID]
+        # KeyError: 125736
+
+        counterStartPoints = 0
+        counterEndPoints = 0
+
+        ################################################################################################################
+        # for featureShortPathSummary in totals["features"]:
+        #     startVertexID = featureShortPathSummary["properties"]["start_vertex_id"]
+        #     endVertexID = featureShortPathSummary["properties"]["end_vertex_id"]
+        #     total_cost = featureShortPathSummary["properties"]["total_cost"]
+        #     del featureShortPathSummary["properties"]["start_vertex_id"]
+        #     del featureShortPathSummary["properties"]["end_vertex_id"]
+        #     del featureShortPathSummary["properties"]["total_cost"]
+        #
+        #     startPointFeature = startPointsFeaturesList[counterStartPoints]
+        #     endPointFeature = endPointsFeaturesList[counterEndPoints]
+        #
+        #     self.createCostSummaryWithAdditionalProperties(costAttribute, endPointFeature, endVertexID,
+        #                                                    featureShortPathSummary, startPointFeature,
+        #                                                    startVertexID,
+        #                                                    total_cost)
+        #     counterEndPoints += 1
+        #     if counterEndPoints == len(endPointsFeaturesList):
+        #         counterStartPoints += 1
+        #         counterEndPoints = 0
+        ################################################################################################################
+
+
+
+        features = []
+        ################################################################################################################
+        # for startPointFeature in startPointsFeaturesList:
+        #     for endPointFeature in endPointsFeaturesList:
+        #         newFeature = createCostSummaryWithAdditionalProperties(costAttribute,
+        #                                                                     startPointFeature,
+        #                                                                     endPointFeature,
+        #                                                                     costSummaryMap)
+        #         if newFeature:
+        #             features.append(newFeature)
+        ################################################################################################################
+
+        with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
+                      backend="threading",
+                      verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
+            # while len(verticesID) <= len(geojson["features"]):
+            returns = parallel(delayed(createCostSummaryWithAdditionalProperties)(self,
+                                                                                  costAttribute,
+                                                                                  startPointFeature,
+                                                                                  endPointFeature,
+                                                                                  costSummaryMap)
+                               for startPointFeature in startPointsFeaturesList
+                               for endPointFeature in endPointsFeaturesList)
+
+            for newFeature in returns:
+                if newFeature:
+                    features.append(newFeature)
+                    # print(returns)
+
+        ################################################################################################################
+
+        totals["features"] = features
+        if not outputFolderPath.endswith(os.sep):
+            summaryFolderPath = outputFolderPath + os.sep + "summary" + os.sep
         else:
-            summaryFolderPath = folderPath + "summary" + os.sep
+            summaryFolderPath = outputFolderPath + "summary" + os.sep
 
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
         self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
 
         endTime = time.time()
-        print("createMultiPointSummary End Time: %s" % getFormattedDatetime(timemilis=endTime))
+        print("createGeneralSummary End Time: %s" % getFormattedDatetime(timemilis=endTime))
 
         totalTime = timeDifference(startTime, endTime)
-        print("createMultiPointSummary Total Time: %s m" % totalTime)
+        print("createGeneralSummary Total Time: %s m" % totalTime)
 
-    def extractCRS(self, geojson):
-        epsgCode = geojson["crs"]["properties"]["name"].split(":")[-3] + ":" + \
-                   geojson["crs"]["properties"]["name"].split(":")[-1]
-        return epsgCode
+    def getVerticesID(self, geojson):
+        startTime = time.time()
+        print("getVerticesID Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
-    def getVertexesID(self, geojson):
-        endEPSGCode = self.extractCRS(geojson)
-        vertexesID = []
+        endEPSGCode = extractCRS(geojson)
+        verticesID = []
+        features = []
 
-        for feature in geojson["features"]:
-            coordinates = feature["geometry"]["coordinates"]
+        # for feature in geojson["features"]:
+        #     vertexID, feature = self.extractFeatureInformation(endEPSGCode, feature)
+        #
+        #     verticesID.append(vertexID)
+        #     features.append(feature)
+        with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
+                      backend="threading",
+                      verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
+            # while len(verticesID) <= len(geojson["features"]):
+            returns = parallel(
+                delayed(extractFeatureInformation)(endEPSGCode, feature, self.geojsonServiceProvider, self.operations)
+                for feature in geojson["features"])
+            for vertexID, feature in returns:
+                verticesID.append(vertexID)
+                features.append(feature)
+                # print(returns)
 
-            featurePoint = Point(latitute=coordinates[1],
-                                 longitude=coordinates[0],
-                                 epsgCode=endEPSGCode)
+        endTime = time.time()
+        print("getVerticesID End Time: %s" % getFormattedDatetime(timemilis=endTime))
 
-            featurePoint = self.operations.transformPoint(featurePoint, self.wfsServiceProvider.getEPSGCode())
-            nearestVertexGeojson = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(
-                featurePoint)
-            newFeaturePoint = nearestVertexGeojson["features"][0]
-            vertexesID.append(newFeaturePoint["id"].split(".")[1])
+        totalTime = timeDifference(startTime, endTime)
+        print("getVerticesID Total Time: %s m" % totalTime)
 
-        return vertexesID
+        return verticesID, features
+
+    def createCostSummaryMap(self, totals):
+        """
+
+        :param totals:
+        :return:
+        """
+        """
+            {
+                "startId1": {
+                    endId1: {feature1},
+                    endId2: {feature2}
+                }
+                "startId2": {
+                    endId1: {feature3},
+                    endId2: {feature4}
+                }
+            }
+            
+        """
+
+        costSummaryMap = {}
+        for featureShortPathSummary in totals["features"]:
+            startVertexID = featureShortPathSummary["properties"]["start_vertex_id"]
+            endVertexID = featureShortPathSummary["properties"]["end_vertex_id"]
+            if startVertexID not in costSummaryMap:
+                costSummaryMap[startVertexID] = {}
+
+            startVertexMap = costSummaryMap[startVertexID]
+            startVertexMap[endVertexID] = featureShortPathSummary
+
+        return costSummaryMap

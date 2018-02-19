@@ -65,5 +65,7 @@ UPDATE edges_noded SET
     ELSE distance
   END;
 
+CREATE INDEX edges_noded_vertices_pgr_gix ON edges_noded_vertices_pgr USING GIST (the_geom);
+
 rollback
 commit

@@ -18,6 +18,8 @@ CREATE EXTENSION postgis_sfcgal;
 
 CREATE EXTENSION pgrouting;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 commit
 
 SELECT PostGIS_full_version();

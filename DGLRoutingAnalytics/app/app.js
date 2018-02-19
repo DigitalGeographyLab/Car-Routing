@@ -4,7 +4,7 @@
         //require('ol/ol.css');
 
         $scope.val = "Main controller variable value"
-        var geoserverUrl = '/geoserver';
+        $scope.geoserverUrl = "http://localhost:8080/geoserver";
         //var center = ol.proj.transform([-70.26, 43.67], 'EPSG:4326', 'EPSG:3857');
 
         L.Control.Layers.include({
@@ -102,6 +102,50 @@
         L.marker([51.5, -0.09]).addTo(map)
             .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
             .openPopup();*/
+
+        $scope.addRouteLayer = function(){
+            // var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
+            //     'request=GetFeature&typeName=tutorial:route_network&' +
+            //     'outputformat=application/json&';
+
+            var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
+                'request=GetFeature&typeName=tutorial:dgl_road_network&' +
+                'outputformat=application/json&';
+
+            $.ajax({
+                url: url,
+                async: false,
+                type: "GET",
+                //dataType: 'json',
+                contentType: 'text/plain',
+                xhrFields: {
+                    // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
+                    // This can be used to set the 'withCredentials' property.
+                    // Set the value to 'true' if you'd like to pass cookies to the server.
+                    // If this is enabled, your server must respond with the header
+                    // 'Access-Control-Allow-Credentials: true'.
+                    withCredentials: false
+                },
+                headers: {
+                    // Set any custom headers here.
+                    // If you set any non-simple headers, your server must include these
+                    // headers in the 'Access-Control-Allow-Headers' response header.
+                },
+                success: function (json) {
+                    $scope.routeLayer = L.Proj.geoJson(json);
+                    $scope.routeLayer.addTo($scope.map);
+                    $scope.ctrl.addOverlay($scope.routeLayer, "Road Network");
+                },
+                error: function () {
+                    // Here's where you handle an error response.
+                    // Note that if the error was due to a CORS issue,
+                    // this function will still fire, but there won't be any additional
+                    // information about the error.
+                }
+            });
+        }
+        //$scope.addRouteLayer();
+
 
         $scope.changeImpedance = function (event) {
             $scope.impedanceFilter = event.target.value;
@@ -280,8 +324,6 @@
             dist = dist.toString().replace(/[.]0$/, '');
             return dist + units;
         }
-
-        $scope.geoserverUrl = "http://localhost:8080/geoserver";
 
         // load the response to the nearest_vertex layer
         $scope.loadVertex = function (response, isSource) {

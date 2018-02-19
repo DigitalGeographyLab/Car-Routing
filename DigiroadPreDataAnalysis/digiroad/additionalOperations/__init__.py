@@ -91,7 +91,7 @@ class WalkingTimeOperation(AbstractAdditionalLayerOperation):
 
         walkingDistance = featureJson["properties"][self.walkingDistanceAttribute]
         if not walkingDistance:
-            walkingDistance = 0
+            walkingDistance = 135
 
         euclideanDistanceTime = self.operations.calculateTime(
             euclideanDistanceStartPoint,
@@ -125,11 +125,26 @@ class ParkingTimeOperation(AbstractAdditionalLayerOperation):
         :return: Parking time.
         """
 
-        parkingTime = None
+        parkingTime = 135  # default walking distance for any place in the metropolitan area rather than the city center
         if featureJson["properties"][self.parkingTimeAttribute]:
             parkingTime = float(featureJson["properties"][self.parkingTimeAttribute])
 
         newProperties = {
             prefix + PostfixAttribute.PARKING_TIME: parkingTime
         }
+        return newProperties
+
+
+class PropertyTransference(AbstractAdditionalLayerOperation):
+    def __init__(self):
+        super(PropertyTransference, self).__init__()
+        self.attributes = []
+
+    def runOperation(self, featureJson, prefix=""):
+        newProperties = {}
+
+        for key in featureJson["properties"]:
+            if not key.startswith(prefix):
+                newProperties[prefix + key] = featureJson["properties"][key]
+
         return newProperties

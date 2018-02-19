@@ -6,6 +6,7 @@ import shutil
 import time
 
 from digiroad import carRoutingExceptions as exc
+from digiroad.entities import Point
 
 
 def enum(**enums):
@@ -28,7 +29,7 @@ GeometryType = enum(POINT="Point", MULTI_POINT='MultiPoint', LINE_STRING='LineSt
 PostfixAttribute = enum(EUCLIDEAN_DISTANCE="EuclideanDistance", AVG_WALKING_DISTANCE="AVGWalkingDistance",
                         WALKING_TIME="WalkingTime", PARKING_TIME="ParkingTime")
 
-GPD_CRS = enum(WGS_84={'init': 'epsg:4326'}, PSEUDO_MERCATOR={'init': 'epsg:3857'})
+GPD_CRS = enum(WGS_84={'init': 'EPSG:4326'}, PSEUDO_MERCATOR={'init': 'EPSG:3857'})
 
 
 def getEnglishMeaning(cost_attribute=None):
@@ -51,6 +52,21 @@ def getConfigurationProperties(section="WFS_CONFIG"):
     config.read(configurationPath)
     return config[section]
 
+def extractCRS(geojson):
+    epsgCode = geojson["crs"]["properties"]["name"].split(":")[-3] + ":" + \
+               geojson["crs"]["properties"]["name"].split(":")[-1]
+    return epsgCode
+
+def createPointFromPointFeature(newFeaturePoint, epsgCode):
+    if newFeaturePoint["geometry"]["type"] == GeometryType.MULTI_POINT:
+        startNearestVertexCoordinates = newFeaturePoint["geometry"]["coordinates"][0]
+    elif newFeaturePoint["geometry"]["type"] == GeometryType.POINT:
+        startNearestVertexCoordinates = newFeaturePoint["geometry"]["coordinates"]
+
+    nearestStartPoint = Point(latitute=startNearestVertexCoordinates[1],
+                              longitude=startNearestVertexCoordinates[0],
+                              epsgCode=epsgCode)
+    return nearestStartPoint
 
 class AbstractLinkedList(object):
     def __init__(self):

@@ -22,6 +22,7 @@ class ReflectionTest(unittest.TestCase):
         for the_object in additionalOperationsList:
             self.assertIsInstance(the_object, AbstractAdditionalLayerOperation)
 
+    @unittest.SkipTest  # Deprecated
     def test_givenTheAdditionalOperationsModuleDirectory_retrieveAllOrderedAbstractOperation(self):
         additionalOperationsList = self.reflection.getAbstractAdditionalLayerOperationObjects()
         self.assertGreater(len(additionalOperationsList), 0)
@@ -39,4 +40,4 @@ class ReflectionTest(unittest.TestCase):
             counter = counter + 1
             self.assertIsInstance(additionalLayerOperation, AbstractAdditionalLayerOperation)
 
-        self.assertEqual(3, counter)
+        self.assertEqual(4, counter)

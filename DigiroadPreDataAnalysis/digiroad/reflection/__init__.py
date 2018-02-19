@@ -3,7 +3,7 @@ import inspect
 import os
 
 from digiroad.additionalOperations import AbstractAdditionalLayerOperation, EuclideanDistanceOperation, \
-    WalkingTimeOperation, ParkingTimeOperation
+    WalkingTimeOperation, ParkingTimeOperation, PropertyTransference
 from digiroad.util import LinkedList
 
 
@@ -19,8 +19,10 @@ class Reflection:
         euclideanDistanceAdditionalLayerOperation = EuclideanDistanceOperation()
         walkingAdditionalLayerOperation = WalkingTimeOperation()
         parkingAdditionalLayerOperation = ParkingTimeOperation()
+        propertyTransference = PropertyTransference()
 
         additionalLayersLinkedList = LinkedList()
+        additionalLayersLinkedList.add(propertyTransference)
         additionalLayersLinkedList.add(euclideanDistanceAdditionalLayerOperation)
         additionalLayersLinkedList.add(walkingAdditionalLayerOperation)
         additionalLayersLinkedList.add(parkingAdditionalLayerOperation)

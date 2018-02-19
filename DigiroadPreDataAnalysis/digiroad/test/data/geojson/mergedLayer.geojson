@@ -19,8 +19,8 @@
         "X": 382293,
         "Y": 6670432,
         "id": "0",
-        "parking_time": 0.73,
-        "walking_distance": 180.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     },
@@ -37,7 +37,7 @@
         "X": 371994,
         "Y": 6670251,
         "id": "16",
-        "parking_time": null,
+        "parking_time": 0.42,
         "walking_distance": null
       },
       "type": "Feature"
@@ -55,8 +55,8 @@
         "X": 393050,
         "Y": 6682798,
         "id": "20",
-        "parking_time": 0.22,
-        "walking_distance": 135.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     },
@@ -73,8 +73,8 @@
         "X": 392320,
         "Y": 6675303,
         "id": "24",
-        "parking_time": 0.22,
-        "walking_distance": 135.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     },
@@ -91,8 +91,8 @@
         "X": 394023,
         "Y": 6678761,
         "id": "25",
-        "parking_time": 0.22,
-        "walking_distance": 135.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     },
@@ -109,7 +109,7 @@
         "X": 384262,
         "Y": 6671251,
         "id": "26",
-        "parking_time": 0.73,
+        "parking_time": 0.42,
         "walking_distance": 180.0
       },
       "type": "Feature"
@@ -127,7 +127,7 @@
         "X": 385274,
         "Y": 6672329,
         "id": "27",
-        "parking_time": 0.73,
+        "parking_time": 0.42,
         "walking_distance": 180.0
       },
       "type": "Feature"
@@ -145,7 +145,7 @@
         "X": 378483,
         "Y": 6677546,
         "id": "28",
-        "parking_time": null,
+        "parking_time": 0.42,
         "walking_distance": null
       },
       "type": "Feature"
@@ -163,8 +163,8 @@
         "X": 383465,
         "Y": 6677186,
         "id": "31",
-        "parking_time": 0.22,
-        "walking_distance": 135.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     },
@@ -181,7 +181,7 @@
         "X": 382819,
         "Y": 6684157,
         "id": "35",
-        "parking_time": null,
+        "parking_time": 0.42,
         "walking_distance": null
       },
       "type": "Feature"
@@ -199,8 +199,8 @@
         "X": 390927,
         "Y": 6673797,
         "id": "37",
-        "parking_time": 0.22,
-        "walking_distance": 135.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     },
@@ -217,8 +217,8 @@
         "X": 397635,
         "Y": 6675402,
         "id": "38",
-        "parking_time": 0.22,
-        "walking_distance": 135.0
+        "parking_time": 0.42,
+        "walking_distance": null
       },
       "type": "Feature"
     }

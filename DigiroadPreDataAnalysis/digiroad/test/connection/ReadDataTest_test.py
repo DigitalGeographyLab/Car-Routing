@@ -1,9 +1,10 @@
-import unittest
 import os
+import unittest
 
 from digiroad.carRoutingExceptions import IncorrectGeometryTypeException
-from digiroad.connection import WFSServiceProvider
+from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.entities import Point
+from digiroad.logic.Operations import Operations
 from digiroad.util import CostAttributes, FileActions
 
 
@@ -15,6 +16,7 @@ class WFSServiceProviderTest(unittest.TestCase):
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
         self.fileActions = FileActions()
+        self.operations = Operations(self.fileActions)
         self.dir = os.getcwd()
 
     def test_givenA_URL_then_returnJsonObject(self):
@@ -62,14 +64,35 @@ class WFSServiceProviderTest(unittest.TestCase):
         #     "lng": 2770620.87667954
         # }
 
-        coordinates = Point(latitute=8443095.452975733,
-                            longitude=2770620.87667954,
-                            epsgCode="EPSG:3857")
+        # coordinates = Point(latitute=8443095.452975733,
+        #                     longitude=2770620.87667954,
+        #                     epsgCode="EPSG:3857")
 
-        nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse('/digiroad/test/data/geojson/nearestCarRoutingVertextResponse.geojson')
+        coordinates = Point(latitute=6672380.0,
+                            longitude=385875.0,
+                            epsgCode="EPSG:3047")
 
-        self.assertEqual(nearestVertexExpectedGeojson,
-                         self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
+        nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse(
+            '/digiroad/test/data/geojson/nearestCarRoutingVertexResponse.geojson')
+
+        coordinates = self.operations.transformPoint(coordinates, self.wfsServiceProvider.getEPSGCode())
+
+        geoJson = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates)
+
+        for feature in nearestVertexExpectedGeojson["features"]:
+            if "id" in feature:
+                del feature["id"]
+
+        if "totalFeatures" in geoJson:
+            del geoJson["totalFeatures"]
+
+        for feature in geoJson["features"]:
+            if "id" in feature:
+                del feature["id"]
+            if "geometry_name" in feature:
+                del feature["geometry_name"]
+
+        self.assertEqual(nearestVertexExpectedGeojson, geoJson)
 
     def test_givenAPoint_retrieveNearestVertexGeojson(self):
         # point_coordinates = {  # EPSG:3857
@@ -81,7 +104,8 @@ class WFSServiceProviderTest(unittest.TestCase):
                             longitude=2770620.87667954,
                             epsgCode="EPSG:3857")
 
-        nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse('/digiroad/test/data/geojson/nearestVertextResponse.geojson')
+        nearestVertexExpectedGeojson = self.readGeojsonExpectedResponse(
+            '/digiroad/test/data/geojson/nearestVertextResponse.geojson')
 
         self.assertEqual(nearestVertexExpectedGeojson, self.wfsServiceProvider.getNearestVertexFromAPoint(coordinates))
 
@@ -90,14 +114,18 @@ class WFSServiceProviderTest(unittest.TestCase):
 
         shortestPathGeojson = self.readShortestPathGeojsonExpectedResponse()
         for feature in shortestPathGeojson["features"]:
-            if feature["id"]:
+            if "id" in feature:
                 del feature["id"]
+            if "geometry_name" in feature:
+                del feature["geometry_name"]
 
         shortestPathResult = self.wfsServiceProvider.getShortestPath(startVertexId=106290, endVertexId=96275,
                                                                      cost=CostAttributes.DISTANCE)
         for feature in shortestPathResult["features"]:
-            if feature["id"]:
+            if "id" in feature:
                 del feature["id"]
+            if "geometry_name" in feature:
+                del feature["geometry_name"]
 
         self.assertDictEqual(shortestPathGeojson,
                              shortestPathResult)

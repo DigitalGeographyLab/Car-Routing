@@ -53,7 +53,7 @@ class Operations:
                                        data=mergedLayer)
 
         originalJson = self.fileActions.readJson(temporalLayer)
-        self.fileActions.deleteFolder(temporalPath)
+        # self.fileActions.deleteFolder(temporalPath)
 
         endTime = time.time()
         print("mergeAdditionalLayers End Time: %s" % getFormattedDatetime(timemilis=endTime))

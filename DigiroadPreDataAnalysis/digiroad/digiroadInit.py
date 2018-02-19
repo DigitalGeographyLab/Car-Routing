@@ -2,8 +2,8 @@ import getopt
 import sys
 
 from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException
-from digiroad.connection import WFSServiceProvider
-from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
+from digiroad.connection import PostgisServiceProvider
+from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.util import CostAttributes, getConfigurationProperties
 
@@ -95,17 +95,16 @@ def main():
 
     config = getConfigurationProperties()
 
-    wfsServiceProvider = WFSServiceProvider(
-        wfs_url=config["wfs_url"],
-        nearestVertexTypeName=config["nearestVertexTypeName"],
-        nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
-        shortestPathTypeName=config["shortestPathTypeName"],
-        outputFormat=config["outputFormat"]
-    )
+    # wfsServiceProvider = WFSServiceProvider(
+    #     wfs_url=config["wfs_url"],
+    #     nearestVertexTypeName=config["nearestVertexTypeName"],
+    #     nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
+    #     shortestPathTypeName=config["shortestPathTypeName"],
+    #     outputFormat=config["outputFormat"]
+    # )
     postgisServiceProvider = PostgisServiceProvider()
     starter = MetropAccessDigiroadApplication(
-        wfsServiceProvider=wfsServiceProvider,
-        postgisServiceProvider=postgisServiceProvider
+        geojsonServiceProvider=postgisServiceProvider
     )
 
     if impedance and not allImpedanceAttribute:
@@ -115,16 +114,16 @@ def main():
             outputFolderPath=outputFolder,
             costAttribute=impedance
         )
-        starter.createSummary(
+        starter.createDetailedSummary(
             folderPath=outputFolder,
             costAttribute=impedance,
             outputFilename="metroAccessDigiroadSummary.geojson"
         )
-        starter.createMultiPointSummary(
+        starter.createGeneralSummary(
             startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
             endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
             costAttribute=impedance,
-            folderPath=outputFolder,
+            outputFolderPath=outputFolder,
             outputFilename="dijsktraCostMetroAccessDigiroadSummary.geojson"
         )
 
@@ -137,15 +136,15 @@ def main():
         )
         
         for key in impedances:
-            starter.createSummary(
+            starter.createDetailedSummary(
                 folderPath=outputFolder,
                 costAttribute=impedances[key],
                 outputFilename="metroAccessDigiroadSummary.geojson"
             )
-            starter.createMultiPointSummary(
+            starter.createGeneralSummary(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 costAttribute=impedances[key],
-                folderPath=outputFolder,
+                outputFolderPath=outputFolder,
                 outputFilename="dijsktraCostMetroAccessDigiroadSummary.geojson"
             )
