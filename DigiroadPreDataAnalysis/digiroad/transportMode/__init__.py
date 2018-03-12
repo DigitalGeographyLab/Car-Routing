@@ -1,10 +1,4 @@
-class AbstractGeojsonProvider:
-    def getConnection(self):
-        raise NotImplementedError("Should have implemented this")
-
-    def execute(self, sql):
-        raise NotImplementedError("Should have implemented this")
-
+class AbstractTransportMode:
     def getNearestVertexFromAPoint(self, coordinates):
         raise NotImplementedError("Should have implemented this")
 

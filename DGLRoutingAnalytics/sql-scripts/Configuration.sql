@@ -1,10 +1,25 @@
 ALTER TABLE edges ADD source INT4;
 ALTER TABLE edges ADD target INT4;
-SELECT pgr_createTopology('edges', 1);
-SELECT pgr_nodeNetwork('edges', 1);
-SELECT pgr_createTopology('edges_noded', 1);
+--#########################################################################################
+-- If getting the errors:
+/*
+Warning 1: Geometry to be inserted is of type 3D Measured Multi Line String, whereas the layer geometry type is 3D Measured Line String (when running org2org library).
+Or
+Unexpected error Geometry has Z dimension but column does not (When running pgr_createTopology())
+*/
+ */
+ALTER TABLE edges
+  ALTER COLUMN the_geom TYPE geometry(MULTILINESTRING,3857) USING ST_Force2D(the_geom) ;
+--#########################################################################################
 
-ALTER TABLE edges_noded
+SELECT pgr_createTopology('edges', 1);
+
+--#########################################################################################
+-- No need to create a new road network, pgRouting do not distribute the cost attribute proportionally to the new segments.
+-- SELECT pgr_nodeNetwork('edges', 1);
+-- SELECT pgr_createTopology('edges_noded', 1);
+
+/*ALTER TABLE edges_noded
   ADD COLUMN name VARCHAR,
   ADD COLUMN type VARCHAR,
   ADD COLUMN oneway VARCHAR,
@@ -63,9 +78,10 @@ UPDATE edges_noded SET
     WHEN 'proposed' THEN -1
     WHEN 'construction' THEN -1
     ELSE distance
-  END;
+  END;*/
 
-CREATE INDEX edges_noded_vertices_pgr_gix ON edges_noded_vertices_pgr USING GIST (the_geom);
+-- CREATE INDEX edges_noded_vertices_pgr_gix ON edges_noded_vertices_pgr USING GIST (the_geom);
+CREATE INDEX edges_vertices_pgr_gix ON edges_vertices_pgr USING GIST (the_geom);
 
-rollback
-commit
+--rollback
+--commit

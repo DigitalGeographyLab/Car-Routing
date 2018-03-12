@@ -1,21 +1,25 @@
 import getopt
 import sys
 
-from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException
+from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException, \
+    TransportModeNotDefinedException
 from digiroad.connection import PostgisServiceProvider
 from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
-from digiroad.util import CostAttributes, getConfigurationProperties
+from digiroad.transportMode.BicycleTransportMode import BicycleTransportMode
+from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
+from digiroad.util import CostAttributes, getConfigurationProperties, TransportModes
 
 
 def printHelp():
-    print (
+    print(
         "DigiroadPreDataAnalysis tool\n"
         "\n\t[--help]: Print information about the parameters necessary to run the tool."
         "\n\t[-s, --start_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
         "\n\t[-e, --end_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
         "\n\t[-o, --outputFolder]: The final destination where the output geojson and summary files will be located."
         "\n\t[-c, --cost]: The impedance/cost attribute to calculate the shortest path."
+        "\n\t[-t, --transportMode]: The transport mode used to calculate the shortest path."
         "\n\t[--all]: Calculate the shortest path to all the impedance/cost attributes."
         "\n\nImpedance/cost values allowed:"
         "\n\tDISTANCE"
@@ -59,6 +63,7 @@ def main():
     allImpedanceAttribute = False
 
     impedanceErrorMessage = "Use the paramenter -c or --cost.\nValues allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY.\nThe parameter --all enable the analysis for all the impedance attributes."
+    transportModeErrorMessage = "Use the paramenter -t or --transportMode.\nValues allowed: PRIVATE_CAR, BICYCLE."
 
     for opt, arg in opts:
         if opt in "--help":
@@ -76,6 +81,9 @@ def main():
         if opt in ("-o", "--outputFolder"):
             outputFolder = arg
 
+        if opt in ("-t", "--transportMode"):
+            transportModeSelected = arg
+
         if opt in "--all":
             allImpedanceAttribute = True
         else:
@@ -88,6 +96,10 @@ def main():
 
     if not startPointsGeojsonFilename or not endPointsGeojsonFilename or not outputFolder:
         raise NotParameterGivenException("Type --help for more information.")
+
+    if not transportModeSelected:
+        raise TransportModeNotDefinedException(
+            transportModeErrorMessage)
 
     if not allImpedanceAttribute and not impedance:
         raise ImpedanceAttributeNotDefinedException(
@@ -103,8 +115,14 @@ def main():
     #     outputFormat=config["outputFormat"]
     # )
     postgisServiceProvider = PostgisServiceProvider()
+
+    if transportModeSelected == TransportModes.BICYCLE:
+        transportMode = BicycleTransportMode(postgisServiceProvider)
+    if transportModeSelected == TransportModes.PRIVATE_CAR:
+        transportMode = PrivateCarTransportMode(postgisServiceProvider)
+
     starter = MetropAccessDigiroadApplication(
-        geojsonServiceProvider=postgisServiceProvider
+        transportMode=transportMode
     )
 
     if impedance and not allImpedanceAttribute:
@@ -134,7 +152,7 @@ def main():
             outputFolderPath=outputFolder,
             costAttribute=impedances
         )
-        
+
         for key in impedances:
             starter.createDetailedSummary(
                 folderPath=outputFolder,

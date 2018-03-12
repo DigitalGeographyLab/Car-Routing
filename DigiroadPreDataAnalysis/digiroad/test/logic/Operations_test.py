@@ -11,7 +11,7 @@ class OperationsTest(unittest.TestCase):
     def setUp(self):
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
                                                      nearestVertexTypeName="tutorial:dgl_nearest_vertex",
-                                                     nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
+                                                     nearestRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
         self.fileActions = FileActions()
@@ -56,7 +56,7 @@ class OperationsTest(unittest.TestCase):
                            epsgCode="EPSG:3047")
         newStartPoint = self.operations.transformPoint(startPoint, targetEPSGCode=self.wfsServiceProvider.getEPSGCode())
 
-        nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(newStartPoint)
+        nearestVertex = self.wfsServiceProvider.getNearestRoutableVertexFromAPoint(newStartPoint)
         epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
                    nearestVertex["crs"]["properties"]["name"].split(":")[-1]
 
@@ -84,7 +84,7 @@ class OperationsTest(unittest.TestCase):
                            longitude=2770620.87667954,
                            epsgCode="EPSG:3857")
 
-        nearestVertex = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(startPoint)
+        nearestVertex = self.wfsServiceProvider.getNearestRoutableVertexFromAPoint(startPoint)
         epsgCode = nearestVertex["crs"]["properties"]["name"].split(":")[-3] + ":" + \
                    nearestVertex["crs"]["properties"]["name"].split(":")[-1]
 

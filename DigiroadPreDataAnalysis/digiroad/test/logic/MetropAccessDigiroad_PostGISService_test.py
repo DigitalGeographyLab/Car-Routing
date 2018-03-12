@@ -7,9 +7,11 @@ import multiprocessing
 from joblib import Parallel, delayed
 from math import sqrt
 
-from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
+from digiroad.carRoutingExceptions import WFSNotDefinedException, NotURLDefinedException, \
+    TransportModeNotDefinedException
 from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
+from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
 from digiroad.util import CostAttributes, getEnglishMeaning, FileActions
 
 
@@ -21,13 +23,14 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         #                                              shortestPathTypeName="tutorial:dgl_shortest_path",
         #                                              outputFormat="application/json")
         self.postgisServiceProvider = PostgisServiceProvider()
-        self.metroAccessDigiroad = MetropAccessDigiroadApplication(self.postgisServiceProvider)
+        self.transportMode = PrivateCarTransportMode(self.postgisServiceProvider)
+        self.metroAccessDigiroad = MetropAccessDigiroadApplication(self.transportMode)
         self.fileActions = FileActions()
         self.dir = os.getcwd()
 
     def test_givenNoneWFSService_Then_ThrowError(self):
         metroAccessDigiroad = MetropAccessDigiroadApplication(None)
-        self.assertRaises(NotWFSDefinedException, metroAccessDigiroad.calculateTotalTimeTravel, "", "", "", "")
+        self.assertRaises(TransportModeNotDefinedException, metroAccessDigiroad.calculateTotalTimeTravel, "", "", "", "")
 
     def test_givenEmtpyURL_Then_ThrowError(self):
         inputCoordinatesURL = None
@@ -94,8 +97,11 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
     @unittest.skip("")  # about 13 m for 12 points (132 possible paths)
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
-        inputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
-        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderNormalCost%'.replace("%", os.sep)
+        # inputStartCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
+        # inputEndCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
+        inputStartCoordinatesURL = self.dir + '%digiroad%test%data%geojson%not-fast-points.geojson'.replace("%", os.sep)
+        inputEndCoordinatesURL = self.dir + '%digiroad%test%data%geojson%not-fast-points2.geojson'.replace("%", os.sep)
+        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderNotFast3%'.replace("%", os.sep)
 
         # distanceCostAttribute = CostAttributes.DISTANCE
         distanceCostAttribute = {
@@ -105,12 +111,12 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             "MIDDAY_DELAY_TIME": CostAttributes.MIDDAY_DELAY_TIME,
             "RUSH_HOUR_DELAY": CostAttributes.RUSH_HOUR_DELAY
         }
-        self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputCoordinatesURL,
-                                                          endCoordinatesGeojsonFilename=inputCoordinatesURL,
+        self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputStartCoordinatesURL,
+                                                          endCoordinatesGeojsonFilename=inputEndCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,
                                                           costAttribute=distanceCostAttribute)
 
-        inputCoordinatesGeojson = self.fileActions.readJson(inputCoordinatesURL)
+        inputCoordinatesGeojson = self.fileActions.readJson(inputStartCoordinatesURL)
         for key in distanceCostAttribute:
             if not outputFolderFeaturesURL.endswith(os.sep):
                 geomsOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + \
@@ -221,11 +227,14 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         self.assertEqual(expectedResult, summaryResult)
 
     def test_givenManyStartPointsGeojsonAndManyEndPointsGeojson_then_createMultiPointSummary(self):
+        # startInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%pointsInTheForest.geojson'.replace("%", os.sep)
+        # endInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%rautatientoriPoint.geojson'.replace("%", os.sep)
+
         startInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%",
                                                                                                                os.sep)
         endInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%",
                                                                                                              os.sep)
-        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
+        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderForest%'.replace("%", os.sep)
 
         expectedJsonURL = self.dir + '%digiroad%test%data%geojson%manyToManyCostSummaryAdditionalInfo.geojson'.replace(
             "%", os.sep)
@@ -248,14 +257,14 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         self.assertEqual(expectedResult, summaryResult)
 
     ################################################
-    # @unittest.SkipTest
+    @unittest.SkipTest
     def test_givenYKRGridCellPoints_then_createMultiPointSummary(self):
         startInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%sampleYKRGridPoints-13000.geojson'.replace(
             "%",
             os.sep)
-        endInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%sampleYKRGridPoints-13000.geojson'.replace("%",
+        endInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%sampleYKRGridPoints-5.geojson'.replace("%",
                                                                                                                     os.sep)
-        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderYKR-13000-13000%'.replace("%", os.sep)
+        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderYKR-13000-5-newRoadNetwork%'.replace("%", os.sep)
 
         # startInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%sampleYKRGridPoints-100.geojson'.replace("%",
         #                                                                                                           os.sep)
@@ -272,13 +281,13 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.RUSH_HOUR_DELAY,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="YKRCostSummary-13000-13000.geojson"
+            outputFilename="YKRCostSummary-13000-5.geojson"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
         summaryResult = self.fileActions.readJson(
             summaryOutputFolderFeaturesURL + getEnglishMeaning(
-                CostAttributes.RUSH_HOUR_DELAY) + "_YKRCostSummary-13000-13000.geojson")
+                CostAttributes.RUSH_HOUR_DELAY) + "_YKRCostSummary-13000-5.geojson")
 
         # self.assertEqual(expectedResult, summaryResult)
         self.assertIsNotNone(summaryResult)
