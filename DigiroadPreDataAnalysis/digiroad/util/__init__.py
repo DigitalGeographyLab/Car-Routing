@@ -24,6 +24,8 @@ carRountingDictionary = {
 CostAttributes = enum(DISTANCE='pituus', SPEED_LIMIT_TIME='digiroa_aa', DAY_AVG_DELAY_TIME='kokopva_aa',
                       MIDDAY_DELAY_TIME='keskpva_aa', RUSH_HOUR_DELAY='ruuhka_aa')
 
+TransportModes = enum(PRIVATE_CAR='private_car', BICYCLE='bicycle')
+
 GeometryType = enum(POINT="Point", MULTI_POINT='MultiPoint', LINE_STRING='LineString')
 
 PostfixAttribute = enum(EUCLIDEAN_DISTANCE="EuclideanDistance", AVG_WALKING_DISTANCE="AVGWalkingDistance",
@@ -215,6 +217,17 @@ class FileActions:
         for feature in data["features"]:
             if feature["geometry"]["type"] != geometryType:
                 raise exc.IncorrectGeometryTypeException("Expected %s" % geometryType)
+
+    def convertToGeojson(self, dataframe):
+        jsonResult = dataframe.to_json()
+        newJson = json.loads(jsonResult)
+        newJson["crs"] = {
+            "properties": {
+                "name": "urn:ogc:def:crs:%s" % (GPD_CRS.PSEUDO_MERCATOR["init"].replace(":", "::"))
+            },
+            "type": "name"
+        }
+        return newJson
 
     def writeFile(self, folderPath, filename, data):
         if not os.path.exists(folderPath):

@@ -12,7 +12,7 @@ class WFSServiceProviderTest(unittest.TestCase):
     def setUp(self):
         self.wfsServiceProvider = WFSServiceProvider(wfs_url="http://localhost:8080/geoserver/wfs?",
                                                      nearestVertexTypeName="tutorial:dgl_nearest_vertex",
-                                                     nearestCarRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
+                                                     nearestRoutingVertexTypeName="tutorial:dgl_nearest_car_routable_vertex",
                                                      shortestPathTypeName="tutorial:dgl_shortest_path",
                                                      outputFormat="application/json")
         self.fileActions = FileActions()
@@ -56,7 +56,7 @@ class WFSServiceProviderTest(unittest.TestCase):
                             longitude=24.929379456878265,
                             epsgCode="EPSG:4326")
 
-        self.assertIsNotNone(self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates))
+        self.assertIsNotNone(self.wfsServiceProvider.getNearestRoutableVertexFromAPoint(coordinates))
 
     def test_givenAPoint_retrieveNearestCarRoutingVertexGeojson(self):
         # point_coordinates = {  # EPSG:3857
@@ -77,7 +77,7 @@ class WFSServiceProviderTest(unittest.TestCase):
 
         coordinates = self.operations.transformPoint(coordinates, self.wfsServiceProvider.getEPSGCode())
 
-        geoJson = self.wfsServiceProvider.getNearestCarRoutableVertexFromAPoint(coordinates)
+        geoJson = self.wfsServiceProvider.getNearestRoutableVertexFromAPoint(coordinates)
 
         for feature in nearestVertexExpectedGeojson["features"]:
             if "id" in feature:

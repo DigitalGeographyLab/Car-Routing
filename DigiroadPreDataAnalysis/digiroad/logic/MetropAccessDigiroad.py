@@ -5,7 +5,8 @@ import time
 
 from joblib import delayed, Parallel
 
-from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
+from digiroad.carRoutingExceptions import WFSNotDefinedException, NotURLDefinedException, \
+    TransportModeNotDefinedException
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
@@ -19,7 +20,7 @@ def extractFeatureInformation(endEPSGCode, feature, geojsonServiceProvider, oper
                          longitude=coordinates[0],
                          epsgCode=endEPSGCode)
     featurePoint = operations.transformPoint(featurePoint, geojsonServiceProvider.getEPSGCode())
-    nearestVertexGeojson = geojsonServiceProvider.getNearestCarRoutableVertexFromAPoint(
+    nearestVertexGeojson = geojsonServiceProvider.getNearestRoutableVertexFromAPoint(
         featurePoint)
     newFeaturePoint = nearestVertexGeojson["features"][0]
     vertexID = newFeaturePoint["properties"]["id"]
@@ -82,11 +83,11 @@ def createCostSummaryWithAdditionalProperties(self, costAttribute, startPointFea
 
 
 class MetropAccessDigiroadApplication:
-    def __init__(self, geojsonServiceProvider=None):
+    def __init__(self, transportMode=None):
         self.fileActions = FileActions()
         self.operations = Operations(FileActions())
         self.reflection = Reflection()
-        self.geojsonServiceProvider = geojsonServiceProvider
+        self.transportMode = transportMode
 
     def calculateTotalTimeTravel(self,
                                  startCoordinatesGeojsonFilename=None,
@@ -104,8 +105,8 @@ class MetropAccessDigiroadApplication:
         :return: None. Store the information in the ``outputFolderPath``.
         """
 
-        if not self.geojsonServiceProvider:
-            raise NotWFSDefinedException()
+        if not self.transportMode:
+            raise TransportModeNotDefinedException()
         if not startCoordinatesGeojsonFilename or not outputFolderPath:
             raise NotURLDefinedException()
 
@@ -141,8 +142,8 @@ class MetropAccessDigiroadApplication:
                                longitude=startCoordinates[0],
                                epsgCode=epsgCode)
 
-            startPoint = self.operations.transformPoint(startPoint, self.geojsonServiceProvider.getEPSGCode())
-            startPointNearestVertexGeojson = self.geojsonServiceProvider.getNearestCarRoutableVertexFromAPoint(
+            startPoint = self.operations.transformPoint(startPoint, self.transportMode.getEPSGCode())
+            startPointNearestVertexGeojson = self.transportMode.getNearestRoutableVertexFromAPoint(
                 startPoint)
             newFeatureStartPoint = startPointNearestVertexGeojson["features"][0]
             startPointEPSGCode = extractCRS(startPointNearestVertexGeojson)
@@ -162,10 +163,10 @@ class MetropAccessDigiroadApplication:
                 endPoint = Point(latitute=endCoordinates[1],
                                  longitude=endCoordinates[0],
                                  epsgCode=epsgCode)
-                endPoint = self.operations.transformPoint(endPoint, self.geojsonServiceProvider.getEPSGCode())
+                endPoint = self.operations.transformPoint(endPoint, self.transportMode.getEPSGCode())
 
                 if not startPoint.equals(endPoint):
-                    endPointNearestVertexGeojson = self.geojsonServiceProvider.getNearestCarRoutableVertexFromAPoint(
+                    endPointNearestVertexGeojson = self.transportMode.getNearestRoutableVertexFromAPoint(
                         endPoint)
 
                     newFeatureEndPoint = endPointNearestVertexGeojson["features"][0]
@@ -207,9 +208,9 @@ class MetropAccessDigiroadApplication:
     def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
                                                        startPointFeature, endPoint, endPointFeature, nearestEndPoint,
                                                        nearestStartPoint, outputFolderPath):
-        shortestPath = self.geojsonServiceProvider.getShortestPath(startVertexId=startVertexId,
-                                                                   endVertexId=endVertexId,
-                                                                   cost=costAttribute)
+        shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
+                                                          endVertexId=endVertexId,
+                                                          cost=costAttribute)
         shortestPath["overallProperties"] = self.insertAdditionalProperties(
             startPointFeature,
             endPointFeature
@@ -388,25 +389,25 @@ class MetropAccessDigiroadApplication:
         totals = None
 
         if len(startVerticesID) == 1 and len(endVerticesID) == 1:
-            totals = self.geojsonServiceProvider.getTotalShortestPathCostOneToOne(
+            totals = self.transportMode.getTotalShortestPathCostOneToOne(
                 startVertexID=startVerticesID[0],
                 endVertexID=endVerticesID[0],
                 costAttribute=costAttribute
             )
         elif len(startVerticesID) == 1 and len(endVerticesID) > 1:
-            totals = self.geojsonServiceProvider.getTotalShortestPathCostOneToMany(
+            totals = self.transportMode.getTotalShortestPathCostOneToMany(
                 startVertexID=startVerticesID[0],
                 endVerticesID=endVerticesID,
                 costAttribute=costAttribute
             )
         elif len(startVerticesID) > 1 and len(endVerticesID) == 1:
-            totals = self.geojsonServiceProvider.getTotalShortestPathCostManyToOne(
+            totals = self.transportMode.getTotalShortestPathCostManyToOne(
                 startVerticesID=startVerticesID,
                 endVertexID=endVerticesID[0],
                 costAttribute=costAttribute
             )
         elif len(startVerticesID) > 1 and len(endVerticesID) > 1:
-            totals = self.geojsonServiceProvider.getTotalShortestPathCostManyToMany(
+            totals = self.transportMode.getTotalShortestPathCostManyToMany(
                 startVerticesID=startVerticesID,
                 endVerticesID=endVerticesID,
                 costAttribute=costAttribute
@@ -507,7 +508,7 @@ class MetropAccessDigiroadApplication:
                       verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
             # while len(verticesID) <= len(geojson["features"]):
             returns = parallel(
-                delayed(extractFeatureInformation)(endEPSGCode, feature, self.geojsonServiceProvider, self.operations)
+                delayed(extractFeatureInformation)(endEPSGCode, feature, self.transportMode, self.operations)
                 for feature in geojson["features"])
             for vertexID, feature in returns:
                 verticesID.append(vertexID)

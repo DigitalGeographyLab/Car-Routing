@@ -1,9 +1,11 @@
 import os
 import unittest
 
-from digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException
+from digiroad.carRoutingExceptions import NotURLDefinedException, \
+    TransportModeNotDefinedException
 from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
+from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
 from digiroad.util import CostAttributes, getEnglishMeaning, FileActions
 
 
@@ -15,14 +17,15 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         #                                              shortestPathTypeName="tutorial:dgl_shortest_path",
         #                                              outputFormat="application/json")
 
-        self.geojsonServiceProvider = PostgisServiceProvider()
-        self.metroAccessDigiroad = MetropAccessDigiroadApplication(self.geojsonServiceProvider)
+        geojsonServiceProvider = PostgisServiceProvider()
+        self.transportMode = PrivateCarTransportMode(geojsonServiceProvider)
+        self.metroAccessDigiroad = MetropAccessDigiroadApplication(self.transportMode)
         self.fileActions = FileActions()
         self.dir = os.getcwd()
 
     def test_givenNoneWFSService_Then_ThrowError(self):
         metroAccessDigiroad = MetropAccessDigiroadApplication(None)
-        self.assertRaises(NotWFSDefinedException, metroAccessDigiroad.calculateTotalTimeTravel, "", "", "", "")
+        self.assertRaises(TransportModeNotDefinedException, metroAccessDigiroad.calculateTotalTimeTravel, "", "", "", "")
 
     def test_givenEmtpyURL_Then_ThrowError(self):
         inputCoordinatesURL = None

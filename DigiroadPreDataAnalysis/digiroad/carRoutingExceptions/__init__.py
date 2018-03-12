@@ -19,9 +19,15 @@ class NotURLDefinedException(Exception):
     pass
 
 
-class NotWFSDefinedException(Exception):
+class WFSNotDefinedException(Exception):
     """
     The exception is thrown if there is not any WFS service defined to retrieve the features.
+    """
+    pass
+
+class TransportModeNotDefinedException(Exception):
+    """
+    The exception is thrown if there is not any Transport Mode defined/selected to retrieve the features.
     """
     pass
 

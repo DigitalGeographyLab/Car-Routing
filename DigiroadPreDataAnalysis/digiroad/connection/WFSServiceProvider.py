@@ -10,13 +10,13 @@ from digiroad.util import FileActions, getFormattedDatetime, timeDifference
 
 class WFSServiceProvider(AbstractGeojsonProvider):
     def __init__(self, wfs_url="http://localhost:8080/geoserver/wfs?",
-                 nearestVertexTypeName="", nearestCarRoutingVertexTypeName="",
+                 nearestVertexTypeName="", nearestRoutingVertexTypeName="",
                  shortestPathTypeName="", outputFormat="", epsgCode="EPSG:3857"):
         self.shortestPathTypeName = shortestPathTypeName
         self.__geoJson = None
         self.wfs_url = wfs_url
         self.nearestVertexTypeName = nearestVertexTypeName
-        self.nearestCarRoutingVertexTypeName = nearestCarRoutingVertexTypeName
+        self.nearestRoutingVertexTypeName = nearestRoutingVertexTypeName
         self.outputFormat = outputFormat
         self.epsgCode = epsgCode
         self.operations = Operations(FileActions())
@@ -26,23 +26,7 @@ class WFSServiceProvider(AbstractGeojsonProvider):
     #
     # def setGeoJson(self, geojson):
     #     self.__geoJson = geojson
-
-    def getNearestVertexFromAPoint(self, coordinates):
-        """
-        From the WFS Service retrieve the nearest vertex from a given point coordinates.
-
-        :param coordinates: Point coordinates. e.g [889213124.3123, 231234.2341]
-        :return: Geojson (Geometry type: Point) with the nearest point coordinates.
-        """
-        coordinates = self.operations.transformPoint(coordinates, self.epsgCode)
-
-        url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
-            self.nearestVertexTypeName, self.outputFormat, str(
-                coordinates.getLongitude()), str(coordinates.getLatitude()))
-
-        return self.requestFeatures(url)
-
-    def requestFeatures(self, url):
+    def execute(self, url):
         """
         Request a JSON from an URL.
 
@@ -64,18 +48,33 @@ class WFSServiceProvider(AbstractGeojsonProvider):
 
         return geojson
 
-    def getNearestCarRoutableVertexFromAPoint(self, coordinates):
+    def getNearestVertexFromAPoint(self, coordinates):
         """
-        From the WFS Service retrieve the nearest car routing vertex from a given point coordinates.
+        From the WFS Service retrieve the nearest vertex from a given point coordinates.
+
+        :param coordinates: Point coordinates. e.g [889213124.3123, 231234.2341]
+        :return: Geojson (Geometry type: Point) with the nearest point coordinates.
+        """
+        coordinates = self.operations.transformPoint(coordinates, self.epsgCode)
+
+        url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
+            self.nearestVertexTypeName, self.outputFormat, str(
+                coordinates.getLongitude()), str(coordinates.getLatitude()))
+
+        return self.execute(url)
+
+    def getNearestRoutableVertexFromAPoint(self, coordinates):
+        """
+        From the WFS Service retrieve the nearest routing vertex from a given point coordinates.
 
         :param coordinates: Point coordinates. e.g [889213124.3123, 231234.2341]
         :return: Geojson (Geometry type: Point) with the nearest point coordinates.
         """
         url = self.wfs_url + "service=WFS&version=1.0.0&request=GetFeature&typeName=%s&outputformat=%s&viewparams=x:%s;y:%s" % (
-            self.nearestCarRoutingVertexTypeName, self.outputFormat, str(
+            self.nearestRoutingVertexTypeName, self.outputFormat, str(
                 coordinates.getLongitude()), str(coordinates.getLatitude()))
 
-        return self.requestFeatures(url)
+        return self.execute(url)
 
     def getShortestPath(self, startVertexId, endVertexId, cost):
         """
@@ -91,7 +90,7 @@ class WFSServiceProvider(AbstractGeojsonProvider):
             self.shortestPathTypeName, self.outputFormat,
             startVertexId, endVertexId, cost)
 
-        return self.requestFeatures(url)
+        return self.execute(url)
 
     def getEPSGCode(self):
         return self.epsgCode
