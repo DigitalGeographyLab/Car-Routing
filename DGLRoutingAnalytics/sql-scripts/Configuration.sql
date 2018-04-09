@@ -83,5 +83,9 @@ UPDATE edges_noded SET
 -- CREATE INDEX edges_noded_vertices_pgr_gix ON edges_noded_vertices_pgr USING GIST (the_geom);
 CREATE INDEX edges_vertices_pgr_gix ON edges_vertices_pgr USING GIST (the_geom);
 
+-- The commands below are necessary to replicate the tables into the different nodes that belong to the cluster
+ALTER TABLE edges DISTRIBUTE BY REPLICATION;
+ALTER TABLE edges_vertices_pgr DISTRIBUTE BY REPLICATION;
+
 --rollback
 --commit

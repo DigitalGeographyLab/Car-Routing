@@ -2,4 +2,10 @@ ogr2ogr -where "TOIMINNALL <> ''" -select "TIEE_KUNTA,TOIMINNALL,LIIKENNEVI,Pitu
 
 
 # UPDATED ROAD NETWORK (Not missing edges)
-ogr2ogr -where "TOIMINNALL <> ''" -select "TIEE_KUNTA,TOIMINNALL,LIIKENNEVI,Pituus,Digiroa_aa,Kokopva_aa,Keskpva_aa,Ruuhka_aa,KmH" -lco GEOMETRY_NAME=the_geom -lco FID=id -t_srs EPSG:3857 -f PostgreSQL PG:"dbname=digiroad_shp user=postgres password=XXXX" -nln edges "C:\Users\jeisonle\Documents\Digital Geography Lab\Shapefiles\MetropAccess-Digiroad_UUSIMAA_2014-1_SHAPE\MetropAccess_Digiroad\Updated RoadNetwork Shapefile\RoadNetwork.shp" -skipfailures -nlt PROMOTE_TO_MULTI
+ogr2ogr -where "TOIMINNALL <> ''" -select "TIEE_KUNTA,TOIMINNALL,LIIKENNEVI,Pituus,Digiroa_aa,Kokopva_aa,Keskpva_aa,Ruuhka_aa,KmH" -lco GEOMETRY_NAME=the_geom -lco FID=id -t_srs EPSG:3857 -f PostgreSQL PG:"host=193.166.25.141 port=30001 dbname=digiroad_shp user=postgres password=XXXX" -nln edges "C:\Users\jeisonle\Documents\Digital Geography Lab\Shapefiles\MetropAccess-Digiroad_UUSIMAA_2014-1_SHAPE\MetropAccess_Digiroad\Updated RoadNetwork Shapefile\RoadNetwork.shp" -skipfailures -nlt PROMOTE_TO_MULTI
+
+# UPDATE BICYCLE ROAD NETWORK
+ogr2ogr -where "pyoravayla <> '' AND luokka <> ''" -select "TIEE_KUNTA,TOIMINNALL,LIIKENNEVI, luokka, pyoravayla, Fast_time, Slow_time" -lco GEOMETRY_NAME=the_geom -lco FID=id -t_srs EPSG:3857 -f PostgreSQL PG:"dbname=digiroad_shp user=postgres password=XXXX" -nln bicycle_edges "C:\Users\jeisonle\Documents\Digital Geography Lab\Shapefiles\Biking_Network_Data\Bike_network_with_Strava_speeds_No_Zeros.shp" -skipfailures -nlt PROMOTE_TO_MULTI
+
+# CAR ROAD NETWORK for BICYCLE TEST
+ogr2ogr -where "pyoravayla <> '' AND luokka <> ''" -select "TIEE_KUNTA,TOIMINNALL,LIIKENNEVI, luokka, pyoravayla, Fast_time, Slow_time" -lco GEOMETRY_NAME=the_geom -lco FID=id -t_srs EPSG:3857 -f PostgreSQL PG:"dbname=digiroad_shp user=postgres password=XXXX" -nln car_bicycle_edges "C:\Users\jeisonle\Documents\Digital Geography Lab\Shapefiles\MetropAccess-Digiroad_UUSIMAA_2014-1_SHAPE\MetropAccess_Digiroad\Updated RoadNetwork Shapefile\RoadNetwork.shp" -skipfailures -nlt PROMOTE_TO_MULTI

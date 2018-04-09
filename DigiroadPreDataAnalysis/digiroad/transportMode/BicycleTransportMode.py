@@ -108,7 +108,7 @@ class BicycleTransportMode(AbstractTransportMode):
                "bicycle_edges AS e " \
                "WHERE " \
                "(e.source = v.id OR e.target = v.id) " \
-               "AND e.TOIMINNALL <> 10 " \
+               "AND e.luokka <> 0 AND e.luokka <> 9 " \
                "AND ST_DWithin(ST_Transform(v.the_geom, 4326)," \
                "ST_Transform(ST_SetSRID(ST_MakePoint(%s, %s), %s), 4326)::geography," \
                "%s)" \
@@ -164,11 +164,8 @@ class BicycleTransportMode(AbstractTransportMode):
               "min(r.seq) AS seq, " \
               "e.id AS id, " \
               "e.liikennevi::integer as direction," \
-              "sum(e.pituus) AS distance," \
-              "sum(e.digiroa_aa) AS speed_limit_time," \
-              "sum(e.kokopva_aa) AS day_avg_delay_time," \
-              "sum(e.keskpva_aa) AS midday_delay_time," \
-              "sum(e.ruuhka_aa) AS rush_hour_delay_time," \
+              "sum(e.fast_time) AS distance," \
+              "sum(e.slow_time) AS speed_limit_time," \
               "ST_SnapToGrid(e.the_geom, 0.00000001) AS geom " \
               "FROM " \
               "pgr_dijkstra('SELECT " \
@@ -176,12 +173,13 @@ class BicycleTransportMode(AbstractTransportMode):
               "source::integer," \
               "target::integer," \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
-              "END)::double precision AS cost," \
+              "END)::double precision AS cost, " \
               "(CASE " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3) THEN %s " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 3) " \
+              "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
               "FROM bicycle_edges', %s, %s, true, true) AS r, " \
@@ -214,18 +212,21 @@ class BicycleTransportMode(AbstractTransportMode):
               "FROM(" \
               "SELECT * " \
               "FROM pgr_dijkstraCost(" \
-              "\'SELECT id::integer, source::integer, target::integer, " \
+              "\'SELECT " \
+              "id::integer," \
+              "source::integer," \
+              "target::integer," \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
-              "END)::double precision AS cost, " \
-              "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+              "END)::double precision AS cost," \
+              "(CASE " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 3) " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM bicycle_edges\', %s, %s, true)) as r," \
+              "FROM bicycle_edges', %s, %s, true)) as r," \
               "bicycle_edges_vertices_pgr AS s," \
               "bicycle_edges_vertices_pgr AS e " \
               "WHERE " \
@@ -259,18 +260,21 @@ class BicycleTransportMode(AbstractTransportMode):
               "FROM(" \
               "SELECT * " \
               "FROM pgr_dijkstraCost(" \
-              "\'SELECT id::integer, source::integer, target::integer, " \
+              "\'SELECT " \
+              "id::integer," \
+              "source::integer," \
+              "target::integer," \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
-              "END)::double precision AS cost, " \
-              "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+              "END)::double precision AS cost," \
+              "(CASE " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 3) " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM bicycle_edges\', ARRAY[%s], %s, true)) as r," \
+              "FROM bicycle_edges', ARRAY[%s], %s, true)) as r," \
               "bicycle_edges_vertices_pgr AS s," \
               "bicycle_edges_vertices_pgr AS e " \
               "WHERE " \
@@ -306,18 +310,21 @@ class BicycleTransportMode(AbstractTransportMode):
               "FROM(" \
               "SELECT * " \
               "FROM pgr_dijkstraCost(" \
-              "\'SELECT id::integer, source::integer, target::integer, " \
+              "\'SELECT " \
+              "id::integer," \
+              "source::integer," \
+              "target::integer," \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
-              "END)::double precision AS cost, " \
-              "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+              "END)::double precision AS cost," \
+              "(CASE " \
+              "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 3) " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM bicycle_edges\', %s, ARRAY[%s], true)) as r," \
+              "FROM bicycle_edges', %s, ARRAY[%s], true)) as r," \
               "bicycle_edges_vertices_pgr AS s," \
               "bicycle_edges_vertices_pgr AS e " \
               "WHERE " \
@@ -436,18 +443,21 @@ class BicycleTransportMode(AbstractTransportMode):
                       "FROM(" \
                       "SELECT * " \
                       "FROM pgr_dijkstraCost(" \
-                      "\'SELECT id::integer, source::integer, target::integer, " \
+                      "\'SELECT " \
+                      "id::integer," \
+                      "source::integer," \
+                      "target::integer," \
                       "(CASE  " \
-                      "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+                      "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 4)  " \
                       "THEN %s " \
                       "ELSE -1 " \
-                      "END)::double precision AS cost, " \
-                      "(CASE  " \
-                      "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+                      "END)::double precision AS cost," \
+                      "(CASE " \
+                      "WHEN luokka <> 0 AND luokka <> 9 AND (liikennevi = 0 OR liikennevi = 2 OR liikennevi = 5 OR liikennevi = 3) " \
                       "THEN %s " \
                       "ELSE -1 " \
                       "END)::double precision AS reverse_cost " \
-                      "FROM bicycle_edges\', ARRAY[%s], ARRAY[%s], true)) as r," \
+                      "FROM bicycle_edges', ARRAY[%s], ARRAY[%s], true)) as r," \
                       "bicycle_edges_vertices_pgr AS s," \
                       "bicycle_edges_vertices_pgr AS e " \
                       "WHERE " \

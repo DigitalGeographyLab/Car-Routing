@@ -207,7 +207,7 @@
         $scope.impedanceFilter = "pituus";
         var impedance_attributes = {
             "pituus": "Distance",
-            "digiroa_aa": "Speed limit time",
+            "digiroa_aa": "Speed limit-based time",
             "kokopva_aa": "Day average delay time",
             "keskpva_aa": "Midday delay time",
             "ruuhka_aa": "Rush hour delay time"

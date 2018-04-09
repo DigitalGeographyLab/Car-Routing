@@ -21,8 +21,13 @@ carRountingDictionary = {
     "ruuhka_aa": "rush_hour_delay_time"
 }
 
-CostAttributes = enum(DISTANCE='pituus', SPEED_LIMIT_TIME='digiroa_aa', DAY_AVG_DELAY_TIME='kokopva_aa',
-                      MIDDAY_DELAY_TIME='keskpva_aa', RUSH_HOUR_DELAY='ruuhka_aa')
+CostAttributes = enum(DISTANCE='pituus',
+                      SPEED_LIMIT_TIME='digiroa_aa',
+                      DAY_AVG_DELAY_TIME='kokopva_aa',
+                      MIDDAY_DELAY_TIME='keskpva_aa',
+                      RUSH_HOUR_DELAY='ruuhka_aa',
+                      BICYCLE_FAST_TIME='fast_time',
+                      BICYCLE_SLOW_TIME='slow_time')
 
 TransportModes = enum(PRIVATE_CAR='private_car', BICYCLE='bicycle')
 
@@ -35,7 +40,10 @@ GPD_CRS = enum(WGS_84={'init': 'EPSG:4326'}, PSEUDO_MERCATOR={'init': 'EPSG:3857
 
 
 def getEnglishMeaning(cost_attribute=None):
-    return carRountingDictionary[cost_attribute]
+    if cost_attribute in carRountingDictionary:
+        return carRountingDictionary[cost_attribute]
+    else:
+        return cost_attribute
 
 
 def getFormattedDatetime(timemilis=time.time(), format='%Y-%m-%d %H:%M:%S'):

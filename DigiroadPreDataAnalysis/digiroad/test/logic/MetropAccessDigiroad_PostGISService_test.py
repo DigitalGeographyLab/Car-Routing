@@ -97,20 +97,21 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
     @unittest.skip("")  # about 13 m for 12 points (132 possible paths)
     def test_givenAMultiPointGeojson_then_returnGeojsonFeatures(self):
-        # inputStartCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
-        # inputEndCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
-        inputStartCoordinatesURL = self.dir + '%digiroad%test%data%geojson%not-fast-points.geojson'.replace("%", os.sep)
-        inputEndCoordinatesURL = self.dir + '%digiroad%test%data%geojson%not-fast-points2.geojson'.replace("%", os.sep)
-        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderNotFast3%'.replace("%", os.sep)
+        inputStartCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
+        inputEndCoordinatesURL = self.dir + '%digiroad%test%data%geojson%reititinTestPoints.geojson'.replace("%", os.sep)
+        # inputStartCoordinatesURL = self.dir + '%digiroad%test%data%geojson%not-fast-points.geojson'.replace("%", os.sep)
+        # inputEndCoordinatesURL = self.dir + '%digiroad%test%data%geojson%not-fast-points2.geojson'.replace("%", os.sep)
+        # outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderNotFast3%'.replace("%", os.sep)
+        outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
 
-        # distanceCostAttribute = CostAttributes.DISTANCE
-        distanceCostAttribute = {
-            "DISTANCE": CostAttributes.DISTANCE,
-            "SPEED_LIMIT_TIME": CostAttributes.SPEED_LIMIT_TIME,
-            "DAY_AVG_DELAY_TIME": CostAttributes.DAY_AVG_DELAY_TIME,
-            "MIDDAY_DELAY_TIME": CostAttributes.MIDDAY_DELAY_TIME,
-            "RUSH_HOUR_DELAY": CostAttributes.RUSH_HOUR_DELAY
-        }
+        distanceCostAttribute = CostAttributes.DISTANCE
+        # distanceCostAttribute = {
+        #     "DISTANCE": CostAttributes.DISTANCE,
+        #     "SPEED_LIMIT_TIME": CostAttributes.SPEED_LIMIT_TIME,
+        #     "DAY_AVG_DELAY_TIME": CostAttributes.DAY_AVG_DELAY_TIME,
+        #     "MIDDAY_DELAY_TIME": CostAttributes.MIDDAY_DELAY_TIME,
+        #     "RUSH_HOUR_DELAY": CostAttributes.RUSH_HOUR_DELAY
+        # }
         self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputStartCoordinatesURL,
                                                           endCoordinatesGeojsonFilename=inputEndCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,

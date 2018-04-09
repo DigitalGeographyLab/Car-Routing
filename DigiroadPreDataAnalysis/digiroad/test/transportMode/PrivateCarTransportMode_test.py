@@ -52,8 +52,8 @@ class PrivateCarTransportModeTest(unittest.TestCase):
 
         expectedSummary = self.fileActions.readJson(dir)
         summaryShortestPathCostOneToOne = self.privateCarTransportMode.getTotalShortestPathCostOneToOne(
-            startVertexID=99080,
-            endVertexID=49020,
+            startVertexID=59227,
+            endVertexID=2692,
             costAttribute=CostAttributes.DISTANCE
         )
         self.assertEqual(expectedSummary, summaryShortestPathCostOneToOne)
@@ -90,7 +90,6 @@ class PrivateCarTransportModeTest(unittest.TestCase):
             costAttribute=CostAttributes.DISTANCE
         )
         self.assertEqual(expectedSummary, summaryShortestPathCostManyToMany)
-
 
     def test_bucle(self):
         arrayList = [0, 1, 2, 3, 4, 5, 6, 7, 8]

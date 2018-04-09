@@ -112,7 +112,7 @@ class Operations:
         :return: time spent.
         """
         if not distance or not speed:
-            return None
+            return 0.0
 
         time = distance / speed
         return time

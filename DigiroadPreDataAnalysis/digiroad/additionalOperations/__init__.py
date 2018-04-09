@@ -72,6 +72,7 @@ class WalkingTimeOperation(AbstractAdditionalLayerOperation):
         super(WalkingTimeOperation, self).__init__(2)
         self.walkingDistanceAttribute, = tuple(
             getConfigurationProperties("GEOJSON_LAYERS_ATTRIBUTES")["walking_distance_attributes"].split(","))
+        self.defaultWalkingDistance = float(getConfigurationProperties("WFS_CONFIG")["walkingDistance"])
         self.walkingSpeed = float(getConfigurationProperties("WFS_CONFIG")["walkingSpeed"])
 
     def runOperation(self, featureJson, prefix=""):
@@ -89,9 +90,10 @@ class WalkingTimeOperation(AbstractAdditionalLayerOperation):
                 euclideanDistanceStartPoint = featureJson["properties"][property]
                 break
 
-        walkingDistance = featureJson["properties"][self.walkingDistanceAttribute]
-        if not walkingDistance:
-            walkingDistance = 135
+        if self.walkingDistanceAttribute in featureJson["properties"]:
+            walkingDistance = featureJson["properties"][self.walkingDistanceAttribute]
+        else:
+            walkingDistance = self.defaultWalkingDistance  # 135
 
         euclideanDistanceTime = self.operations.calculateTime(
             euclideanDistanceStartPoint,
