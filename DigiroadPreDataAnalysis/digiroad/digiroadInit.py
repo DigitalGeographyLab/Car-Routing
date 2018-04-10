@@ -52,12 +52,19 @@ def main():
     outputFolder = None
     # impedance = CostAttributes.DISTANCE
     impedance = None
-    impedances = {
+    car_impedances = {
         "DISTANCE": CostAttributes.DISTANCE,
         "SPEED_LIMIT_TIME": CostAttributes.SPEED_LIMIT_TIME,
         "DAY_AVG_DELAY_TIME": CostAttributes.DAY_AVG_DELAY_TIME,
         "MIDDAY_DELAY_TIME": CostAttributes.MIDDAY_DELAY_TIME,
         "RUSH_HOUR_DELAY": CostAttributes.RUSH_HOUR_DELAY
+
+    }
+
+    bicycle_impedances = {
+        "BICYCLE_FAST_TIME": CostAttributes.BICYCLE_FAST_TIME,
+        "BICYCLE_SLOW_TIME": CostAttributes.BICYCLE_SLOW_TIME
+
     }
 
     allImpedanceAttribute = False
@@ -88,11 +95,14 @@ def main():
             allImpedanceAttribute = True
         else:
             if opt in ("-c", "--cost"):
-                if arg not in impedances:
+                if (arg not in car_impedances) or (arg not in bicycle_impedances):
                     raise ImpedanceAttributeNotDefinedException(
                         impedanceErrorMessage)
 
-                impedance = impedances[arg]
+                if arg in car_impedances:
+                    impedance = car_impedances[arg]
+                elif arg in bicycle_impedances:
+                    impedance = bicycle_impedances[arg]
 
     if not startPointsGeojsonFilename or not endPointsGeojsonFilename or not outputFolder:
         raise NotParameterGivenException("Type --help for more information.")
@@ -118,8 +128,10 @@ def main():
 
     if transportModeSelected == TransportModes.BICYCLE:
         transportMode = BicycleTransportMode(postgisServiceProvider)
+        impedances = bicycle_impedances
     if transportModeSelected == TransportModes.PRIVATE_CAR:
         transportMode = PrivateCarTransportMode(postgisServiceProvider)
+        impedances = car_impedances
 
     starter = MetropAccessDigiroadApplication(
         transportMode=transportMode
