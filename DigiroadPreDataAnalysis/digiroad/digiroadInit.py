@@ -71,6 +71,7 @@ def main():
     }
 
     allImpedanceAttribute = False
+    costOnly = False
 
     impedanceErrorMessage = "Use the paramenter -c or --cost.\nValues allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY.\nThe parameter --all enable the analysis for all the impedance attributes."
     transportModeErrorMessage = "Use the paramenter -t or --transportMode.\nValues allowed: PRIVATE_CAR, BICYCLE."
@@ -93,8 +94,9 @@ def main():
 
         if opt in ("-t", "--transportMode"):
             transportModeSelected = arg
+
         if opt in "--cost_only":
-            costOnly = arg
+            costOnly = True
 
         if opt in "--all":
             allImpedanceAttribute = True
