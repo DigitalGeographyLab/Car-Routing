@@ -29,7 +29,7 @@ CostAttributes = enum(DISTANCE='pituus',
                       BICYCLE_FAST_TIME='fast_time',
                       BICYCLE_SLOW_TIME='slow_time')
 
-TransportModes = enum(PRIVATE_CAR='private_car', BICYCLE='bicycle')
+TransportModes = enum(PRIVATE_CAR='PRIVATE_CAR', BICYCLE='BICYCLE')
 
 GeometryType = enum(POINT="Point", MULTI_POINT='MultiPoint', LINE_STRING='LineString')
 

@@ -46,7 +46,10 @@ def main():
     :return: None. All the information is stored in the ``shortestPathOutput`` URL.
     """
     argv = sys.argv[1:]
-    opts, args = getopt.getopt(argv, "s:e:o:c:", ["start_point=", "end_point=", "outputFolder=", "cost", "all", "help"])
+    opts, args = getopt.getopt(
+        argv, "s:e:o:c:t:",
+        ["start_point=", "end_point=", "outputFolder=", "cost", "transportMode", "all", "help"]
+    )
 
     startPointsGeojsonFilename = None
     outputFolder = None
