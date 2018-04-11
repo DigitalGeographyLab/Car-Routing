@@ -48,7 +48,7 @@ def main():
     argv = sys.argv[1:]
     opts, args = getopt.getopt(
         argv, "s:e:o:c:t:",
-        ["start_point=", "end_point=", "outputFolder=", "cost", "transportMode", "all", "help"]
+        ["start_point=", "end_point=", "outputFolder=", "cost", "transportMode", "cost_only", "all", "help"]
     )
 
     startPointsGeojsonFilename = None
@@ -93,6 +93,8 @@ def main():
 
         if opt in ("-t", "--transportMode"):
             transportModeSelected = arg
+        if opt in "--cost_only":
+            costOnly = arg
 
         if opt in "--all":
             allImpedanceAttribute = True
@@ -144,17 +146,19 @@ def main():
     )
 
     if impedance and not allImpedanceAttribute:
-        starter.calculateTotalTimeTravel(
-            startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-            endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-            outputFolderPath=outputFolder,
-            costAttribute=impedance
-        )
-        starter.createDetailedSummary(
-            folderPath=outputFolder,
-            costAttribute=impedance,
-            outputFilename="metroAccessDigiroadSummary.geojson"
-        )
+        if not costOnly:
+            starter.calculateTotalTimeTravel(
+                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                outputFolderPath=outputFolder,
+                costAttribute=impedance
+            )
+            starter.createDetailedSummary(
+                folderPath=outputFolder,
+                costAttribute=impedance,
+                outputFilename="metroAccessDigiroadSummary.geojson"
+            )
+
         starter.createGeneralSummary(
             startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
             endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
@@ -164,19 +168,21 @@ def main():
         )
 
     if allImpedanceAttribute:
-        starter.calculateTotalTimeTravel(
-            startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-            endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-            outputFolderPath=outputFolder,
-            costAttribute=impedances
-        )
+        if not costOnly:
+            starter.calculateTotalTimeTravel(
+                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                outputFolderPath=outputFolder,
+                costAttribute=impedances
+            )
 
         for key in impedances:
-            starter.createDetailedSummary(
-                folderPath=outputFolder,
-                costAttribute=impedances[key],
-                outputFilename="metroAccessDigiroadSummary.geojson"
-            )
+            if not costOnly:
+                starter.createDetailedSummary(
+                    folderPath=outputFolder,
+                    costAttribute=impedances[key],
+                    outputFilename="metroAccessDigiroadSummary.geojson"
+                )
             starter.createGeneralSummary(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
