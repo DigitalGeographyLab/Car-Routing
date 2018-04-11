@@ -25,6 +25,11 @@
 ```
     $ conda install -c conda-forge pyproj
 ```
+* psycopg2
+```
+    $ conda install -c conda-forge psycopg2
+```
+
 * geopandas
 ```
     $ conda install -c conda-forge geopandas
