@@ -129,10 +129,13 @@ def main():
     # )
     postgisServiceProvider = PostgisServiceProvider()
 
+    transportMode = None
+    impedances = None
+
     if transportModeSelected == TransportModes.BICYCLE:
         transportMode = BicycleTransportMode(postgisServiceProvider)
         impedances = bicycle_impedances
-    if transportModeSelected == TransportModes.PRIVATE_CAR:
+    elif transportModeSelected == TransportModes.PRIVATE_CAR:
         transportMode = PrivateCarTransportMode(postgisServiceProvider)
         impedances = car_impedances
 
