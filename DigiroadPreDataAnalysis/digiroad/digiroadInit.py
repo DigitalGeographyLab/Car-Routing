@@ -3,7 +3,7 @@ import sys
 
 from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException, \
     TransportModeNotDefinedException
-from digiroad.connection import PostgisServiceProvider
+from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
 from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.transportMode.BicycleTransportMode import BicycleTransportMode
