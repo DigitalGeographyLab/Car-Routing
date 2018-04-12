@@ -102,7 +102,7 @@ def main():
             allImpedanceAttribute = True
         else:
             if opt in ("-c", "--cost"):
-                if (arg not in car_impedances) or (arg not in bicycle_impedances):
+                if (arg not in car_impedances) and (arg not in bicycle_impedances):
                     raise ImpedanceAttributeNotDefinedException(
                         impedanceErrorMessage)
 
