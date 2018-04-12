@@ -462,8 +462,8 @@ class MetropAccessDigiroadApplication:
             # while len(verticesID) <= len(geojson["features"]):
             returns = parallel(delayed(createCostSummaryWithAdditionalProperties)(self,
                                                                                   costAttribute,
-                                                                                  startPointFeature,
-                                                                                  endPointFeature,
+                                                                                  copy.deepcopy(startPointFeature),
+                                                                                  copy.deepcopy(endPointFeature),
                                                                                   costSummaryMap)
                                for startPointFeature in startPointsFeaturesList
                                for endPointFeature in endPointsFeaturesList)
