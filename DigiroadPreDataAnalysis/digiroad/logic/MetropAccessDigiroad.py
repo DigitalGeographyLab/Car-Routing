@@ -275,42 +275,45 @@ class MetropAccessDigiroadApplication:
             
         
             # self.additionalFeaturePropertiesCache[newPropertiesId] = newProperties
+        if not existStartFeaturePropertiesCache or not existEndFeaturePropertiesCache:
+            additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
+            while additionalLayerOperationLinkedList.hasNext():
+                additionalLayerOperation = additionalLayerOperationLinkedList.next()
 
-        additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
-        while additionalLayerOperationLinkedList.hasNext():
-            additionalLayerOperation = additionalLayerOperationLinkedList.next()
+                if not existStartFeaturePropertiesCache:
+                    newPropertiesStartPointFeature = additionalLayerOperation.runOperation(
+                        featureJson=startPointFeature,
+                        prefix="startPoint_")
+                    # for property in newPropertiesStartPointFeature:
+                    #     startPointFeature["properties"][property] = newPropertiesStartPointFeature[property]
+                    #     featureProperties[property] = newPropertiesStartPointFeature[property]
+                    startFeatureProperties.update(newPropertiesStartPointFeature)
 
-            if not existStartFeaturePropertiesCache:
-                newPropertiesStartPointFeature = additionalLayerOperation.runOperation(
-                    featureJson=startPointFeature,
-                    prefix="startPoint_")
-                # for property in newPropertiesStartPointFeature:
-                #     startPointFeature["properties"][property] = newPropertiesStartPointFeature[property]
-                #     featureProperties[property] = newPropertiesStartPointFeature[property]
-                startFeatureProperties.update(newPropertiesStartPointFeature)
+                if not existEndFeaturePropertiesCache:
+                    newPropertiesEndPointFeature = additionalLayerOperation.runOperation(
+                        featureJson=endPointFeature,
+                        prefix="endPoint_")
+                    # for property in newPropertiesEndPointFeature:
+                    #     endPointFeature["properties"][property] = newPropertiesEndPointFeature[property]
+                    #     featureProperties[property] = newPropertiesEndPointFeature[property]
+                    endFeatureProperties.update(newPropertiesEndPointFeature)
 
-            if not existEndFeaturePropertiesCache:
-                newPropertiesEndPointFeature = additionalLayerOperation.runOperation(
-                    featureJson=endPointFeature,
-                    prefix="endPoint_")
-                # for property in newPropertiesEndPointFeature:
-                #     endPointFeature["properties"][property] = newPropertiesEndPointFeature[property]
-                #     featureProperties[property] = newPropertiesEndPointFeature[property]
-                endFeatureProperties.update(newPropertiesEndPointFeature)
+        if not existStartFeaturePropertiesCache:
+            self.additionalFeaturePropertiesCache[startPointId] = copy.deepcopy(startFeatureProperties)
 
-        self.additionalFeaturePropertiesCache[startPointId] = startFeatureProperties
-        self.additionalFeaturePropertiesCache[endPointId] = endFeatureProperties
+        if not existEndFeaturePropertiesCache:
+            self.additionalFeaturePropertiesCache[endPointId] = copy.deepcopy(endFeatureProperties)
 
-        featureProperties = {}
-        if existStartFeaturePropertiesCache:
-            startFeatureProperties.update(endFeatureProperties)
-            featureProperties = startFeatureProperties
-        elif existEndFeaturePropertiesCache:
-            endFeatureProperties.update(startFeatureProperties)
-            featureProperties = endFeatureProperties
-        else:
-            startFeatureProperties.update(endFeatureProperties)
-            featureProperties = startFeatureProperties
+        # featureProperties = {}
+        # if existStartFeaturePropertiesCache:
+        #     startFeatureProperties.update(endFeatureProperties)
+        #     featureProperties = startFeatureProperties
+        # elif existEndFeaturePropertiesCache:
+        #     endFeatureProperties.update(startFeatureProperties)
+        #     featureProperties = endFeatureProperties
+        # else:
+        startFeatureProperties.update(endFeatureProperties)
+        featureProperties = startFeatureProperties
 
         return featureProperties
 
