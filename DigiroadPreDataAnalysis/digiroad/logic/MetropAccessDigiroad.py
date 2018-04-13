@@ -305,9 +305,13 @@ class MetropAccessDigiroadApplication:
         if existStartFeaturePropertiesCache:
             startFeatureProperties.update(endFeatureProperties)
             featureProperties = startFeatureProperties
-        if existEndFeaturePropertiesCache:
+        elif existEndFeaturePropertiesCache:
             endFeatureProperties.update(startFeatureProperties)
             featureProperties = endFeatureProperties
+        else:
+            startFeatureProperties.update(endFeatureProperties)
+            featureProperties = startFeatureProperties
+
         return featureProperties
 
     def createDetailedSummary(self, folderPath, costAttribute, outputFilename):
