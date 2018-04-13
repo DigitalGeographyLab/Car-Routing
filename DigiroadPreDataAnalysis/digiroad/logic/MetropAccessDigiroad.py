@@ -14,7 +14,13 @@ from digiroad.util import GeometryType, getEnglishMeaning, getFormattedDatetime,
     timeDifference, FileActions, extractCRS, createPointFromPointFeature, getConfigurationProperties
 
 
-def extractFeatureInformation(endEPSGCode, feature, geojsonServiceProvider, operations):
+def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider, operations):
+    pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+
+    pointId = feature["properties"][pointIdentifierKey]
+    if pointId in self.nearestVerticesCache:
+        return self.nearestVerticesCache[pointId]
+    
     coordinates = feature["geometry"]["coordinates"]
     featurePoint = Point(latitute=coordinates[1],
                          longitude=coordinates[0],
@@ -36,6 +42,9 @@ def extractFeatureInformation(endEPSGCode, feature, geojsonServiceProvider, oper
                                                          nearestPoint.getLatitude()]
     feature["properties"]["coordinatesCRS"] = featurePoint.getEPSGCode()
     ###
+
+    self.nearestVerticesCache[pointId] = (vertexID, feature)
+    
     return vertexID, feature
 
 
@@ -59,10 +68,20 @@ def createCostSummaryWithAdditionalProperties(self, costAttribute, startPointFea
     del summaryFeature["properties"]["end_vertex_id"]
     del summaryFeature["properties"]["total_cost"]
 
+    # pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+
+    # startPointId = startPointFeature["properties"][pointIdentifierKey]
+    # endPointId = endPointFeature["properties"][pointIdentifierKey]
+
+    # newPropertiesId = startPointId + "-" + endPointId
+    # if newPropertiesId in self.additionalFeaturePropertiesCache:
+    #     newProperties = self.additionalFeaturePropertiesCache[newPropertiesId]
+    # else:
     newProperties = self.insertAdditionalProperties(
         startPointFeature,
         endPointFeature
     )
+    # self.additionalFeaturePropertiesCache[newPropertiesId] = newProperties
 
     # coordinates = summaryFeature["geometry"]["coordinates"]
     # coordinates[0] = startPointFeature["properties"]["selectedPointCoordinates"]
@@ -88,6 +107,8 @@ class MetropAccessDigiroadApplication:
         self.operations = Operations(FileActions())
         self.reflection = Reflection()
         self.transportMode = transportMode
+        self.nearestVerticesCache = {}
+        self.additionalFeaturePropertiesCache = {}
 
     def calculateTotalTimeTravel(self,
                                  startCoordinatesGeojsonFilename=None,
@@ -236,26 +257,57 @@ class MetropAccessDigiroadApplication:
                                    data=shortestPath)
 
     def insertAdditionalProperties(self, startPointFeature, endPointFeature):
-        featureProperties = {}
+        startFeatureProperties = {}
+        endFeatureProperties = {}
+
+        pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+        
+        startPointId = startPointFeature["properties"][pointIdentifierKey]
+        endPointId = endPointFeature["properties"][pointIdentifierKey]
+
+        existStartFeaturePropertiesCache = startPointId in self.additionalFeaturePropertiesCache
+        if existStartFeaturePropertiesCache:
+            startFeatureProperties = self.additionalFeaturePropertiesCache[startPointId]
+
+        existEndFeaturePropertiesCache = endPointId in self.additionalFeaturePropertiesCache
+        if existEndFeaturePropertiesCache:
+            endFeatureProperties = self.additionalFeaturePropertiesCache[endPointId]
+            
+        
+            # self.additionalFeaturePropertiesCache[newPropertiesId] = newProperties
 
         additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
         while additionalLayerOperationLinkedList.hasNext():
             additionalLayerOperation = additionalLayerOperationLinkedList.next()
 
-            newProperties = additionalLayerOperation.runOperation(
-                featureJson=startPointFeature,
-                prefix="startPoint_")
-            for property in newProperties:
-                startPointFeature["properties"][property] = newProperties[property]
-                featureProperties[property] = newProperties[property]
+            if not existStartFeaturePropertiesCache:
+                newPropertiesStartPointFeature = additionalLayerOperation.runOperation(
+                    featureJson=startPointFeature,
+                    prefix="startPoint_")
+                # for property in newPropertiesStartPointFeature:
+                #     startPointFeature["properties"][property] = newPropertiesStartPointFeature[property]
+                #     featureProperties[property] = newPropertiesStartPointFeature[property]
+                startFeatureProperties.update(newPropertiesStartPointFeature)
 
-            newProperties = additionalLayerOperation.runOperation(
-                featureJson=endPointFeature,
-                prefix="endPoint_")
-            for property in newProperties:
-                endPointFeature["properties"][property] = newProperties[property]
-                featureProperties[property] = newProperties[property]
+            if not existEndFeaturePropertiesCache:
+                newPropertiesEndPointFeature = additionalLayerOperation.runOperation(
+                    featureJson=endPointFeature,
+                    prefix="endPoint_")
+                # for property in newPropertiesEndPointFeature:
+                #     endPointFeature["properties"][property] = newPropertiesEndPointFeature[property]
+                #     featureProperties[property] = newPropertiesEndPointFeature[property]
+                endFeatureProperties.update(newPropertiesEndPointFeature)
 
+        self.additionalFeaturePropertiesCache[startPointId] = startFeatureProperties
+        self.additionalFeaturePropertiesCache[endPointId] = endFeatureProperties
+
+        featureProperties = {}
+        if existStartFeaturePropertiesCache:
+            startFeatureProperties.update(endFeatureProperties)
+            featureProperties = startFeatureProperties
+        if existEndFeaturePropertiesCache:
+            endFeatureProperties.update(startFeatureProperties)
+            featureProperties = endFeatureProperties
         return featureProperties
 
     def createDetailedSummary(self, folderPath, costAttribute, outputFilename):
@@ -508,7 +560,7 @@ class MetropAccessDigiroadApplication:
                       verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
             # while len(verticesID) <= len(geojson["features"]):
             returns = parallel(
-                delayed(extractFeatureInformation)(endEPSGCode, feature, self.transportMode, self.operations)
+                delayed(extractFeatureInformation)(self, endEPSGCode, feature, self.transportMode, self.operations)
                 for feature in geojson["features"])
             for vertexID, feature in returns:
                 verticesID.append(vertexID)
@@ -542,6 +594,8 @@ class MetropAccessDigiroadApplication:
             }
             
         """
+        startTime = time.time()
+        print("createCostSummaryMap Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         costSummaryMap = {}
         for featureShortPathSummary in totals["features"]:
@@ -552,5 +606,11 @@ class MetropAccessDigiroadApplication:
 
             startVertexMap = costSummaryMap[startVertexID]
             startVertexMap[endVertexID] = featureShortPathSummary
+
+        endTime = time.time()
+        print("createCostSummaryMap End Time: %s" % getFormattedDatetime(timemilis=endTime))
+
+        totalTime = timeDifference(startTime, endTime)
+        print("createCostSummaryMap Total Time: %s m" % totalTime)
 
         return costSummaryMap
