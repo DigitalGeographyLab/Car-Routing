@@ -1,15 +1,12 @@
-import json
-
 import psycopg2
 import geopandas as gpd
-import time
-
-from joblib import Parallel, delayed
 
 from digiroad.connection import AbstractGeojsonProvider
-from digiroad.util import getConfigurationProperties, GPD_CRS, getFormattedDatetime, timeDifference, FileActions
+from digiroad.util import getConfigurationProperties, GPD_CRS, FileActions, \
+    dgl_timer
 
 
+@dgl_timer
 def executePostgisQueryReturningDataFrame(self, sql):
     """
     Given a PG_SQL execute the query and retrieve the attributes and its respective geometries.
@@ -17,8 +14,6 @@ def executePostgisQueryReturningDataFrame(self, sql):
     :param sql: Postgis SQL sentence.
     :return: Sentence query results.
     """
-    startTime = time.time()
-    print("executePostgisQueryReturningDataFrame Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
     con = self.getConnection()
 
@@ -26,12 +21,6 @@ def executePostgisQueryReturningDataFrame(self, sql):
         df = gpd.GeoDataFrame.from_postgis(sql, con, geom_col='geom', crs=GPD_CRS.PSEUDO_MERCATOR)
     finally:
         con.close()
-
-    endTime = time.time()
-    print("executePostgisQueryReturningDataFrame End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-    totalTime = timeDifference(startTime, endTime)
-    print("executePostgisQueryReturningDataFrame Total Time: %s m" % totalTime)
 
     return df
 
@@ -53,6 +42,7 @@ class PostgisServiceProvider(AbstractGeojsonProvider):
 
         return con
 
+    @dgl_timer
     def execute(self, sql):
         """
         Given a PG_SQL execute the query and retrieve the attributes and its respective geometries.
@@ -60,8 +50,6 @@ class PostgisServiceProvider(AbstractGeojsonProvider):
         :param sql: Postgis SQL sentence.
         :return: Sentence query results.
         """
-        startTime = time.time()
-        print("executePostgisQuery Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         con = self.getConnection()
 
@@ -71,12 +59,6 @@ class PostgisServiceProvider(AbstractGeojsonProvider):
             con.close()
 
         newJson = self.fileActions.convertToGeojson(df)
-
-        endTime = time.time()
-        print("executePostgisQuery End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("executePostgisQuery Total Time: %s m" % totalTime)
 
         return newJson
 

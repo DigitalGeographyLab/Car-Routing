@@ -1,17 +1,19 @@
 import copy
 import os
-# from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 
 from joblib import delayed, Parallel
 
-from digiroad.carRoutingExceptions import WFSNotDefinedException, NotURLDefinedException, \
+from digiroad.carRoutingExceptions import NotURLDefinedException, \
     TransportModeNotDefinedException
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
-from digiroad.util import GeometryType, getEnglishMeaning, getFormattedDatetime, \
-    timeDifference, FileActions, extractCRS, createPointFromPointFeature, getConfigurationProperties, dgl_timer_enabled, \
+from digiroad.util import GeometryType, getEnglishMeaning, FileActions, extractCRS, createPointFromPointFeature, \
+    getConfigurationProperties, dgl_timer_enabled, \
     dgl_timer
+
+
+# from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 
 
 def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider, operations):
