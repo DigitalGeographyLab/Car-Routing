@@ -55,7 +55,7 @@ def createCostSummaryWithAdditionalProperties(self, costAttribute, startPointFea
 
     # if startVertexID == endVertexID:
     #     return None
-    if startVertexID not in costSummaryMap or endVertexID not in costSummaryMap[startVertexID]:
+    if (startVertexID not in costSummaryMap) or (endVertexID not in costSummaryMap[startVertexID]):
         print("Not contained into the costSummaryMap:", startVertexID, endVertexID)
         return None
 
@@ -275,7 +275,7 @@ class MetropAccessDigiroadApplication:
             
         
             # self.additionalFeaturePropertiesCache[newPropertiesId] = newProperties
-        if not existStartFeaturePropertiesCache or not existEndFeaturePropertiesCache:
+        if (not existStartFeaturePropertiesCache) or (not existEndFeaturePropertiesCache):
             additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
             while additionalLayerOperationLinkedList.hasNext():
                 additionalLayerOperation = additionalLayerOperationLinkedList.next()

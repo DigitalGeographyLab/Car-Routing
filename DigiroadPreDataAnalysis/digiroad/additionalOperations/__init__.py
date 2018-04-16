@@ -117,6 +117,7 @@ class ParkingTimeOperation(AbstractAdditionalLayerOperation):
         super(ParkingTimeOperation, self).__init__(3)
         self.parkingTimeAttribute, = tuple(
             getConfigurationProperties("GEOJSON_LAYERS_ATTRIBUTES")["parking_time_attributes"].split(","))
+        self.defaultParkingTime = float(getConfigurationProperties("WFS_CONFIG")["parkingTime"])
 
     def runOperation(self, featureJson, prefix=""):
         """
@@ -127,8 +128,8 @@ class ParkingTimeOperation(AbstractAdditionalLayerOperation):
         :return: Parking time.
         """
 
-        parkingTime = 135  # default walking distance for any place in the metropolitan area rather than the city center
-        if featureJson["properties"][self.parkingTimeAttribute]:
+        parkingTime = self.defaultParkingTime  # default parking time for any place in the metropolitan area rather than the city center
+        if self.parkingTimeAttribute in featureJson["properties"]:
             parkingTime = float(featureJson["properties"][self.parkingTimeAttribute])
 
         newProperties = {
