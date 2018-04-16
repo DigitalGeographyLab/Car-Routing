@@ -418,6 +418,7 @@ class MetropAccessDigiroadApplication:
         :return: None. Store the information in the ``outputFolderPath``.
         """
 
+        print("Start merge additional layers")
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
             originalJsonURL=startCoordinatesGeojsonFilename,
             outputFolderPath=outputFolderPath
@@ -427,12 +428,16 @@ class MetropAccessDigiroadApplication:
             originalJsonURL=endCoordinatesGeojsonFilename,
             outputFolderPath=outputFolderPath
         )
+        print("End merge additional layers")
 
+        print("Start nearest vertices finding")
         startVerticesID, startPointsFeaturesList = self.getVerticesID(inputStartCoordinates)
         endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates)
+        print("End nearest vertices finding")
 
         totals = None
 
+        print("Start cost summary calculation")
         if len(startVerticesID) == 1 and len(endVerticesID) == 1:
             totals = self.transportMode.getTotalShortestPathCostOneToOne(
                 startVertexID=startVerticesID[0],
@@ -457,6 +462,7 @@ class MetropAccessDigiroadApplication:
                 endVerticesID=endVerticesID,
                 costAttribute=costAttribute
             )
+        print("End cost summary calculation")
 
         costSummaryMap = self.createCostSummaryMap(totals)
         # summaryFeature = costSummaryMap[startVertexID][endVertexID]
@@ -501,6 +507,7 @@ class MetropAccessDigiroadApplication:
         #             features.append(newFeature)
         ################################################################################################################
 
+        print("Start createCostSummaryWithAdditionalProperties")
         with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
                       backend="threading",
                       verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
@@ -517,6 +524,8 @@ class MetropAccessDigiroadApplication:
                 if newFeature:
                     features.append(newFeature)
                     # print(returns)
+
+        print("End createCostSummaryWithAdditionalProperties")
 
         ################################################################################################################
 

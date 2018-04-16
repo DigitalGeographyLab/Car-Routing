@@ -1,10 +1,8 @@
-import time
-
 from joblib import Parallel, delayed
 
 from digiroad.connection.PostgisServiceProvider import executePostgisQueryReturningDataFrame
 from digiroad.transportMode import AbstractTransportMode
-from digiroad.util import getConfigurationProperties, getFormattedDatetime, timeDifference, FileActions
+from digiroad.util import getConfigurationProperties, getFormattedDatetime, timeDifference, FileActions, dgl_timer
 
 
 class PrivateCarTransportMode(AbstractTransportMode):
@@ -21,7 +19,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
         :return: Geojson (Geometry type: Point) with the nearest point coordinates.
         """
 
-        print("Start getNearestVertexFromAPoint")
+        # print("Start getNearestVertexFromAPoint")
 
         epsgCode = coordinates.getEPSGCode().split(":")[1]
 
@@ -46,7 +44,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
 
         geojson = self.serviceProvider.execute(sql)
 
-        print("End getNearestVertexFromAPoint")
+        # print("End getNearestVertexFromAPoint")
         return geojson
 
     def getNearestRoutableVertexFromAPoint(self, coordinates, radius=500):
@@ -57,7 +55,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
         :return: Geojson (Geometry type: Point) with the nearest point coordinates.
         """
 
-        print("Start getNearestRoutableVertexFromAPoint")
+        # print("Start getNearestRoutableVertexFromAPoint")
 
         epsgCode = coordinates.getEPSGCode().split(":")[1]
 
@@ -72,12 +70,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
             sql = self.getNearestRoutableVertexSQL(coordinates, epsgCode, radius)
             geojson = self.serviceProvider.execute(sql)
 
-        if len(geojson["features"]) > 0:
-            print("Nearest Vertex found within the radius %s " % radius)
-        else:
-            print("Nearest Vertex NOT found within the radius %s " % radius)
-
-        print("End getNearestRoutableVertexFromAPoint")
+        # if len(geojson["features"]) > 0:
+        #     print("Nearest Vertex found within the radius %s " % radius)
+        # else:
+        #     print("Nearest Vertex NOT found within the radius %s " % radius)
+        # 
+        # print("End getNearestRoutableVertexFromAPoint")
         return geojson
 
     def getNearestRoutableVertexSQL(self, coordinates, epsgCode, radius):
@@ -129,7 +127,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
         :return: Geojson (Geometry type: LineString) containing the segment features of the shortest path.
         """
 
-        print("Start getShortestPath")
+        # print("Start getShortestPath")
 
         # sql = "SELECT " \
         #       "min(r.seq) AS seq, " \
@@ -191,7 +189,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "GROUP BY e.id, e.liikennevi" % (cost, cost, str(startVertexId), str(endVertexId))
 
         geojson = self.serviceProvider.execute(sql)
-        print("End getShortestPath")
+        # print("End getShortestPath")
         return geojson
 
     def getTotalShortestPathCostOneToOne(self, startVertexID, endVertexID, costAttribute):
@@ -389,6 +387,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
     #     print("End getTotalShortestPathCostManyToMany")
     #     return geojson
 
+    @dgl_timer
     def getTotalShortestPathCostManyToMany(self, startVerticesID=[], endVerticesID=[], costAttribute=None):
         """
         Using the power of pgr_Dijsktra algorithm this function calculate the total routing cost from a set of point to a single point.
@@ -398,9 +397,6 @@ class PrivateCarTransportMode(AbstractTransportMode):
         :param costAttribute: Impedance/cost to measure the weight of the route.
         :return: Shortest path summary json.
         """
-
-        startTime = time.time()
-        print("getTotalShortestPathCostManyToMany Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         startVerticesCounter = 0
         startJump = int(getConfigurationProperties(section="PARALLELIZATION")["max_vertices_blocks"])
@@ -478,14 +474,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
 
         geojson = self.fileActions.convertToGeojson(dataFrame)
 
-        endTime = time.time()
-        print("getTotalShortestPathCostManyToMany End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("getTotalShortestPathCostManyToMany Total Time: %s m" % totalTime)
-
         return geojson
 
     def getEPSGCode(self):
         return self.epsgCode
-
