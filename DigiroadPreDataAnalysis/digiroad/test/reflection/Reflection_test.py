@@ -1,8 +1,10 @@
 import os
+import time
 import unittest
 
 from digiroad.additionalOperations import AbstractAdditionalLayerOperation
 from digiroad.reflection import Reflection
+from digiroad.util import dgl_timer
 
 
 class ReflectionTest(unittest.TestCase):
@@ -41,3 +43,10 @@ class ReflectionTest(unittest.TestCase):
             self.assertIsInstance(additionalLayerOperation, AbstractAdditionalLayerOperation)
 
         self.assertEqual(4, counter)
+
+    def test_createTimerDecorator(self):
+        self.captureProcessDuration(delay=3)
+
+    @dgl_timer
+    def captureProcessDuration(self, delay):
+        time.sleep(delay)

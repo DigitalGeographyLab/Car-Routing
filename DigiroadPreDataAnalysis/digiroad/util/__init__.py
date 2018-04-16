@@ -62,10 +62,12 @@ def getConfigurationProperties(section="WFS_CONFIG"):
     config.read(configurationPath)
     return config[section]
 
+
 def extractCRS(geojson):
     epsgCode = geojson["crs"]["properties"]["name"].split(":")[-3] + ":" + \
                geojson["crs"]["properties"]["name"].split(":")[-1]
     return epsgCode
+
 
 def createPointFromPointFeature(newFeaturePoint, epsgCode):
     if newFeaturePoint["geometry"]["type"] == GeometryType.MULTI_POINT:
@@ -77,6 +79,7 @@ def createPointFromPointFeature(newFeaturePoint, epsgCode):
                               longitude=startNearestVertexCoordinates[0],
                               epsgCode=epsgCode)
     return nearestStartPoint
+
 
 class AbstractLinkedList(object):
     def __init__(self):
@@ -251,3 +254,49 @@ class FileActions:
         if os.path.exists(path):
             shutil.rmtree(path)
         print("The FOLDER %s was deleted" % path)
+
+
+def dgl_timer(func):
+    def func_wrapper(*args, **kwargs):
+        timerEnabled = "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["timerEnabled"])
+        if timerEnabled:
+            functionName = func.__name__
+            startTime = time.time()
+            print("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+
+            ###############################
+            returns = func(*args, **kwargs)
+            ###############################
+
+            endTime = time.time()
+            print("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+
+            totalTime = timeDifference(startTime, endTime)
+            print("%s Total Time: %s m" % (functionName, totalTime))
+
+            return returns
+        else:
+            return func(*args, **kwargs)
+
+    return func_wrapper
+
+
+def dgl_timer_enabled(func):
+    def func_wrapper(*args, **kwargs):
+        functionName = func.__name__
+        startTime = time.time()
+        print("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+
+        ###############################
+        returns = func(*args, **kwargs)
+        ###############################
+
+        endTime = time.time()
+        print("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+
+        totalTime = timeDifference(startTime, endTime)
+        print("%s Total Time: %s m" % (functionName, totalTime))
+
+        return returns
+
+    return func_wrapper

@@ -4,11 +4,10 @@ import os
 import geopandas as gpd
 import numpy as np
 import nvector as nv
-import time
 from pyproj import Proj, transform
 
 from digiroad.entities import Point
-from digiroad.util import getConfigurationProperties, GPD_CRS
+from digiroad.util import getConfigurationProperties, GPD_CRS, dgl_timer
 
 from digiroad.util import getFormattedDatetime, timeDifference
 
@@ -17,6 +16,7 @@ class Operations:
     def __init__(self, fileActions):
         self.fileActions = fileActions
 
+    @dgl_timer
     def mergeAdditionalLayers(self, originalJsonURL, outputFolderPath):
         """
         Merge all the layers listed in the ./resources/configuration.properties with the original json that contains the
@@ -26,8 +26,6 @@ class Operations:
         :param outputFolderPath: Output folder to store the temporal files.
         :return: Merged layer in geojson format.
         """
-        startTime = time.time()
-        print("mergeAdditionalLayers Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         layerNames = getConfigurationProperties("GEOJSON_LAYERS")
         layerAttributes = getConfigurationProperties("GEOJSON_LAYERS_ATTRIBUTES")
@@ -53,13 +51,7 @@ class Operations:
                                        data=mergedLayer)
 
         originalJson = self.fileActions.readJson(temporalLayer)
-        # self.fileActions.deleteFolder(temporalPath)
-
-        endTime = time.time()
-        print("mergeAdditionalLayers End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("mergeAdditionalLayers Total Time: %s m" % totalTime)
+        self.fileActions.deleteFolder(temporalPath)
 
         return originalJson
 

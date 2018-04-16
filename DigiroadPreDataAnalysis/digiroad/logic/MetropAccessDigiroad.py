@@ -1,7 +1,6 @@
 import copy
 import os
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
-import time
 
 from joblib import delayed, Parallel
 
@@ -11,7 +10,8 @@ from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
 from digiroad.util import GeometryType, getEnglishMeaning, getFormattedDatetime, \
-    timeDifference, FileActions, extractCRS, createPointFromPointFeature, getConfigurationProperties
+    timeDifference, FileActions, extractCRS, createPointFromPointFeature, getConfigurationProperties, dgl_timer_enabled, \
+    dgl_timer
 
 
 def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider, operations):
@@ -20,7 +20,7 @@ def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider
     pointId = feature["properties"][pointIdentifierKey]
     if pointId in self.nearestVerticesCache:
         return self.nearestVerticesCache[pointId]
-    
+
     coordinates = feature["geometry"]["coordinates"]
     featurePoint = Point(latitute=coordinates[1],
                          longitude=coordinates[0],
@@ -44,7 +44,7 @@ def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider
     ###
 
     self.nearestVerticesCache[pointId] = (vertexID, feature)
-    
+
     return vertexID, feature
 
 
@@ -111,6 +111,7 @@ class MetropAccessDigiroadApplication:
         self.additionalStartFeaturePropertiesCache = {}
         self.additionalEndFeaturePropertiesCache = {}
 
+    @dgl_timer_enabled
     def calculateTotalTimeTravel(self,
                                  startCoordinatesGeojsonFilename=None,
                                  endCoordinatesGeojsonFilename=None,
@@ -131,9 +132,6 @@ class MetropAccessDigiroadApplication:
             raise TransportModeNotDefinedException()
         if not startCoordinatesGeojsonFilename or not outputFolderPath:
             raise NotURLDefinedException()
-
-        startTime = time.time()
-        print("calculateTotalTimeTravel Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         if isinstance(costAttribute, dict):
             for key in costAttribute:
@@ -220,12 +218,6 @@ class MetropAccessDigiroadApplication:
                                                                             startPoint, startPointFeature, endPoint,
                                                                             endPointFeature, nearestEndPoint,
                                                                             nearestStartPoint, newOutputFolderPath)
-
-        endTime = time.time()
-        print("calculateTotalTimeTravel End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("calculateTotalTimeTravel Total Time: %s m" % totalTime)
 
     def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
                                                        startPointFeature, endPoint, endPointFeature, nearestEndPoint,
@@ -318,6 +310,7 @@ class MetropAccessDigiroadApplication:
 
         return featureProperties
 
+    @dgl_timer_enabled
     def createDetailedSummary(self, folderPath, costAttribute, outputFilename):
         """
         Given a set of Geojson (Geometry type: LineString) files, read all the files from the given ``folderPath`` and
@@ -329,8 +322,6 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the summary information in the folderPath with the name given in outputFilename.
         """
-        startTime = time.time()
-        print("createDetailedSummary Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         if not folderPath.endswith(os.sep):
             attributeFolderPath = folderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
@@ -410,12 +401,7 @@ class MetropAccessDigiroadApplication:
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
         self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
 
-        endTime = time.time()
-        print("createDetailedSummary End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("createDetailedSummary Total Time: %s m" % totalTime)
-
+    @dgl_timer_enabled
     def createGeneralSummary(self, startCoordinatesGeojsonFilename, endCoordinatesGeojsonFilename, costAttribute,
                              outputFolderPath, outputFilename):
         """
@@ -429,9 +415,6 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the information in the ``outputFolderPath``.
         """
-
-        startTime = time.time()
-        print("createGeneralSummary Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
             originalJsonURL=startCoordinatesGeojsonFilename,
@@ -544,15 +527,8 @@ class MetropAccessDigiroadApplication:
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
         self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
 
-        endTime = time.time()
-        print("createGeneralSummary End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("createGeneralSummary Total Time: %s m" % totalTime)
-
+    @dgl_timer
     def getVerticesID(self, geojson):
-        startTime = time.time()
-        print("getVerticesID Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         endEPSGCode = extractCRS(geojson)
         verticesID = []
@@ -575,14 +551,9 @@ class MetropAccessDigiroadApplication:
                 features.append(feature)
                 # print(returns)
 
-        endTime = time.time()
-        print("getVerticesID End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("getVerticesID Total Time: %s m" % totalTime)
-
         return verticesID, features
 
+    @dgl_timer
     def createCostSummaryMap(self, totals):
         """
 
@@ -602,8 +573,6 @@ class MetropAccessDigiroadApplication:
             }
             
         """
-        startTime = time.time()
-        print("createCostSummaryMap Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         costSummaryMap = {}
         for featureShortPathSummary in totals["features"]:
@@ -614,11 +583,5 @@ class MetropAccessDigiroadApplication:
 
             startVertexMap = costSummaryMap[startVertexID]
             startVertexMap[endVertexID] = featureShortPathSummary
-
-        endTime = time.time()
-        print("createCostSummaryMap End Time: %s" % getFormattedDatetime(timemilis=endTime))
-
-        totalTime = timeDifference(startTime, endTime)
-        print("createCostSummaryMap Total Time: %s m" % totalTime)
 
         return costSummaryMap
