@@ -108,7 +108,8 @@ class MetropAccessDigiroadApplication:
         self.reflection = Reflection()
         self.transportMode = transportMode
         self.nearestVerticesCache = {}
-        self.additionalFeaturePropertiesCache = {}
+        self.additionalStartFeaturePropertiesCache = {}
+        self.additionalEndFeaturePropertiesCache = {}
 
     def calculateTotalTimeTravel(self,
                                  startCoordinatesGeojsonFilename=None,
@@ -261,19 +262,19 @@ class MetropAccessDigiroadApplication:
         endFeatureProperties = {}
 
         pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
-        
+
         startPointId = startPointFeature["properties"][pointIdentifierKey]
         endPointId = endPointFeature["properties"][pointIdentifierKey]
 
-        existStartFeaturePropertiesCache = startPointId in self.additionalFeaturePropertiesCache
+        existStartFeaturePropertiesCache = startPointId in self.additionalStartFeaturePropertiesCache
         if existStartFeaturePropertiesCache:
-            startFeatureProperties = self.additionalFeaturePropertiesCache[startPointId]
+            startFeatureProperties = self.additionalStartFeaturePropertiesCache[startPointId]
 
-        existEndFeaturePropertiesCache = endPointId in self.additionalFeaturePropertiesCache
+        existEndFeaturePropertiesCache = endPointId in self.additionalEndFeaturePropertiesCache
         if existEndFeaturePropertiesCache:
-            endFeatureProperties = self.additionalFeaturePropertiesCache[endPointId]
-            
-        
+            endFeatureProperties = self.additionalEndFeaturePropertiesCache[endPointId]
+
+
             # self.additionalFeaturePropertiesCache[newPropertiesId] = newProperties
         if (not existStartFeaturePropertiesCache) or (not existEndFeaturePropertiesCache):
             additionalLayerOperationLinkedList = self.reflection.getLinkedAbstractAdditionalLayerOperation()
@@ -299,10 +300,10 @@ class MetropAccessDigiroadApplication:
                     endFeatureProperties.update(newPropertiesEndPointFeature)
 
         if not existStartFeaturePropertiesCache:
-            self.additionalFeaturePropertiesCache[startPointId] = copy.deepcopy(startFeatureProperties)
+            self.additionalStartFeaturePropertiesCache[startPointId] = copy.deepcopy(startFeatureProperties)
 
         if not existEndFeaturePropertiesCache:
-            self.additionalFeaturePropertiesCache[endPointId] = copy.deepcopy(endFeatureProperties)
+            self.additionalEndFeaturePropertiesCache[endPointId] = copy.deepcopy(endFeatureProperties)
 
         # featureProperties = {}
         # if existStartFeaturePropertiesCache:
