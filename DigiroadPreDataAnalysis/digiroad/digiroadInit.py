@@ -65,6 +65,7 @@ def main():
     }
 
     bicycle_impedances = {
+        "DISTANCE": CostAttributes.DISTANCE,
         "BICYCLE_FAST_TIME": CostAttributes.BICYCLE_FAST_TIME,
         "BICYCLE_SLOW_TIME": CostAttributes.BICYCLE_SLOW_TIME
 

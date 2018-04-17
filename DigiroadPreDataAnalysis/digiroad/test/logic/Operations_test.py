@@ -100,3 +100,11 @@ class OperationsTest(unittest.TestCase):
 
         self.assertEqual(euclideanDistanceExpected,
                          self.operations.calculateEuclideanDistance(startPoint, endPoint))
+
+    def test_transformPoint_to_newCoordinateSystem(self):
+        url = self.dir + '%digiroad%test%data%geojson%Subsets%1_Origs_WGS84.geojson'.replace("%", os.sep)
+        epsgCode = self.operations.extractCRSWithGeopandas(url)
+        print(epsgCode)
+        self.assertEqual("epsg:4326", epsgCode)
+
+

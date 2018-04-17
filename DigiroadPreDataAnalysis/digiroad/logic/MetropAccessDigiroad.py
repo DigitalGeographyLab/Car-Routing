@@ -155,7 +155,8 @@ class MetropAccessDigiroadApplication:
             outputFolderPath=outputFolderPath
         )
 
-        epsgCode = extractCRS(inputStartCoordinates)
+        epsgCode = self.operations.extractCRSWithGeopandas(
+            startCoordinatesGeojsonFilename)  # extractCRS(inputStartCoordinates)
 
         for startPointFeature in inputStartCoordinates["features"]:
             startCoordinates = startPointFeature["geometry"]["coordinates"]
@@ -168,7 +169,8 @@ class MetropAccessDigiroadApplication:
             startPointNearestVertexGeojson = self.transportMode.getNearestRoutableVertexFromAPoint(
                 startPoint)
             newFeatureStartPoint = startPointNearestVertexGeojson["features"][0]
-            startPointEPSGCode = extractCRS(startPointNearestVertexGeojson)
+            startPointEPSGCode = self.operations.extractCRSWithGeopandas(
+                startCoordinatesGeojsonFilename)  # extractCRS(startPointNearestVertexGeojson)
             nearestStartPoint = createPointFromPointFeature(newFeatureStartPoint, startPointEPSGCode)
             startVertexId = newFeatureStartPoint["properties"]["id"]
 
@@ -431,8 +433,10 @@ class MetropAccessDigiroadApplication:
         print("End merge additional layers")
 
         print("Start nearest vertices finding")
-        startVerticesID, startPointsFeaturesList = self.getVerticesID(inputStartCoordinates)
-        endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates)
+        epsgCode = self.operations.extractCRSWithGeopandas(startCoordinatesGeojsonFilename)
+        # epsgCode = self.operations.extractCRSWithGeopandas(endCoordinatesGeojsonFilename)
+        startVerticesID, startPointsFeaturesList = self.getVerticesID(inputStartCoordinates, epsgCode)
+        endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates, epsgCode)
         print("End nearest vertices finding")
 
         totals = None
@@ -539,9 +543,8 @@ class MetropAccessDigiroadApplication:
         self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
 
     @dgl_timer
-    def getVerticesID(self, geojson):
+    def getVerticesID(self, geojson, endEPSGCode):
 
-        endEPSGCode = extractCRS(geojson)
         verticesID = []
         features = []
 

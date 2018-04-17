@@ -151,3 +151,7 @@ class Operations:
         lng, lat = transform(inProj, outProj, point.getLongitude(), point.getLatitude())
 
         return Point(latitute=lat, longitude=lng, epsgCode=targetEPSGCode)
+
+    def extractCRSWithGeopandas(self, url):
+        pointsDF = gpd.read_file(url)
+        return pointsDF.crs["init"]
