@@ -129,7 +129,8 @@ class ParkingTimeOperation(AbstractAdditionalLayerOperation):
         """
 
         parkingTime = self.defaultParkingTime  # default parking time for any place in the metropolitan area rather than the city center
-        if self.parkingTimeAttribute in featureJson["properties"]:
+        if (self.parkingTimeAttribute in featureJson["properties"]) \
+                and featureJson["properties"][self.parkingTimeAttribute]:
             parkingTime = float(featureJson["properties"][self.parkingTimeAttribute])
 
         newProperties = {
