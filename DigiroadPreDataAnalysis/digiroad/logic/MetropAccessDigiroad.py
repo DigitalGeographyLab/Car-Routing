@@ -222,7 +222,7 @@ class MetropAccessDigiroadApplication:
                                                                             startPoint, startPointFeature, endPoint,
                                                                             endPointFeature, nearestEndPoint,
                                                                             nearestStartPoint, newOutputFolderPath)
-
+    @dgl_timer
     def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
                                                        startPointFeature, endPoint, endPointFeature, nearestEndPoint,
                                                        nearestStartPoint, outputFolderPath):
@@ -326,6 +326,7 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the summary information in the folderPath with the name given in outputFilename.
         """
+        Logger.getInstance().info("Start createDetailedSummary for: %s" % costAttribute)
 
         if not folderPath.endswith(os.sep):
             attributeFolderPath = folderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(costAttribute) + os.sep
@@ -419,6 +420,7 @@ class MetropAccessDigiroadApplication:
         :param outputFilename: Filename to give to the summary file.
         :return: None. Store the information in the ``outputFolderPath``.
         """
+        Logger.getInstance().info("Start createGeneralSummary for: %s" % costAttribute)
 
         Logger.getInstance().info("Start merge additional layers")
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
