@@ -132,43 +132,6 @@ def main():
         raise ImpedanceAttributeNotDefinedException(
             impedanceErrorMessage)
 
-    if not isEntryList:
-        prefix = ""
-        executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
-                                   impedance, transportModeSelected, bicycle_impedances,
-                                   car_impedances, allImpedanceAttribute,
-                                   costOnly,
-                                   prefix)
-    else:
-        for startRoot, startDirs, startFiles in os.walk(startPointsGeojsonFilename):
-            for startPointsFilename in startFiles:
-                if startPointsFilename.endswith("geojson"):
-
-                    for endRoot, endDirs, endFiles in os.walk(endPointsGeojsonFilename):
-                        for endPointsFilename in endFiles:
-                            if endPointsFilename.endswith("geojson"):
-
-                                executeSpatialDataAnalysis(outputFolder,
-                                                           os.path.join(startRoot, startPointsFilename),
-                                                           os.path.join(endRoot, endPointsFilename),
-                                                           impedance, transportModeSelected, bicycle_impedances,
-                                                           car_impedances, allImpedanceAttribute,
-                                                           costOnly,
-                                                           startPointsFilename + "_" + endPointsFilename + "-")
-
-
-def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
-                               impedance, transportModeSelected, bicycle_impedances, car_impedances, allImpedanceAttribute,
-                               costOnly, prefix):
-    Logger.configureLogger(outputFolder, prefix)
-    config = getConfigurationProperties()
-    # wfsServiceProvider = WFSServiceProvider(
-    #     wfs_url=config["wfs_url"],
-    #     nearestVertexTypeName=config["nearestVertexTypeName"],
-    #     nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
-    #     shortestPathTypeName=config["shortestPathTypeName"],
-    #     outputFormat=config["outputFormat"]
-    # )
     postgisServiceProvider = PostgisServiceProvider()
 
     transportMode = None
@@ -185,21 +148,61 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
         transportMode=transportMode
     )
 
+    if not isEntryList:
+        prefix = ""
+        executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
+                                   starter,
+                                   impedance, impedances, allImpedanceAttribute,
+                                   costOnly,
+                                   prefix)
+    else:
+        for startRoot, startDirs, startFiles in os.walk(startPointsGeojsonFilename):
+            for startPointsFilename in startFiles:
+                if startPointsFilename.endswith("geojson"):
+
+                    for endRoot, endDirs, endFiles in os.walk(endPointsGeojsonFilename):
+                        for endPointsFilename in endFiles:
+                            if endPointsFilename.endswith("geojson"):
+
+                                executeSpatialDataAnalysis(outputFolder,
+                                                           os.path.join(startRoot, startPointsFilename),
+                                                           os.path.join(endRoot, endPointsFilename),
+                                                           starter,
+                                                           impedance, impedances, allImpedanceAttribute,
+                                                           costOnly,
+                                                           startPointsFilename + "_" + endPointsFilename + "-")
+
+
+def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
+                               starterApplication,
+                               impedance, impedances, allImpedanceAttribute,
+                               costOnly,
+                               prefix):
+    Logger.configureLogger(outputFolder, prefix)
+    config = getConfigurationProperties()
+    # wfsServiceProvider = WFSServiceProvider(
+    #     wfs_url=config["wfs_url"],
+    #     nearestVertexTypeName=config["nearestVertexTypeName"],
+    #     nearestCarRoutingVertexTypeName=config["nearestCarRoutingVertexTypeName"],
+    #     shortestPathTypeName=config["shortestPathTypeName"],
+    #     outputFormat=config["outputFormat"]
+    # )
+
     if impedance and not allImpedanceAttribute:
         if not costOnly:
-            starter.calculateTotalTimeTravel(
+            starterApplication.calculateTotalTimeTravel(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 outputFolderPath=outputFolder,
                 costAttribute=impedance
             )
-            starter.createDetailedSummary(
+            starterApplication.createDetailedSummary(
                 folderPath=outputFolder,
                 costAttribute=impedance,
                 outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
             )
 
-        starter.createGeneralSummary(
+        starterApplication.createGeneralSummary(
             startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
             endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
             costAttribute=impedance,
@@ -209,7 +212,7 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
 
     if allImpedanceAttribute:
         if not costOnly:
-            starter.calculateTotalTimeTravel(
+            starterApplication.calculateTotalTimeTravel(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 outputFolderPath=outputFolder,
@@ -218,12 +221,12 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
 
         for key in impedances:
             if not costOnly:
-                starter.createDetailedSummary(
+                starterApplication.createDetailedSummary(
                     folderPath=outputFolder,
                     costAttribute=impedances[key],
                     outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
                 )
-            starter.createGeneralSummary(
+            starterApplication.createGeneralSummary(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 costAttribute=impedances[key],
