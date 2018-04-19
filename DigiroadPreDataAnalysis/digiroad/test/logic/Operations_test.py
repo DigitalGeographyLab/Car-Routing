@@ -109,7 +109,7 @@ class OperationsTest(unittest.TestCase):
         self.assertEqual("epsg:4326", epsgCode)
 
     def test_logger(self):
-        outputFolder = self.dir + '%digiroad%test%data%outputFolder%log'.replace("%", os.sep)
+        outputFolder = self.dir + '%digiroad%test%data%outputFolder%logs'.replace("%", os.sep)
         log_filename = "log.log"
         self.fileActions.createFile(outputFolder, log_filename)
 

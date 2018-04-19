@@ -334,9 +334,9 @@ class Logger:
         raise Exception("Instances must be constructed with Logger.getInstance()")
 
     @staticmethod
-    def configureLogger(outputFolder):
-        log_filename = "log - %s.log" % getFormattedDatetime(timemilis=time.time)
-        FileActions().createFile(outputFolder, log_filename)
+    def configureLogger(outputFolder, prefix):
+        log_filename = prefix + "_log - %s.log" % getFormattedDatetime(timemilis=time.time)
+        FileActions().createFile(outputFolder + os.sep + "logs", log_filename)
         fileHandler = logging.FileHandler(outputFolder + os.sep + log_filename, 'w')
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         fileHandler.setFormatter(formatter)
