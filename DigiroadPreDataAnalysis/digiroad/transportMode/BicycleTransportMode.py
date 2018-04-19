@@ -2,7 +2,7 @@ from joblib import Parallel, delayed
 
 from digiroad.connection.PostgisServiceProvider import executePostgisQueryReturningDataFrame
 from digiroad.transportMode import AbstractTransportMode
-from digiroad.util import getConfigurationProperties, FileActions, dgl_timer
+from digiroad.util import getConfigurationProperties, FileActions, dgl_timer, parallel_job_print, Logger
 
 
 class BicycleTransportMode(AbstractTransportMode):
@@ -205,7 +205,7 @@ class BicycleTransportMode(AbstractTransportMode):
         :return: Shortest path summary json.
         """
 
-        print("Start getTotalShortestPathCostOneToOne")
+        Logger.getInstance().info("Start getTotalShortestPathCostOneToOne")
 
         sql = "SELECT " \
               "s.id AS start_vertex_id," \
@@ -240,7 +240,7 @@ class BicycleTransportMode(AbstractTransportMode):
         # "s.id, e.id, r.agg_cost" \
 
         geojson = self.serviceProvider.execute(sql)
-        print("End getTotalShortestPathCostOneToOne")
+        Logger.getInstance().info("End getTotalShortestPathCostOneToOne")
         return geojson
 
     def getTotalShortestPathCostManyToOne(self, startVerticesID=[], endVertexID=None, costAttribute=None):
@@ -253,7 +253,7 @@ class BicycleTransportMode(AbstractTransportMode):
         :return: Shortest path summary json.
         """
 
-        print("Start getTotalShortestPathCostManyToOne")
+        Logger.getInstance().info("Start getTotalShortestPathCostManyToOne")
         sql = "SELECT " \
               "s.id AS start_vertex_id," \
               "e.id  AS end_vertex_id," \
@@ -288,7 +288,7 @@ class BicycleTransportMode(AbstractTransportMode):
 
 
         geojson = self.serviceProvider.execute(sql)
-        print("End getTotalShortestPathCostManyToOne")
+        Logger.getInstance().info("End getTotalShortestPathCostManyToOne")
         return geojson
 
     def getTotalShortestPathCostOneToMany(self, startVertexID=None, endVerticesID=[], costAttribute=None):
@@ -301,7 +301,7 @@ class BicycleTransportMode(AbstractTransportMode):
         :return: Shortest path summary json.
         """
 
-        print("Start getTotalShortestPathCostOneToMany")
+        Logger.getInstance().info("Start getTotalShortestPathCostOneToMany")
 
         sql = "SELECT " \
               "s.id AS start_vertex_id," \
@@ -337,7 +337,7 @@ class BicycleTransportMode(AbstractTransportMode):
 
 
         geojson = self.serviceProvider.execute(sql)
-        print("End getTotalShortestPathCostOneToMany")
+        Logger.getInstance().info("End getTotalShortestPathCostOneToMany")
         return geojson
 
     # def getTotalShortestPathCostManyToMany(self, startVerticesID=[], endVerticesID=[], costAttribute=None):
@@ -475,6 +475,7 @@ class BicycleTransportMode(AbstractTransportMode):
         with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
                       backend="threading",
                       verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
+            parallel._print = parallel_job_print
             returns = parallel(delayed(executePostgisQueryReturningDataFrame)(self.serviceProvider, sql)
                                for sql in sqlExecutionList)
 

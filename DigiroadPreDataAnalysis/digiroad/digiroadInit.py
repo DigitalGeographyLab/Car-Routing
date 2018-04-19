@@ -8,7 +8,8 @@ from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.transportMode.BicycleTransportMode import BicycleTransportMode
 from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
-from digiroad.util import CostAttributes, getConfigurationProperties, TransportModes
+from digiroad.util import CostAttributes, getConfigurationProperties, TransportModes, Logger, FileActions, \
+    getFormattedDatetime
 
 
 def printHelp():
@@ -122,6 +123,8 @@ def main():
     if not allImpedanceAttribute and not impedance:
         raise ImpedanceAttributeNotDefinedException(
             impedanceErrorMessage)
+
+    Logger.configureLogger(outputFolder)
 
     config = getConfigurationProperties()
 

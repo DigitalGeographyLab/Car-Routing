@@ -540,6 +540,7 @@ class PostgisServiceProvider(AbstractGeojsonProvider):
         #     with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
         #                   backend="threading",
         #                   verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
+        #         parallel._print = parallel_job_print
         #         returns = parallel(delayed(executePostgisQueryReturningDataFrame)(self, sql)
         #                            for sql in sqlExecutionList)
         #

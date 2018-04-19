@@ -1,10 +1,11 @@
+import logging
 import os
 import unittest
 
 from digiroad.connection.WFSServiceProvider import WFSServiceProvider
 from digiroad.entities import Point
 from digiroad.logic.Operations import Operations
-from digiroad.util import FileActions
+from digiroad.util import FileActions, Logger
 
 
 class OperationsTest(unittest.TestCase):
@@ -107,4 +108,14 @@ class OperationsTest(unittest.TestCase):
         print(epsgCode)
         self.assertEqual("epsg:4326", epsgCode)
 
+    def test_logger(self):
+        outputFolder = self.dir + '%digiroad%test%data%outputFolder%log'.replace("%", os.sep)
+        log_filename = "log.log"
+        self.fileActions.createFile(outputFolder, log_filename)
 
+        # Logger.getInstance().basicConfig(filename=log_filename)
+        fileh = logging.FileHandler(outputFolder + os.sep + log_filename, 'w')
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        fileh.setFormatter(formatter)
+        Logger.getInstance().addHandler(fileh)
+        Logger.getInstance().info("MY LOG")

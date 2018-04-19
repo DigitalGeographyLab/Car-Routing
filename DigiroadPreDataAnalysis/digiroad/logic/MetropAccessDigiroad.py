@@ -10,7 +10,7 @@ from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
 from digiroad.util import GeometryType, getEnglishMeaning, FileActions, extractCRS, createPointFromPointFeature, \
     getConfigurationProperties, dgl_timer_enabled, \
-    dgl_timer
+    dgl_timer, parallel_job_print, Logger
 
 
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
@@ -58,7 +58,7 @@ def createCostSummaryWithAdditionalProperties(self, costAttribute, startPointFea
     # if startVertexID == endVertexID:
     #     return None
     if (startVertexID not in costSummaryMap) or (endVertexID not in costSummaryMap[startVertexID]):
-        print("Not contained into the costSummaryMap:", startVertexID, endVertexID)
+        Logger.getInstance().warning("Not contained into the costSummaryMap: %s %s" % (startVertexID, endVertexID))
         return None
 
     summaryFeature = costSummaryMap[startVertexID][endVertexID]
@@ -344,7 +344,7 @@ class MetropAccessDigiroadApplication:
 
                 filemetadata = file.split("-")
                 if len(filemetadata) < 2:
-                    print(filemetadata)
+                    Logger.getInstance().info(filemetadata)
 
                 shortestPath = self.fileActions.readJson(url=attributeFolderPath + file)
 
@@ -399,7 +399,7 @@ class MetropAccessDigiroadApplication:
                                                                        endPoints
                     totals["features"].append(newSummaryFeature)
                 except Exception as err:
-                    print(err)
+                    Logger.getInstance().info(err)
 
         totals["totalFeatures"] = len(totals["features"])
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
@@ -420,7 +420,7 @@ class MetropAccessDigiroadApplication:
         :return: None. Store the information in the ``outputFolderPath``.
         """
 
-        print("Start merge additional layers")
+        Logger.getInstance().info("Start merge additional layers")
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
             originalJsonURL=startCoordinatesGeojsonFilename,
             outputFolderPath=outputFolderPath
@@ -430,18 +430,18 @@ class MetropAccessDigiroadApplication:
             originalJsonURL=endCoordinatesGeojsonFilename,
             outputFolderPath=outputFolderPath
         )
-        print("End merge additional layers")
+        Logger.getInstance().info("End merge additional layers")
 
-        print("Start nearest vertices finding")
+        Logger.getInstance().info("Start nearest vertices finding")
         epsgCode = self.operations.extractCRSWithGeopandas(startCoordinatesGeojsonFilename)
         # epsgCode = self.operations.extractCRSWithGeopandas(endCoordinatesGeojsonFilename)
         startVerticesID, startPointsFeaturesList = self.getVerticesID(inputStartCoordinates, epsgCode)
         endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates, epsgCode)
-        print("End nearest vertices finding")
+        Logger.getInstance().info("End nearest vertices finding")
 
         totals = None
 
-        print("Start cost summary calculation")
+        Logger.getInstance().info("Start cost summary calculation")
         if len(startVerticesID) == 1 and len(endVerticesID) == 1:
             totals = self.transportMode.getTotalShortestPathCostOneToOne(
                 startVertexID=startVerticesID[0],
@@ -466,7 +466,7 @@ class MetropAccessDigiroadApplication:
                 endVerticesID=endVerticesID,
                 costAttribute=costAttribute
             )
-        print("End cost summary calculation")
+        Logger.getInstance().info("End cost summary calculation")
 
         costSummaryMap = self.createCostSummaryMap(totals)
         # summaryFeature = costSummaryMap[startVertexID][endVertexID]
@@ -511,11 +511,12 @@ class MetropAccessDigiroadApplication:
         #             features.append(newFeature)
         ################################################################################################################
 
-        print("Start createCostSummaryWithAdditionalProperties")
+        Logger.getInstance().info("Start createCostSummaryWithAdditionalProperties")
         with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
                       backend="threading",
                       verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
             # while len(verticesID) <= len(geojson["features"]):
+            parallel._print = parallel_job_print
             returns = parallel(delayed(createCostSummaryWithAdditionalProperties)(self,
                                                                                   costAttribute,
                                                                                   copy.deepcopy(startPointFeature),
@@ -529,7 +530,7 @@ class MetropAccessDigiroadApplication:
                     features.append(newFeature)
                     # print(returns)
 
-        print("End createCostSummaryWithAdditionalProperties")
+        Logger.getInstance().info("End createCostSummaryWithAdditionalProperties")
 
         ################################################################################################################
 
@@ -557,6 +558,7 @@ class MetropAccessDigiroadApplication:
                       backend="threading",
                       verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
             # while len(verticesID) <= len(geojson["features"]):
+            parallel._print = parallel_job_print
             returns = parallel(
                 delayed(extractFeatureInformation)(self, endEPSGCode, feature, self.transportMode, self.operations)
                 for feature in geojson["features"])

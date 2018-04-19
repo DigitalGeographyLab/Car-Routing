@@ -5,7 +5,7 @@ from owslib.util import openURL
 
 from digiroad.connection import AbstractGeojsonProvider
 from digiroad.logic.Operations import Operations
-from digiroad.util import FileActions, getFormattedDatetime, timeDifference
+from digiroad.util import FileActions, getFormattedDatetime, timeDifference, Logger
 
 
 class WFSServiceProvider(AbstractGeojsonProvider):
@@ -34,17 +34,17 @@ class WFSServiceProvider(AbstractGeojsonProvider):
         :return: Downloaded Json.
         """
         startTime = time.time()
-        print("requestFeatures Start Time: %s" % getFormattedDatetime(timemilis=startTime))
+        Logger.getInstance().info("requestFeatures Start Time: %s" % getFormattedDatetime(timemilis=startTime))
 
         u = openURL(url)
 
         geojson = json.loads(u.read().decode('utf-8'))
 
         endTime = time.time()
-        print("requestFeatures End Time: %s" % getFormattedDatetime(timemilis=endTime))
+        Logger.getInstance().info("requestFeatures End Time: %s" % getFormattedDatetime(timemilis=endTime))
 
         totalTime = timeDifference(startTime, endTime)
-        print("requestFeatures Total Time: %s m" % totalTime)
+        Logger.getInstance().info("requestFeatures Total Time: %s m" % totalTime)
 
         return geojson
 

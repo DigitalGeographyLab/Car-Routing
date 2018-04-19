@@ -1,6 +1,8 @@
 import configparser
 import datetime
 import json
+import logging
+import logging.config
 import os
 import shutil
 import time
@@ -244,16 +246,22 @@ class FileActions:
         if not os.path.exists(folderPath):
             os.makedirs(folderPath)
 
-        fileURL = folderPath + "/%s" % filename
+        fileURL = folderPath + "%s%s" % (os.sep, filename)
 
         with open(fileURL, 'w+') as outfile:
             json.dump(data, outfile, sort_keys=True)
 
+    def createFile(self, folderPath, filename):
+        if not os.path.exists(folderPath):
+            os.makedirs(folderPath)
+        with open(folderPath + os.sep + filename, 'w+') as outfile:
+            outfile.close()
+
     def deleteFolder(self, path):
-        print("Deleting FOLDER %s" % path)
+        Logger.getInstance().info("Deleting FOLDER %s" % path)
         if os.path.exists(path):
             shutil.rmtree(path)
-        print("The FOLDER %s was deleted" % path)
+        Logger.getInstance().info("The FOLDER %s was deleted" % path)
 
 
 def dgl_timer(func):
@@ -262,17 +270,17 @@ def dgl_timer(func):
         if timerEnabled:
             functionName = func.__name__
             startTime = time.time()
-            print("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+            Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
 
             ###############################
             returns = func(*args, **kwargs)
             ###############################
 
             endTime = time.time()
-            print("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+            Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
 
             totalTime = timeDifference(startTime, endTime)
-            print("%s Total Time: %s m" % (functionName, totalTime))
+            Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
 
             return returns
         else:
@@ -285,18 +293,68 @@ def dgl_timer_enabled(func):
     def func_wrapper(*args, **kwargs):
         functionName = func.__name__
         startTime = time.time()
-        print("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+        Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
 
         ###############################
         returns = func(*args, **kwargs)
         ###############################
 
         endTime = time.time()
-        print("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+        Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
 
         totalTime = timeDifference(startTime, endTime)
-        print("%s Total Time: %s m" % (functionName, totalTime))
+        Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
 
         return returns
 
     return func_wrapper
+
+
+def parallel_job_print(msg, msg_args):
+    """ Display the message on stout or stderr depending on verbosity
+    """
+    # XXX: Not using the logger framework: need to
+    # learn to use logger better.
+    # if not self.verbose:
+    #     return
+    # if self.verbose < 50:
+    #     writer = sys.stderr.write
+    # else:
+    #     writer = sys.stdout.write
+    msg = msg % msg_args
+    self = "Parallel(n_jobs=%s)" % getConfigurationProperties(section="PARALLELIZATION")["jobs"]
+    # writer('[%s]: %s\n' % (self, msg))
+    Logger.getInstance().info('[%s]: %s' % (self, msg))
+
+
+class Logger:
+    __instance = None
+
+    def __init__(self):
+        raise Exception("Instances must be constructed with Logger.getInstance()")
+
+    @staticmethod
+    def configureLogger(outputFolder):
+        log_filename = "log - %s.log" % getFormattedDatetime(timemilis=time.time)
+        FileActions().createFile(outputFolder, log_filename)
+        fileHandler = logging.FileHandler(outputFolder + os.sep + log_filename, 'w')
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        fileHandler.setFormatter(formatter)
+        Logger.getInstance().addHandler(fileHandler)
+
+    @staticmethod
+    def getInstance():
+        if not Logger.__instance:
+            configurationPath = os.getcwd() + "%resources%logging.properties".replace("%", os.sep)
+
+            logging.config.fileConfig(configurationPath)
+
+            # create logger
+            Logger.__instance = logging.getLogger("CARDAT")
+        # "application" code
+        # Logger.instance.debug("debug message")
+        # Logger.instance.info("info message")
+        # Logger.instance.warn("warn message")
+        # Logger.instance.error("error message")
+        # Logger.instance.critical("critical message")
+        return Logger.__instance

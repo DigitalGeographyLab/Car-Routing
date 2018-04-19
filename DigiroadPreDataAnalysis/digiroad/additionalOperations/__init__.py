@@ -90,10 +90,11 @@ class WalkingTimeOperation(AbstractAdditionalLayerOperation):
                 euclideanDistanceStartPoint = featureJson["properties"][property]
                 break
 
-        if self.walkingDistanceAttribute in featureJson["properties"]:
+        if (self.walkingDistanceAttribute in featureJson["properties"]) \
+                and featureJson["properties"][self.walkingDistanceAttribute]:
             walkingDistance = featureJson["properties"][self.walkingDistanceAttribute]
         else:
-            walkingDistance = self.defaultWalkingDistance  # 135
+            walkingDistance = self.defaultWalkingDistance
 
         euclideanDistanceTime = self.operations.calculateTime(
             euclideanDistanceStartPoint,
