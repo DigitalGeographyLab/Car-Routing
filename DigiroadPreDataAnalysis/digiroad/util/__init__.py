@@ -347,7 +347,7 @@ class Logger:
 
     @staticmethod
     def configureLogger(outputFolder, prefix):
-        log_filename = prefix + "_log - %s.log" % getFormattedDatetime(timemilis=time.time)
+        log_filename = prefix + "_log - %s.log" % getFormattedDatetime(timemilis=time.time())
         FileActions().createFile(outputFolder + os.sep + "logs", log_filename)
         fileHandler = logging.FileHandler(outputFolder + os.sep + log_filename, 'w')
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
