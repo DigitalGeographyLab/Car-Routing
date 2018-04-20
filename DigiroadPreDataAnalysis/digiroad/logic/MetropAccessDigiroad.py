@@ -222,6 +222,7 @@ class MetropAccessDigiroadApplication:
                                                                             startPoint, startPointFeature, endPoint,
                                                                             endPointFeature, nearestEndPoint,
                                                                             nearestStartPoint, newOutputFolderPath)
+
     @dgl_timer
     def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
                                                        startPointFeature, endPoint, endPointFeature, nearestEndPoint,
@@ -543,7 +544,20 @@ class MetropAccessDigiroadApplication:
             summaryFolderPath = outputFolderPath + "summary" + os.sep
 
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
-        self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
+        filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
+
+        self.fileActions.compressOutputFile(
+            folderPath=summaryFolderPath,
+            zip_filename="summary.zip",
+            filepath=filepath
+        )
+
+        debug = False
+        if "debug" in getConfigurationProperties(section="WFS_CONFIG"):
+            debug = "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["debug"])
+
+        if not debug:
+            self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=outputFilename)
 
     @dgl_timer
     def getVerticesID(self, geojson, endEPSGCode):

@@ -6,6 +6,7 @@ import logging.config
 import os
 import shutil
 import time
+import zipfile
 
 from digiroad import carRoutingExceptions as exc
 from digiroad.entities import Point
@@ -81,6 +82,52 @@ def createPointFromPointFeature(newFeaturePoint, epsgCode):
                               longitude=startNearestVertexCoordinates[0],
                               epsgCode=epsgCode)
     return nearestStartPoint
+
+
+def dgl_timer(func):
+    def func_wrapper(*args, **kwargs):
+        timerEnabled = "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["timerEnabled"])
+        if timerEnabled:
+            functionName = func.__name__
+            startTime = time.time()
+            Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+
+            ###############################
+            returns = func(*args, **kwargs)
+            ###############################
+
+            endTime = time.time()
+            Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+
+            totalTime = timeDifference(startTime, endTime)
+            Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
+
+            return returns
+        else:
+            return func(*args, **kwargs)
+
+    return func_wrapper
+
+
+def dgl_timer_enabled(func):
+    def func_wrapper(*args, **kwargs):
+        functionName = func.__name__
+        startTime = time.time()
+        Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+
+        ###############################
+        returns = func(*args, **kwargs)
+        ###############################
+
+        endTime = time.time()
+        Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+
+        totalTime = timeDifference(startTime, endTime)
+        Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
+
+        return returns
+
+    return func_wrapper
 
 
 class AbstractLinkedList(object):
@@ -251,11 +298,17 @@ class FileActions:
         with open(fileURL, 'w+') as outfile:
             json.dump(data, outfile, sort_keys=True)
 
+        return fileURL
+
     def createFile(self, folderPath, filename):
         if not os.path.exists(folderPath):
             os.makedirs(folderPath)
         with open(folderPath + os.sep + filename, 'w+') as outfile:
             outfile.close()
+
+    def deleteFile(self, folderPath, filename):
+        if os.path.exists(folderPath + os.sep + filename):
+            os.remove(folderPath + os.sep + filename)
 
     def deleteFolder(self, path):
         Logger.getInstance().info("Deleting FOLDER %s" % path)
@@ -263,51 +316,10 @@ class FileActions:
             shutil.rmtree(path)
         Logger.getInstance().info("The FOLDER %s was deleted" % path)
 
-
-def dgl_timer(func):
-    def func_wrapper(*args, **kwargs):
-        timerEnabled = "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["timerEnabled"])
-        if timerEnabled:
-            functionName = func.__name__
-            startTime = time.time()
-            Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
-
-            ###############################
-            returns = func(*args, **kwargs)
-            ###############################
-
-            endTime = time.time()
-            Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
-
-            totalTime = timeDifference(startTime, endTime)
-            Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
-
-            return returns
-        else:
-            return func(*args, **kwargs)
-
-    return func_wrapper
-
-
-def dgl_timer_enabled(func):
-    def func_wrapper(*args, **kwargs):
-        functionName = func.__name__
-        startTime = time.time()
-        Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
-
-        ###############################
-        returns = func(*args, **kwargs)
-        ###############################
-
-        endTime = time.time()
-        Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
-
-        totalTime = timeDifference(startTime, endTime)
-        Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
-
-        return returns
-
-    return func_wrapper
+    @dgl_timer
+    def compressOutputFile(self, folderPath, zip_filename, filepath):
+        zipf = zipfile.ZipFile(folderPath + os.sep + zip_filename, "a", zipfile.ZIP_DEFLATED, allowZip64=True)
+        zipf.write(filepath, os.path.basename(filepath))
 
 
 def parallel_job_print(msg, msg_args):
