@@ -53,7 +53,8 @@ def main():
     argv = sys.argv[1:]
     opts, args = getopt.getopt(
         argv, "s:e:o:c:t:",
-        ["start_point=", "end_point=", "outputFolder=", "cost", "transportMode", "cost_only", "all", "help"]
+        ["start_point=", "end_point=", "outputFolder=", "cost",
+         "transportMode", "is_entry_list", "cost_only", "all", "help"]
     )
 
     startPointsGeojsonFilename = None
