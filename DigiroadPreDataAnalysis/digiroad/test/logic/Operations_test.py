@@ -1,4 +1,3 @@
-import logging
 import os
 import unittest
 
@@ -109,13 +108,9 @@ class OperationsTest(unittest.TestCase):
         self.assertEqual("epsg:4326", epsgCode)
 
     def test_logger(self):
-        outputFolder = self.dir + '%digiroad%test%data%outputFolder%logs'.replace("%", os.sep)
-        log_filename = "log.log"
-        self.fileActions.createFile(outputFolder, log_filename)
+        outputFolder = self.dir + '%digiroad%test%data%outputFolder'.replace("%", os.sep)
 
-        # Logger.getInstance().basicConfig(filename=log_filename)
-        fileh = logging.FileHandler(outputFolder + os.sep + log_filename, 'w')
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        fileh.setFormatter(formatter)
-        Logger.getInstance().addHandler(fileh)
+        Logger.configureLogger(outputFolder=outputFolder,
+                               prefix="prefix")
+
         Logger.getInstance().info("MY LOG")
