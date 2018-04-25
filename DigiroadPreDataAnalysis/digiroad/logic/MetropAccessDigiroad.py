@@ -563,6 +563,10 @@ class MetropAccessDigiroadApplication:
 
         csv_separator = getConfigurationProperties(section="WFS_CONFIG")["csv_separator"]
         csv_path = os.path.join(summaryFolderPath, outputFilename + ".csv")
+
+        if not os.path.exists(summaryFolderPath):
+            os.makedirs(summaryFolderPath)
+            
         dataframeSummary.to_csv(csv_path, sep=csv_separator, index=False)
 
         filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson",
