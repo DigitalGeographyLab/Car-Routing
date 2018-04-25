@@ -3,6 +3,7 @@ import datetime
 import json
 import logging
 import logging.config
+import numpy
 import os
 import shutil
 import time
@@ -10,6 +11,8 @@ import zipfile
 
 from digiroad import carRoutingExceptions as exc
 from digiroad.entities import Point
+
+from pandas.io.json import json_normalize
 
 
 def enum(**enums):
@@ -320,6 +323,16 @@ class FileActions:
     def compressOutputFile(self, folderPath, zip_filename, filepath):
         zipf = zipfile.ZipFile(folderPath + os.sep + zip_filename, "a", zipfile.ZIP_DEFLATED, allowZip64=True)
         zipf.write(filepath, os.path.basename(filepath))
+
+    @dgl_timer
+    def transformGeojsonInDataFrame(self, geojson):
+        if "features" in geojson:
+            df = json_normalize(geojson["features"])
+            columns = numpy.asarray([column.replace("properties.", "") for column in df.columns.values])
+            df.columns = columns
+            return df
+
+        return None
 
 
 def parallel_job_print(msg, msg_args):

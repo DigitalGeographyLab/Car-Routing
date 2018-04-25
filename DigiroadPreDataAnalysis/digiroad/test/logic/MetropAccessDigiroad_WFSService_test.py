@@ -158,7 +158,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="oneToOneCostSummary.geojson"
+            outputFilename="oneToOneCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -182,7 +182,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="oneToManyCostSummary.geojson"
+            outputFilename="oneToManyCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -207,7 +207,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="manyToOneCostSummary.geojson"
+            outputFilename="manyToOneCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -232,7 +232,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="manyToManyCostSummary.geojson"
+            outputFilename="manyToManyCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -258,7 +258,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.RUSH_HOUR_DELAY,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="YKRCostSummary-5.geojson"
+            outputFilename="YKRCostSummary-5"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep

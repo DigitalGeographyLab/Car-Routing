@@ -543,8 +543,30 @@ class MetropAccessDigiroadApplication:
         else:
             summaryFolderPath = outputFolderPath + "summary" + os.sep
 
+        pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+        columns = {
+            "startPoint_" + pointIdentifierKey: "ykr_from_id",
+            "endPoint_" + pointIdentifierKey: "ykr_to_id",
+            "total_travel_time": "travel_time"
+        }
+
+        dataframeSummary = self.operations.calculateTravelTimeFromGeojsonObject(
+            travelTimeSummary=totals
+        )
+
+        dataframeSummary = self.operations.renameColumnsAndExtractSubSet(
+            travelTimeMatrix=dataframeSummary,
+            columns=columns
+        )
+
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
-        filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
+
+        csv_separator = getConfigurationProperties(section="WFS_CONFIG")["csv_separator"]
+        csv_path = os.path.join(summaryFolderPath, outputFilename + ".csv")
+        dataframeSummary.to_csv(csv_path, sep=csv_separator, index=False)
+
+        filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson",
+                                              data=totals)
 
         self.fileActions.compressOutputFile(
             folderPath=summaryFolderPath,
@@ -552,12 +574,19 @@ class MetropAccessDigiroadApplication:
             filepath=filepath
         )
 
+        self.fileActions.compressOutputFile(
+            folderPath=summaryFolderPath,
+            zip_filename="summary_csv.zip",
+            filepath=csv_path
+        )
+
         debug = False
         if "debug" in getConfigurationProperties(section="WFS_CONFIG"):
             debug = "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["debug"])
 
         if not debug:
-            self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=outputFilename)
+            self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson")
+            self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=outputFilename + ".csv")
 
     @dgl_timer
     def getVerticesID(self, geojson, endEPSGCode):

@@ -104,7 +104,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         # outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderNotFast3%'.replace("%", os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
 
-        distanceCostAttribute = CostAttributes.DISTANCE
+        distanceCostAttribute = CostAttributes.RUSH_HOUR_DELAY
         # distanceCostAttribute = {
         #     "DISTANCE": CostAttributes.DISTANCE,
         #     "SPEED_LIMIT_TIME": CostAttributes.SPEED_LIMIT_TIME,
@@ -141,12 +141,12 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
         expectedResult = self.fileActions.readJson(expectedJsonURL)
         self.metroAccessDigiroad.createDetailedSummary(outputFolderFeaturesURL,
-                                                       CostAttributes.DISTANCE, "metroAccessDigiroadSummary.geojson")
+                                                       CostAttributes.RUSH_HOUR_DELAY, "metroAccessDigiroadSummary.geojson")
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
         summaryResult = self.fileActions.readJson(
             summaryOutputFolderFeaturesURL + getEnglishMeaning(
-                CostAttributes.DISTANCE) + "_metroAccessDigiroadSummary.geojson")
+                CostAttributes.RUSH_HOUR_DELAY) + "_metroAccessDigiroadSummary.geojson")
 
         self.assertEqual(expectedResult, summaryResult)
 
@@ -165,7 +165,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="oneToOneCostSummary.geojson"
+            outputFilename="oneToOneCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -191,7 +191,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="oneToManyCostSummary.geojson"
+            outputFilename="oneToManyCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -217,7 +217,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="manyToOneCostSummary.geojson"
+            outputFilename="manyToOneCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -247,7 +247,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.DISTANCE,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="manyToManyCostSummary.geojson"
+            outputFilename="manyToManyCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -282,7 +282,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.RUSH_HOUR_DELAY,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="YKRCostSummary-13000-5.geojson"
+            outputFilename="YKRCostSummary-13000-5"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep

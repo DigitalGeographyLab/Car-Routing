@@ -7,7 +7,7 @@ import nvector as nv
 from pyproj import Proj, transform
 
 from digiroad.entities import Point
-from digiroad.util import getConfigurationProperties, GPD_CRS, dgl_timer
+from digiroad.util import getConfigurationProperties, GPD_CRS, dgl_timer, Logger
 
 from digiroad.util import getFormattedDatetime, timeDifference
 
@@ -155,3 +155,40 @@ class Operations:
     def extractCRSWithGeopandas(self, url):
         pointsDF = gpd.read_file(url)
         return pointsDF.crs["init"]
+
+    @dgl_timer
+    def calculateTravelTimeFromGeojsonFile(self, travelTimeSummaryURL):
+        travelTimeSummaryDF = gpd.GeoDataFrame.from_file(travelTimeSummaryURL)
+        return self.calculateTravelTimeFromDataframe(travelTimeSummaryDF)
+
+    @dgl_timer
+    def calculateTravelTimeFromGeojsonObject(self, travelTimeSummary):
+        if "features" in travelTimeSummary:
+            travelTimeSummaryDF = self.fileActions.transformGeojsonInDataFrame(travelTimeSummary)
+            return self.calculateTravelTimeFromDataframe(travelTimeSummaryDF)
+
+    @dgl_timer
+    def calculateTravelTimeFromDataframe(self, travelTimeSummaryDF):
+        Logger.getInstance().info("Dataframe length=%s" % len(travelTimeSummaryDF))
+
+        if len(travelTimeSummaryDF["costAttribute"]) > 0:
+            costAttribute = travelTimeSummaryDF["costAttribute"][0]
+            travelTimeSummaryDF["total_travel_time"] = travelTimeSummaryDF.startPoint_EuclideanDistanceWalkingTime + \
+                                                       travelTimeSummaryDF.startPoint_AVGWalkingDistanceWalkingTime + \
+                                                       travelTimeSummaryDF[costAttribute] + \
+                                                       travelTimeSummaryDF.endPoint_ParkingTime + \
+                                                       travelTimeSummaryDF.endPoint_AVGWalkingDistanceWalkingTime + \
+                                                       travelTimeSummaryDF.endPoint_EuclideanDistanceWalkingTime
+
+        return travelTimeSummaryDF
+
+    @dgl_timer
+    def renameColumnsAndExtractSubSet(self, travelTimeMatrix, columns, geometryColumn="geometry"):
+        if columns:
+            keys = [key for key in columns]
+
+            # keys.append(geometryColumn) # the geometry is removed, it will be used the join with the grid centroid table
+
+            travelTimeMatrix = travelTimeMatrix[keys]
+            travelTimeMatrix = travelTimeMatrix.rename(index=str, columns=columns)
+        return travelTimeMatrix

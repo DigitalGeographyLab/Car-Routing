@@ -208,7 +208,7 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
             endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
             costAttribute=impedance,
             outputFolderPath=outputFolder,
-            outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary.geojson"
+            outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary"
         )
 
     if allImpedanceAttribute:
@@ -232,5 +232,5 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 costAttribute=impedances[key],
                 outputFolderPath=outputFolder,
-                outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary.geojson"
+                outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary"
             )

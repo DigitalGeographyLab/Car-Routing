@@ -162,7 +162,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.BICYCLE_FAST_TIME,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="oneToOneCostSummary.geojson"
+            outputFilename="oneToOneCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -188,7 +188,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.BICYCLE_FAST_TIME,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="oneToManyCostSummary.geojson"
+            outputFilename="oneToManyCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -214,7 +214,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.BICYCLE_FAST_TIME,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="manyToOneCostSummary.geojson"
+            outputFilename="manyToOneCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -244,7 +244,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.BICYCLE_FAST_TIME,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="manyToManyCostSummary.geojson"
+            outputFilename="manyToManyCostSummary"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
@@ -279,7 +279,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             endCoordinatesGeojsonFilename=endInputCoordinatesURL,
             costAttribute=CostAttributes.BICYCLE_FAST_TIME,
             outputFolderPath=outputFolderFeaturesURL,
-            outputFilename="BicycleRoadNetwork-13000-5.geojson"
+            outputFilename="BicycleRoadNetwork-13000-5"
         )
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
