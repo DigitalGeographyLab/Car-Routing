@@ -166,8 +166,9 @@ class BicycleTransportMode(AbstractTransportMode):
               "min(r.seq) AS seq, " \
               "e.id AS id, " \
               "e.liikennevi::integer as direction," \
-              "sum(e.fast_time) AS distance," \
-              "sum(e.slow_time) AS speed_limit_time," \
+              "sum(e.pituus) AS distance," \
+              "sum(e.fast_time) AS fast_time," \
+              "sum(e.slow_time) AS slow_time," \
               "ST_SnapToGrid(e.the_geom, 0.00000001) AS geom " \
               "FROM " \
               "pgr_dijkstra('SELECT " \

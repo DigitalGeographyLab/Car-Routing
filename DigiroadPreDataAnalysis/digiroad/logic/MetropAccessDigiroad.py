@@ -401,7 +401,8 @@ class MetropAccessDigiroadApplication:
                                                                        endPoints
                     totals["features"].append(newSummaryFeature)
                 except Exception as err:
-                    Logger.getInstance().info(err)
+                    Logger.getInstance().exception(err)
+                    raise err
 
         totals["totalFeatures"] = len(totals["features"])
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
