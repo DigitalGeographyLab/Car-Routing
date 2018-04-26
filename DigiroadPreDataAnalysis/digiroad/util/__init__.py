@@ -1,4 +1,5 @@
 import configparser
+import csv
 import datetime
 import json
 import logging
@@ -333,6 +334,32 @@ class FileActions:
             return df
 
         return None
+
+    def writeInCSV(self, folderPath, filename, valueList):
+        if not os.path.exists(folderPath):
+            os.makedirs(folderPath)
+
+        file = folderPath + os.sep + filename
+
+        if not os.path.isfile(file):
+            fieldList = []
+
+            attributes = getConfigurationProperties(section="ATTRIBUTES_MAPPING")
+
+            for attribute_key in attributes:
+                attribute_splitted = attributes[attribute_key].split(",")
+                key = attribute_splitted[0]
+                value = attribute_splitted[1]
+                fieldList.append(value)
+
+            with open(file, 'w', newline='') as outputFile:
+                writer = csv.writer(outputFile, delimiter=';')
+                writer.writerow(fieldList)
+                writer.writerow(valueList)
+        else:
+            with open(file, 'a', newline='') as outputFile:
+                writer = csv.writer(outputFile, delimiter=';')
+                writer.writerow(valueList)
 
 
 def parallel_job_print(msg, msg_args):

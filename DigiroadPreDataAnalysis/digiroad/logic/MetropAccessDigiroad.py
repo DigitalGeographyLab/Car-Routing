@@ -14,6 +14,7 @@ from digiroad.util import GeometryType, getEnglishMeaning, FileActions, extractC
 
 
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
+from digiroad.util import CostAttributes
 
 
 def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider, operations):
@@ -212,21 +213,62 @@ class MetropAccessDigiroadApplication:
                         for key in costAttribute:
                             newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
                                 costAttribute[key]) + os.sep
+                            csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                                endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(
+                                costAttribute[key]) + "_costSummary.csv"
+
                             self.createShortestPathFileWithAdditionalProperties(costAttribute[key], startVertexId,
                                                                                 endVertexId,
                                                                                 startPoint, startPointFeature, endPoint,
                                                                                 endPointFeature, nearestEndPoint,
-                                                                                nearestStartPoint, newOutputFolderPath)
+                                                                                nearestStartPoint, outputFolderPath,
+                                                                                newOutputFolderPath, csv_filename)
                     else:
+                        csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                            endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute) + "_costSummary.csv"
+
                         self.createShortestPathFileWithAdditionalProperties(costAttribute, startVertexId, endVertexId,
                                                                             startPoint, startPointFeature, endPoint,
                                                                             endPointFeature, nearestEndPoint,
-                                                                            nearestStartPoint, newOutputFolderPath)
+                                                                            nearestStartPoint, outputFolderPath,
+                                                                            newOutputFolderPath, csv_filename)
+
+        if isinstance(costAttribute, dict):
+            for key in costAttribute:
+                csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                    endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute[key]) + "_costSummary.csv"
+
+                self.storeCSVFile(outputFolderPath, csv_filename)
+        else:
+            csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute) + "_costSummary.csv"
+
+            self.storeCSVFile(outputFolderPath, csv_filename)
+
+    def storeCSVFile(self, outputFolderPath, csv_filename):
+        if not outputFolderPath.endswith(os.sep):
+            summaryFolderPath = outputFolderPath + os.sep + "summary" + os.sep
+        else:
+            summaryFolderPath = outputFolderPath + "summary" + os.sep
+
+        self.fileActions.compressOutputFile(
+            folderPath=summaryFolderPath,
+            zip_filename=csv_filename + "_summary_csv.zip",
+            filepath=summaryFolderPath + os.sep + csv_filename
+        )
+
+        debug = False
+        if "debug" in getConfigurationProperties(section="WFS_CONFIG"):
+            debug = "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["debug"])
+
+        if not debug:
+            # self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson")
+            self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=csv_filename)
 
     @dgl_timer
     def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
                                                        startPointFeature, endPoint, endPointFeature, nearestEndPoint,
-                                                       nearestStartPoint, outputFolderPath):
+                                                       nearestStartPoint, roorPath, outputFolderPath, csv_filename):
         shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
                                                           endVertexId=endVertexId,
                                                           cost=costAttribute)
@@ -244,15 +286,40 @@ class MetropAccessDigiroadApplication:
         shortestPath["overallProperties"]["nearestEndCoordinates"] = [nearestEndPoint.getLongitude(),
                                                                       nearestEndPoint.getLatitude()]
 
+        shortestPath["overallProperties"]["startVertexId"] = startVertexId
+        shortestPath["overallProperties"]["endVertexId"] = endVertexId
+
         if "totalFeatures" not in shortestPath:
             shortestPath["totalFeatures"] = len(shortestPath["features"])
+
+        pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+
+        startPointIdentifier = startPointFeature["properties"][pointIdentifierKey]
+        endPointIdentifier = endPointFeature["properties"][pointIdentifierKey]
 
         filename = "shortestPath"
         extension = "geojson"
         completeFilename = "%s-%s-%s-%s.%s" % (
-            filename, getEnglishMeaning(costAttribute), startVertexId, endVertexId, extension)
-        self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
-                                   data=shortestPath)
+            filename, getEnglishMeaning(costAttribute), startPointIdentifier, endPointIdentifier, extension)
+
+        startPointId, endPointId, totalDistance, totalTravelTime = self.calculateSmallSummary(
+            shortestPath=shortestPath,
+            costAttribute=CostAttributes.BICYCLE_FAST_TIME
+        )
+
+        if not roorPath.endswith(os.sep):
+            summaryFolderPath = roorPath + os.sep + "summary" + os.sep
+        else:
+            summaryFolderPath = roorPath + "summary" + os.sep
+
+        valueList = [startPointId, endPointId, totalDistance, totalTravelTime]
+        self.fileActions.writeInCSV(summaryFolderPath, csv_filename, valueList)
+
+        if "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["storeShortPathFile"]):
+            self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
+                                       data=shortestPath)
+
+        return outputFolderPath, completeFilename, summaryFolderPath, csv_filename
 
     def insertAdditionalProperties(self, startPointFeature, endPointFeature):
         startFeatureProperties = {}
@@ -360,8 +427,8 @@ class MetropAccessDigiroadApplication:
                         "type": GeometryType.LINE_STRING
                     },
                     "properties": {
-                        "startVertexId": int(filemetadata[2]),
-                        "endVertexId": int(filemetadata[3].replace(".geojson", "")),
+                        # "startVertexId": int(filemetadata[2]),
+                        # "endVertexId": int(filemetadata[3].replace(".geojson", "")),
                         "costAttribute": filemetadata[1]
                     }
                 }
@@ -407,6 +474,43 @@ class MetropAccessDigiroadApplication:
         totals["totalFeatures"] = len(totals["features"])
         outputFilename = getEnglishMeaning(costAttribute) + "_" + outputFilename
         self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename, data=totals)
+
+    @dgl_timer
+    def calculateSmallSummary(self, shortestPath, costAttribute):
+        """
+        Given a Geojson (Geometry type: LineString) files, read all the files from the given ``folderPath`` and
+        sum cost attribute and distance values (distance, and any of: speed_limit_time, day_avg_delay_time, midday_delay_time and
+        rush_hour_delay_time) and return the sum up of those values.
+
+        :param shortestPath: Shortest path geojson features.
+        :param costAttribute: The sum up will be based on the given cost impedance value.
+        :return: start point centroid id, end point centroid id, total distance and total travel time.
+        """
+
+        Logger.getInstance().info("Start calculateSmallSummary for: %s" % costAttribute)
+
+        pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+
+        startPointId = shortestPath["overallProperties"]["startPoint_" + pointIdentifierKey]
+        endPointId = shortestPath["overallProperties"]["endPoint_" + pointIdentifierKey]
+
+        travelTime = 0.0
+        totalDistance = 0.0
+        for segmentFeature in shortestPath["features"]:
+            for key in segmentFeature["properties"]:
+                if costAttribute == key:
+                    travelTime += segmentFeature["properties"][costAttribute]
+                if getEnglishMeaning(CostAttributes.DISTANCE) == key:
+                    totalDistance += segmentFeature["properties"][getEnglishMeaning(CostAttributes.DISTANCE)]
+
+        totalTravelTime = shortestPath["overallProperties"]["startPoint_EuclideanDistanceWalkingTime"] + \
+                          shortestPath["overallProperties"]["startPoint_AVGWalkingDistanceWalkingTime"] + \
+                          travelTime + \
+                          shortestPath["overallProperties"]["endPoint_ParkingTime"] + \
+                          shortestPath["overallProperties"]["endPoint_AVGWalkingDistanceWalkingTime"] + \
+                          shortestPath["overallProperties"]["endPoint_EuclideanDistanceWalkingTime"]
+
+        return startPointId, endPointId, totalDistance, totalTravelTime
 
     @dgl_timer_enabled
     def createGeneralSummary(self, startCoordinatesGeojsonFilename, endCoordinatesGeojsonFilename, costAttribute,
@@ -567,7 +671,7 @@ class MetropAccessDigiroadApplication:
 
         if not os.path.exists(summaryFolderPath):
             os.makedirs(summaryFolderPath)
-            
+
         dataframeSummary.to_csv(csv_path, sep=csv_separator, index=False)
 
         filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson",

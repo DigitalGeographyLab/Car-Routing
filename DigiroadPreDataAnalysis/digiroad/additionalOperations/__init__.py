@@ -91,7 +91,7 @@ class WalkingTimeOperation(AbstractAdditionalLayerOperation):
                 break
 
         if (self.walkingDistanceAttribute in featureJson["properties"]) \
-                and featureJson["properties"][self.walkingDistanceAttribute]:
+                and (featureJson["properties"][self.walkingDistanceAttribute] is not None):
             walkingDistance = featureJson["properties"][self.walkingDistanceAttribute]
         else:
             walkingDistance = self.defaultWalkingDistance
@@ -131,7 +131,7 @@ class ParkingTimeOperation(AbstractAdditionalLayerOperation):
 
         parkingTime = self.defaultParkingTime  # default parking time for any place in the metropolitan area rather than the city center
         if (self.parkingTimeAttribute in featureJson["properties"]) \
-                and featureJson["properties"][self.parkingTimeAttribute]:
+                and (featureJson["properties"][self.parkingTimeAttribute] is not None):
             parkingTime = float(featureJson["properties"][self.parkingTimeAttribute])
 
         newProperties = {

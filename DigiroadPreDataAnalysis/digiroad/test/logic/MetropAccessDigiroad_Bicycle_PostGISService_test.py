@@ -103,12 +103,12 @@ class MetropAccessDigiroadTest(unittest.TestCase):
         # outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderNotFast3%'.replace("%", os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolder%'.replace("%", os.sep)
 
-        distanceCostAttribute = CostAttributes.BICYCLE_FAST_TIME
-        # distanceCostAttribute = {
-        #     "DISTANCE": CostAttributes.DISTANCE,
-        #     "BICYCLE_FAST_TIME": CostAttributes.BICYCLE_FAST_TIME,
-        #     "BICYCLE_SLOW_TIME": CostAttributes.BICYCLE_SLOW_TIME,
-        # }
+        # distanceCostAttribute = CostAttributes.BICYCLE_FAST_TIME
+        distanceCostAttribute = {
+            # "DISTANCE": CostAttributes.DISTANCE,
+            "BICYCLE_FAST_TIME": CostAttributes.BICYCLE_FAST_TIME
+            # "BICYCLE_SLOW_TIME": CostAttributes.BICYCLE_SLOW_TIME,
+        }
         self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputStartCoordinatesURL,
                                                           endCoordinatesGeojsonFilename=inputEndCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,
@@ -138,7 +138,8 @@ class MetropAccessDigiroadTest(unittest.TestCase):
 
         expectedResult = self.fileActions.readJson(expectedJsonURL)
         self.metroAccessDigiroad.createDetailedSummary(outputFolderFeaturesURL,
-                                                       CostAttributes.BICYCLE_FAST_TIME, "metroAccessDigiroadSummary.geojson")
+                                                       CostAttributes.BICYCLE_FAST_TIME,
+                                                       "metroAccessDigiroadSummary.geojson")
 
         summaryOutputFolderFeaturesURL = outputFolderFeaturesURL + os.sep + "summary" + os.sep
         summaryResult = self.fileActions.readJson(
@@ -146,6 +147,23 @@ class MetropAccessDigiroadTest(unittest.TestCase):
                 CostAttributes.BICYCLE_FAST_TIME) + "_metroAccessDigiroadSummary.geojson")
 
         self.assertEqual(expectedResult, summaryResult)
+
+    def test_givenAShortestPathGeojson_then_calculateTheTotalTravelTime(self):
+        shortestPathFile = self.dir + '%digiroad%test%data%geojson%shortestPath-fast_time-bicycle.geojson'.replace(
+            "%",
+            os.sep
+        )
+        shortestPath = self.fileActions.readJson(shortestPathFile)
+
+        startPointId, endPointId, totalDistance, totalTravelTime = self.metroAccessDigiroad.calculateSmallSummary(
+            shortestPath=shortestPath,
+            costAttribute=CostAttributes.BICYCLE_FAST_TIME
+        )
+
+        self.assertEqual(0, startPointId)
+        self.assertEqual(38, endPointId)
+        self.assertEqual(19610.75592183732, totalDistance)
+        self.assertEqual(58.30832489071997, totalTravelTime)
 
     def test_givenOneStartPointGeojsonAndOneEndPointGeojson_then_createMultiPointSummary(self):
         startInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%onePoint.geojson'.replace("%", os.sep)
@@ -261,7 +279,7 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             "%",
             os.sep)
         endInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%sampleYKRGridPoints-5.geojson'.replace("%",
-                                                                                                                    os.sep)
+                                                                                                                os.sep)
         outputFolderFeaturesURL = self.dir + '%digiroad%test%data%outputFolderBicycleRoadNetwork%'.replace("%", os.sep)
 
         # startInputCoordinatesURL = self.dir + '%digiroad%test%data%geojson%sampleYKRGridPoints-100.geojson'.replace("%",
