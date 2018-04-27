@@ -107,7 +107,7 @@ def main():
 
         if opt in "--summary":
             summaryOnly = True
-        if opt in "routes":
+        if opt in "--routes":
             routesOnly = True
 
         if opt in "--is_entry_list":
@@ -212,7 +212,7 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
                     outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
                 )
 
-        if not routesOnly and summaryOnly:
+        if (not routesOnly) and summaryOnly:
             starterApplication.createGeneralSummary(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
@@ -237,7 +237,7 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
                     costAttribute=impedances[key],
                     outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
                 )
-            if not routesOnly and summaryOnly:
+            if (not routesOnly) and summaryOnly:
                 starterApplication.createGeneralSummary(
                     startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                     endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
