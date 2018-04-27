@@ -23,7 +23,8 @@ def printHelp():
         "\n\t[-o, --outputFolder]: The final destination where the output geojson and summary files will be located."
         "\n\t[-c, --cost]: The impedance/cost attribute to calculate the shortest path."
         "\n\t[-t, --transportMode]: The transport mode used to calculate the shortest path."
-        "\n\t[--cost_only]: Only the cost summary should be calculated."
+        "\n\t[--routes]: Only calculate the shortest path."
+        "\n\t[--summary]: Only the cost summary should be calculated."
         "\n\t[--is_entry_list]: The start and end points entries are folders containing a list of geojson files."
         "\n\t[--all]: Calculate the shortest path to all the impedance/cost attributes."
         "\n\nImpedance/cost values allowed:"
@@ -54,7 +55,7 @@ def main():
     opts, args = getopt.getopt(
         argv, "s:e:o:c:t:",
         ["start_point=", "end_point=", "outputFolder=", "cost",
-         "transportMode", "is_entry_list", "cost_only", "all", "help"]
+         "transportMode", "is_entry_list", "routes", "summary", "all", "help"]
     )
 
     startPointsGeojsonFilename = None
@@ -78,7 +79,8 @@ def main():
     }
 
     allImpedanceAttribute = False
-    costOnly = False
+    summaryOnly = False
+    routesOnly = False
     isEntryList = False
 
     impedanceErrorMessage = "Use the paramenter -c or --cost.\nValues allowed: DISTANCE, SPEED_LIMIT_TIME, DAY_AVG_DELAY_TIME, MIDDAY_DELAY_TIME, RUSH_HOUR_DELAY.\nThe parameter --all enable the analysis for all the impedance attributes."
@@ -103,8 +105,10 @@ def main():
         if opt in ("-t", "--transportMode"):
             transportModeSelected = arg
 
-        if opt in "--cost_only":
-            costOnly = True
+        if opt in "--summary":
+            summaryOnly = True
+        if opt in "routes":
+            routesOnly = True
 
         if opt in "--is_entry_list":
             isEntryList = True
@@ -154,7 +158,8 @@ def main():
         executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
                                    starter,
                                    impedance, impedances, allImpedanceAttribute,
-                                   costOnly,
+                                   summaryOnly,
+                                   routesOnly,
                                    prefix)
     else:
         for startRoot, startDirs, startFiles in os.walk(startPointsGeojsonFilename):
@@ -170,14 +175,16 @@ def main():
                                                            os.path.join(endRoot, endPointsFilename),
                                                            starter,
                                                            impedance, impedances, allImpedanceAttribute,
-                                                           costOnly,
+                                                           summaryOnly,
+                                                           routesOnly,
                                                            startPointsFilename + "_" + endPointsFilename + "-")
 
 
 def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
                                starterApplication,
                                impedance, impedances, allImpedanceAttribute,
-                               costOnly,
+                               summaryOnly,
+                               routesOnly,
                                prefix):
     Logger.configureLogger(outputFolder, prefix)
     config = getConfigurationProperties()
@@ -190,29 +197,32 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
     # )
 
     if impedance and not allImpedanceAttribute:
-        if not costOnly:
+        if routesOnly:
             starterApplication.calculateTotalTimeTravel(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 outputFolderPath=outputFolder,
                 costAttribute=impedance
             )
-            starterApplication.createDetailedSummary(
-                folderPath=outputFolder,
+
+            if summaryOnly:
+                starterApplication.createDetailedSummary(
+                    folderPath=outputFolder,
+                    costAttribute=impedance,
+                    outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
+                )
+
+        if not routesOnly and summaryOnly:
+            starterApplication.createGeneralSummary(
+                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
                 costAttribute=impedance,
-                outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
+                outputFolderPath=outputFolder,
+                outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary"
             )
 
-        starterApplication.createGeneralSummary(
-            startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-            endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-            costAttribute=impedance,
-            outputFolderPath=outputFolder,
-            outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary"
-        )
-
     if allImpedanceAttribute:
-        if not costOnly:
+        if routesOnly:
             starterApplication.calculateTotalTimeTravel(
                 startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                 endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
@@ -221,16 +231,17 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
             )
 
         for key in impedances:
-            if not costOnly:
+            if routesOnly and summaryOnly:
                 starterApplication.createDetailedSummary(
                     folderPath=outputFolder,
                     costAttribute=impedances[key],
                     outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
                 )
-            starterApplication.createGeneralSummary(
-                startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
-                endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
-                costAttribute=impedances[key],
-                outputFolderPath=outputFolder,
-                outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary"
-            )
+            if not routesOnly and summaryOnly:
+                starterApplication.createGeneralSummary(
+                    startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
+                    endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
+                    costAttribute=impedances[key],
+                    outputFolderPath=outputFolder,
+                    outputFilename=prefix + "dijsktraCostMetroAccessDigiroadSummary"
+                )
