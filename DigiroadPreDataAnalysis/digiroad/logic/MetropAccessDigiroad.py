@@ -253,7 +253,7 @@ class MetropAccessDigiroadApplication:
 
         self.fileActions.compressOutputFile(
             folderPath=summaryFolderPath,
-            zip_filename=csv_filename + "_summary_csv.zip",
+            zip_filename="summary_csv.zip",
             filepath=summaryFolderPath + os.sep + csv_filename
         )
 

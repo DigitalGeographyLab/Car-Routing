@@ -13,7 +13,7 @@ from digiroad.connection.PostgisServiceProvider import PostgisServiceProvider
 from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.transportMode.BicycleTransportMode import BicycleTransportMode
 from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
-from digiroad.util import CostAttributes, getEnglishMeaning, FileActions
+from digiroad.util import CostAttributes, getEnglishMeaning, FileActions, Logger
 
 
 class MetropAccessDigiroadTest(unittest.TestCase):
@@ -58,6 +58,11 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             "BICYCLE_FAST_TIME": CostAttributes.BICYCLE_FAST_TIME,
             "BICYCLE_SLOW_TIME": CostAttributes.BICYCLE_SLOW_TIME,
         }
+
+        prefix = os.path.basename(inputCoordinatesURL) + "_" + os.path.basename(input2CoordinatesURL) + "_log."
+
+        Logger.configureLogger(outputFolderFeaturesURL, prefix)
+
         self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputCoordinatesURL,
                                                           endCoordinatesGeojsonFilename=input2CoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,
@@ -109,6 +114,10 @@ class MetropAccessDigiroadTest(unittest.TestCase):
             "BICYCLE_FAST_TIME": CostAttributes.BICYCLE_FAST_TIME
             # "BICYCLE_SLOW_TIME": CostAttributes.BICYCLE_SLOW_TIME,
         }
+
+        prefix = CostAttributes.BICYCLE_FAST_TIME + "_log."
+
+        Logger.configureLogger(outputFolderFeaturesURL, prefix)
         self.metroAccessDigiroad.calculateTotalTimeTravel(startCoordinatesGeojsonFilename=inputStartCoordinatesURL,
                                                           endCoordinatesGeojsonFilename=inputEndCoordinatesURL,
                                                           outputFolderPath=outputFolderFeaturesURL,

@@ -381,22 +381,30 @@ def parallel_job_print(msg, msg_args):
 
 class Logger:
     __instance = None
+    __handler = None
 
     def __init__(self):
         raise Exception("Instances must be constructed with Logger.getInstance()")
 
     @staticmethod
     def configureLogger(outputFolder, prefix):
-        Logger.__instance = None
+        # Logger.__instance = None
 
         log_filename = prefix + "_log - %s.log" % getFormattedDatetime(timemilis=time.time(),
                                                                        format='%Y-%m-%d %H_%M_%S')
         logs_folder = outputFolder + os.sep + "logs"
 
         FileActions().createFile(logs_folder, log_filename)
+
+        if Logger.__handler is not None:
+            Logger.getInstance().removeHandler(Logger.__handler)
+
         fileHandler = logging.FileHandler(logs_folder + os.sep + log_filename, 'w')
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         fileHandler.setFormatter(formatter)
+
+        Logger.__handler = fileHandler
+
         Logger.getInstance().addHandler(fileHandler)
 
     @staticmethod
