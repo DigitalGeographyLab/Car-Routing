@@ -12,9 +12,116 @@ from digiroad.util import GeometryType, getEnglishMeaning, FileActions, extractC
     getConfigurationProperties, dgl_timer_enabled, \
     dgl_timer, parallel_job_print, Logger
 
-
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.util import CostAttributes
+
+
+# @dgl_timer
+def createShortestPathFileWithAdditionalProperties(self,
+                                                   costAttribute,
+                                                   startPointFeature,
+                                                   endPointFeature,
+                                                   outputFolderPath,
+                                                   summaryFolderPath,
+                                                   csv_filename,
+                                                   epsgCode):
+    ####################################
+    startVertexId, newStartPointFeature = extractFeatureInformation(
+        self=self,
+        endEPSGCode=epsgCode,
+        feature=startPointFeature,
+        geojsonServiceProvider=self.transportMode,
+        operations=self.operations
+    )
+
+    startCoordinates = newStartPointFeature["properties"]["selectedPointCoordinates"]
+    startPoint = Point(latitute=startCoordinates[1],
+                       longitude=startCoordinates[0],
+                       epsgCode=self.transportMode.getEPSGCode())
+
+    nearestStartCoordinates = newStartPointFeature["properties"]["nearestVertexCoordinates"]
+    nearestStartPoint = Point(latitute=nearestStartCoordinates[1],
+                              longitude=nearestStartCoordinates[0],
+                              epsgCode=self.transportMode.getEPSGCode())
+    ####################################
+    endVertexId, newEndPointFeature = extractFeatureInformation(
+        self=self,
+        endEPSGCode=epsgCode,
+        feature=endPointFeature,
+        geojsonServiceProvider=self.transportMode,
+        operations=self.operations
+    )
+
+    endCoordinates = newEndPointFeature["properties"]["selectedPointCoordinates"]
+    endPoint = Point(latitute=endCoordinates[1],
+                     longitude=endCoordinates[0],
+                     epsgCode=self.transportMode.getEPSGCode())
+
+    nearestEndCoordinates = newEndPointFeature["properties"]["nearestVertexCoordinates"]
+    nearestEndPoint = Point(latitute=nearestEndCoordinates[1],
+                            longitude=nearestEndCoordinates[0],
+                            epsgCode=self.transportMode.getEPSGCode())
+    ####################################
+
+    if startPoint.equals(endPoint):
+        return None, None, None, None
+
+    shortestPathId = str(startVertexId) + "_" + str(endVertexId)
+    existShortestPath = shortestPathId in self.shortestPathCache
+    if existShortestPath:
+        shortestPath = self.shortestPathCache[shortestPathId]
+        Logger.getInstance().info("Shortest path is cached %s " + shortestPathId)
+    else:
+        shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
+                                                          endVertexId=endVertexId,
+                                                          cost=costAttribute)
+        self.shortestPathCache[shortestPathId] = shortestPath
+
+    shortestPath = copy.deepcopy(shortestPath)
+
+    shortestPath["overallProperties"] = self.insertAdditionalProperties(
+        newStartPointFeature,
+        newEndPointFeature
+    )
+
+    shortestPath["overallProperties"]["selectedStartCoordinates"] = [startPoint.getLongitude(),
+                                                                     startPoint.getLatitude()]
+    shortestPath["overallProperties"]["selectedEndCoordinates"] = [endPoint.getLongitude(),
+                                                                   endPoint.getLatitude()]
+    shortestPath["overallProperties"]["nearestStartCoordinates"] = [nearestStartPoint.getLongitude(),
+                                                                    nearestStartPoint.getLatitude()]
+    shortestPath["overallProperties"]["nearestEndCoordinates"] = [nearestEndPoint.getLongitude(),
+                                                                  nearestEndPoint.getLatitude()]
+
+    shortestPath["overallProperties"]["startVertexId"] = startVertexId
+    shortestPath["overallProperties"]["endVertexId"] = endVertexId
+
+    if "totalFeatures" not in shortestPath:
+        shortestPath["totalFeatures"] = len(shortestPath["features"])
+
+    pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
+
+    startPointIdentifier = newStartPointFeature["properties"][pointIdentifierKey]
+    endPointIdentifier = newEndPointFeature["properties"][pointIdentifierKey]
+
+    filename = "shortestPath"
+    extension = "geojson"
+    completeFilename = "%s-%s-%s-%s.%s" % (
+        filename, getEnglishMeaning(costAttribute), startPointIdentifier, endPointIdentifier, extension)
+
+    startPointId, endPointId, totalDistance, totalTravelTime = self.calculateSmallSummary(
+        shortestPath=shortestPath,
+        costAttribute=CostAttributes.BICYCLE_FAST_TIME
+    )
+
+    valueList = [startPointId, endPointId, totalDistance, totalTravelTime]
+    self.fileActions.writeInCSV(summaryFolderPath, csv_filename, valueList)
+
+    if "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["storeShortPathFile"]):
+        self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
+                                   data=shortestPath)
+
+    return outputFolderPath, completeFilename, summaryFolderPath, csv_filename
 
 
 def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider, operations):
@@ -113,6 +220,7 @@ class MetropAccessDigiroadApplication:
         self.nearestVerticesCache = {}
         self.additionalStartFeaturePropertiesCache = {}
         self.additionalEndFeaturePropertiesCache = {}
+        self.shortestPathCache = {}
 
     @dgl_timer_enabled
     def calculateTotalTimeTravel(self,
@@ -136,15 +244,34 @@ class MetropAccessDigiroadApplication:
         if not startCoordinatesGeojsonFilename or not outputFolderPath:
             raise NotURLDefinedException()
 
+        if not outputFolderPath.endswith(os.sep):
+            summaryFolderPath = outputFolderPath + os.sep + "summary" + os.sep
+        else:
+            summaryFolderPath = outputFolderPath + "summary" + os.sep
+
         if isinstance(costAttribute, dict):
             for key in costAttribute:
-                newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
-                    costAttribute[key]) + os.sep
+                newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + \
+                                      getEnglishMeaning(costAttribute[key]) + os.sep
+                csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                    endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute[key]) + "_costSummary.csv"
+                zipCSVFilename = getEnglishMeaning(costAttribute[key]) + "_summary_csv.zip"
+
                 self.fileActions.deleteFolder(path=newOutputFolderPath)
+                self.fileActions.deleteFile(summaryFolderPath, csv_filename)
+                self.fileActions.deleteFile(summaryFolderPath, zipCSVFilename)
+
         else:
             newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
                 costAttribute) + os.sep
+            csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(
+                costAttribute) + "_costSummary.csv"
+            zipCSVFilename = getEnglishMeaning(costAttribute) + "_summary_csv.zip"
+
             self.fileActions.deleteFolder(path=newOutputFolderPath)
+            self.fileActions.deleteFile(summaryFolderPath, csv_filename)
+            self.fileActions.deleteFile(summaryFolderPath, zipCSVFilename)
 
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
             originalJsonURL=startCoordinatesGeojsonFilename,
@@ -159,93 +286,88 @@ class MetropAccessDigiroadApplication:
         epsgCode = self.operations.extractCRSWithGeopandas(
             startCoordinatesGeojsonFilename)  # extractCRS(inputStartCoordinates)
 
+        delayedShortedPathCalculations = []
+
+        ################################################################################################################
         for startPointFeature in inputStartCoordinates["features"]:
-            startCoordinates = startPointFeature["geometry"]["coordinates"]
+            # nearestStartPoint, startPoint, startPointEPSGCode, startVertexId = self.featureDataCompilation(
+            #     startPointFeature, startCoordinatesGeojsonFilename, epsgCode
+            # )
 
-            startPoint = Point(latitute=startCoordinates[1],
-                               longitude=startCoordinates[0],
-                               epsgCode=epsgCode)
-
-            startPoint = self.operations.transformPoint(startPoint, self.transportMode.getEPSGCode())
-            startPointNearestVertexGeojson = self.transportMode.getNearestRoutableVertexFromAPoint(
-                startPoint)
-            newFeatureStartPoint = startPointNearestVertexGeojson["features"][0]
-            startPointEPSGCode = self.operations.extractCRSWithGeopandas(
-                startCoordinatesGeojsonFilename)  # extractCRS(startPointNearestVertexGeojson)
-            nearestStartPoint = createPointFromPointFeature(newFeatureStartPoint, startPointEPSGCode)
-            startVertexId = newFeatureStartPoint["properties"]["id"]
-
-            ######## Add new properties to the start point feature
-            startPointFeature["properties"]["selectedPointCoordinates"] = [startPoint.getLongitude(),
-                                                                           startPoint.getLatitude()]
-            startPointFeature["properties"]["nearestVertexCoordinates"] = [nearestStartPoint.getLongitude(),
-                                                                           nearestStartPoint.getLatitude()]
-            startPointFeature["properties"]["coordinatesCRS"] = startPoint.getEPSGCode()
-            ########
 
             for endPointFeature in inputEndCoordinates["features"]:
-                endCoordinates = endPointFeature["geometry"]["coordinates"]
-                endPoint = Point(latitute=endCoordinates[1],
-                                 longitude=endCoordinates[0],
-                                 epsgCode=epsgCode)
-                endPoint = self.operations.transformPoint(endPoint, self.transportMode.getEPSGCode())
+                # nearestEndPoint, endPoint, endPointEPSGCode, endVertexId = self.featureDataCompilation(
+                #     endPointFeature, endCoordinatesGeojsonFilename, epsgCode
+                # )
 
-                if not startPoint.equals(endPoint):
-                    endPointNearestVertexGeojson = self.transportMode.getNearestRoutableVertexFromAPoint(
-                        endPoint)
-
-                    newFeatureEndPoint = endPointNearestVertexGeojson["features"][0]
-                    # endPointEPSGCode = extractCRS(endPointNearestVertexGeojson)
-                    nearestEndPoint = createPointFromPointFeature(newFeatureEndPoint,
-                                                                  startPointEPSGCode  # endPointEPSGCode
-                                                                  )
-                    endVertexId = newFeatureEndPoint["properties"]["id"]
-
-                    ######## Add new properties to the end point feature
-                    endPointFeature["properties"]["selectedPointCoordinates"] = [endPoint.getLongitude(),
-                                                                                 endPoint.getLatitude()]
-                    endPointFeature["properties"]["nearestVertexCoordinates"] = [nearestEndPoint.getLongitude(),
-                                                                                 nearestEndPoint.getLatitude()]
-                    endPointFeature["properties"]["coordinatesCRS"] = startPoint.getEPSGCode()
-                    ########
-
-                    if isinstance(costAttribute, dict):
-                        for key in costAttribute:
-                            newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
-                                costAttribute[key]) + os.sep
-                            csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
-                                endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(
-                                costAttribute[key]) + "_costSummary.csv"
-
-                            self.createShortestPathFileWithAdditionalProperties(costAttribute[key], startVertexId,
-                                                                                endVertexId,
-                                                                                startPoint, startPointFeature, endPoint,
-                                                                                endPointFeature, nearestEndPoint,
-                                                                                nearestStartPoint, outputFolderPath,
-                                                                                newOutputFolderPath, csv_filename)
-                    else:
+                if isinstance(costAttribute, dict):
+                    for key in costAttribute:
+                        newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
+                            costAttribute[key]) + os.sep
                         csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
-                            endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute) + "_costSummary.csv"
+                            endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(
+                            costAttribute[key]) + "_costSummary.csv"
 
-                        self.createShortestPathFileWithAdditionalProperties(costAttribute, startVertexId, endVertexId,
-                                                                            startPoint, startPointFeature, endPoint,
-                                                                            endPointFeature, nearestEndPoint,
-                                                                            nearestStartPoint, outputFolderPath,
-                                                                            newOutputFolderPath, csv_filename)
+                        # self.createShortestPathFileWithAdditionalProperties(costAttribute[key], startVertexId,
+                        #                                                     endVertexId,
+                        #                                                     startPoint, newStartPointFeature,
+                        #                                                     endPoint,
+                        #                                                     newEndPointFeature, nearestEndPoint,
+                        #                                                     nearestStartPoint,
+                        #                                                     newOutputFolderPath, summaryFolderPath,
+                        #                                                     csv_filename)
+
+                        delayedShortedPathCalculations.append(
+                            delayed(createShortestPathFileWithAdditionalProperties)(
+                                self, costAttribute[key],
+                                startPointFeature, endPointFeature,
+                                newOutputFolderPath, summaryFolderPath,
+                                csv_filename,
+                                epsgCode
+                            )
+                        )
+                else:
+                    csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
+                        endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute) + "_costSummary.csv"
+
+                    # self.createShortestPathFileWithAdditionalProperties(costAttribute, startVertexId, endVertexId,
+                    #                                                     startPoint, newStartPointFeature, endPoint,
+                    #                                                     newEndPointFeature, nearestEndPoint,
+                    #                                                     nearestStartPoint,
+                    #                                                     newOutputFolderPath, summaryFolderPath,
+                    #                                                     csv_filename)
+
+                    delayedShortedPathCalculations.append(
+                        delayed(createShortestPathFileWithAdditionalProperties)(
+                            self,
+                            costAttribute,
+                            startPointFeature, endPointFeature,
+                            newOutputFolderPath, summaryFolderPath,
+                            csv_filename,
+                            epsgCode)
+                    )
+
+        ################################################################################################################
+
+        with Parallel(n_jobs=int(getConfigurationProperties(section="PARALLELIZATION")["jobs"]),
+                      backend="threading",
+                      verbose=int(getConfigurationProperties(section="PARALLELIZATION")["verbose"])) as parallel:
+            parallel._print = parallel_job_print
+            returns = parallel(tuple(delayedShortedPathCalculations))
 
         if isinstance(costAttribute, dict):
             for key in costAttribute:
                 csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
                     endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute[key]) + "_costSummary.csv"
 
-                self.storeCSVFile(outputFolderPath, csv_filename)
+                self.storeCSVFile(getEnglishMeaning(costAttribute[key]), outputFolderPath, csv_filename)
         else:
             csv_filename = os.path.basename(startCoordinatesGeojsonFilename) + "_" + os.path.basename(
                 endCoordinatesGeojsonFilename) + "_" + getEnglishMeaning(costAttribute) + "_costSummary.csv"
 
-            self.storeCSVFile(outputFolderPath, csv_filename)
+            self.storeCSVFile(getEnglishMeaning(costAttribute), outputFolderPath, csv_filename)
 
-    def storeCSVFile(self, outputFolderPath, csv_filename):
+    def storeCSVFile(self, costAttribute, outputFolderPath, csv_filename):
         if not outputFolderPath.endswith(os.sep):
             summaryFolderPath = outputFolderPath + os.sep + "summary" + os.sep
         else:
@@ -253,7 +375,7 @@ class MetropAccessDigiroadApplication:
 
         self.fileActions.compressOutputFile(
             folderPath=summaryFolderPath,
-            zip_filename="summary_csv.zip",
+            zip_filename=costAttribute + "_summary_csv.zip",
             filepath=summaryFolderPath + os.sep + csv_filename
         )
 
@@ -264,62 +386,6 @@ class MetropAccessDigiroadApplication:
         if not debug:
             # self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson")
             self.fileActions.deleteFile(folderPath=summaryFolderPath, filename=csv_filename)
-
-    @dgl_timer
-    def createShortestPathFileWithAdditionalProperties(self, costAttribute, startVertexId, endVertexId, startPoint,
-                                                       startPointFeature, endPoint, endPointFeature, nearestEndPoint,
-                                                       nearestStartPoint, roorPath, outputFolderPath, csv_filename):
-        shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
-                                                          endVertexId=endVertexId,
-                                                          cost=costAttribute)
-        shortestPath["overallProperties"] = self.insertAdditionalProperties(
-            startPointFeature,
-            endPointFeature
-        )
-
-        shortestPath["overallProperties"]["selectedStartCoordinates"] = [startPoint.getLongitude(),
-                                                                         startPoint.getLatitude()]
-        shortestPath["overallProperties"]["selectedEndCoordinates"] = [endPoint.getLongitude(),
-                                                                       endPoint.getLatitude()]
-        shortestPath["overallProperties"]["nearestStartCoordinates"] = [nearestStartPoint.getLongitude(),
-                                                                        nearestStartPoint.getLatitude()]
-        shortestPath["overallProperties"]["nearestEndCoordinates"] = [nearestEndPoint.getLongitude(),
-                                                                      nearestEndPoint.getLatitude()]
-
-        shortestPath["overallProperties"]["startVertexId"] = startVertexId
-        shortestPath["overallProperties"]["endVertexId"] = endVertexId
-
-        if "totalFeatures" not in shortestPath:
-            shortestPath["totalFeatures"] = len(shortestPath["features"])
-
-        pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
-
-        startPointIdentifier = startPointFeature["properties"][pointIdentifierKey]
-        endPointIdentifier = endPointFeature["properties"][pointIdentifierKey]
-
-        filename = "shortestPath"
-        extension = "geojson"
-        completeFilename = "%s-%s-%s-%s.%s" % (
-            filename, getEnglishMeaning(costAttribute), startPointIdentifier, endPointIdentifier, extension)
-
-        startPointId, endPointId, totalDistance, totalTravelTime = self.calculateSmallSummary(
-            shortestPath=shortestPath,
-            costAttribute=CostAttributes.BICYCLE_FAST_TIME
-        )
-
-        if not roorPath.endswith(os.sep):
-            summaryFolderPath = roorPath + os.sep + "summary" + os.sep
-        else:
-            summaryFolderPath = roorPath + "summary" + os.sep
-
-        valueList = [startPointId, endPointId, totalDistance, totalTravelTime]
-        self.fileActions.writeInCSV(summaryFolderPath, csv_filename, valueList)
-
-        if "True".__eq__(getConfigurationProperties(section="WFS_CONFIG")["storeShortPathFile"]):
-            self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
-                                       data=shortestPath)
-
-        return outputFolderPath, completeFilename, summaryFolderPath, csv_filename
 
     def insertAdditionalProperties(self, startPointFeature, endPointFeature):
         startFeatureProperties = {}

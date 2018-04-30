@@ -311,8 +311,10 @@ class FileActions:
             outfile.close()
 
     def deleteFile(self, folderPath, filename):
+        Logger.getInstance().info("Deleting FILE %s" % os.path.join(folderPath, filename))
         if os.path.exists(folderPath + os.sep + filename):
             os.remove(folderPath + os.sep + filename)
+        Logger.getInstance().info("The FILE %s was deleted" % os.path.join(folderPath, filename))
 
     def deleteFolder(self, path):
         Logger.getInstance().info("Deleting FOLDER %s" % path)
