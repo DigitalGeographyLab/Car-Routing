@@ -66,18 +66,23 @@ def createShortestPathFileWithAdditionalProperties(self,
     if startPoint.equals(endPoint):
         return None, None, None, None
 
-    shortestPathId = str(startVertexId) + "_" + str(endVertexId)
-    existShortestPath = shortestPathId in self.shortestPathCache
-    if existShortestPath:
-        shortestPath = self.shortestPathCache[shortestPathId]
-        Logger.getInstance().info("Shortest path is cached %s " + shortestPathId)
-    else:
-        shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
-                                                          endVertexId=endVertexId,
-                                                          cost=costAttribute)
-        self.shortestPathCache[shortestPathId] = shortestPath
+    # shortestPathId = str(startVertexId) + "_" + str(endVertexId)
+    # existShortestPath = shortestPathId in self.shortestPathCache
+    # if existShortestPath:
+    #     shortestPath = self.shortestPathCache[shortestPathId]
+    #     Logger.getInstance().info("Shortest path is cached %s " + shortestPathId)
+    # else:
+    #     shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
+    #                                                       endVertexId=endVertexId,
+    #                                                       cost=costAttribute)
+    #     self.shortestPathCache[shortestPathId] = shortestPath
 
-    shortestPath = copy.deepcopy(shortestPath)
+    # shortestPath = copy.deepcopy(shortestPath)
+    ### The above cache procedure is too large that exceed the shared memory.
+
+    shortestPath = self.transportMode.getShortestPath(startVertexId=startVertexId,
+                                                      endVertexId=endVertexId,
+                                                      cost=costAttribute)
 
     shortestPath["overallProperties"] = self.insertAdditionalProperties(
         newStartPointFeature,
