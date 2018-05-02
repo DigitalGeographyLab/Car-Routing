@@ -61,6 +61,9 @@ WHERE
 GROUP BY
   e.old_id, e.liikennevi
 
+--------------------------------------------------------------------------------------------------
+
+
   
 --------------------------------------------------------------------------------------------------
 
@@ -96,6 +99,23 @@ FROM
 WHERE
   (e.source = v.id OR e.target = v.id)
   AND e.TOIMINNALL <> 10
+GROUP BY v.id, v.the_geom
+ORDER BY v.the_geom <-> ST_SetSRID(ST_MakePoint(%x%, %y%), 3857)
+LIMIT 1
+
+------------------------------------------------------------------------------------------------
+-- Nearest Car Routing Vertex within a radius
+SELECT
+  v.id,
+  ST_SnapToGrid(v.the_geom, 0.00000001) AS geom,
+  string_agg(distinct(e.id || ''),',') AS name
+FROM
+  helsinki_road_network_2018_vertices_pgr AS v,
+  helsinki_road_network_2018 AS e
+WHERE
+  (e.source = v.id OR e.target = v.id)
+  AND e.TOIMINN_LK <> 10
+  AND ST_DWithin(ST_Transform(v.the_geom, 4326),ST_Transform(ST_SetSRID(ST_MakePoint(%x%, %y%), 3857), 4326)::geography, 3000)
 GROUP BY v.id, v.the_geom
 ORDER BY v.the_geom <-> ST_SetSRID(ST_MakePoint(%x%, %y%), 3857)
 LIMIT 1

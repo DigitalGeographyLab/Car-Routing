@@ -5,6 +5,17 @@
 
         $scope.val = "Main controller variable value"
         $scope.geoserverUrl = "http://localhost:8080/geoserver";
+
+        // $scope.geoWorkspace = "tutorial";
+        // $scope.geoRoadNetworkLayer = "dgl_road_network";
+        // $scope.geoNearestVertexLayer = "dgl_nearest_car_routable_vertex";
+        // $scope.geoShortestPathLayer = "dgl_shortest_path";
+
+        $scope.geoWorkspace = "dgl_road_network_ws";
+        $scope.geoRoadNetworkLayer = "car_road_network_2018";
+        $scope.geoNearestVertexLayer = "car_nearest_vertex_2018";
+        $scope.geoShortestPathLayer = "car_shortest_path_2018";
+
         //var center = ol.proj.transform([-70.26, 43.67], 'EPSG:4326', 'EPSG:3857');
 
         L.Control.Layers.include({
@@ -104,12 +115,9 @@
             .openPopup();*/
 
         $scope.addRouteLayer = function(){
-            // var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-            //     'request=GetFeature&typeName=tutorial:route_network&' +
-            //     'outputformat=application/json&';
-
             var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                'request=GetFeature&typeName=tutorial:dgl_road_network&' +
+                'request=GetFeature&typeName=workspace:layerName&'.replace('workspace', $scope.geoWorkspace)
+                    .replace('layerName', $scope.geoRoadNetworkLayer) +
                 'outputformat=application/json&';
 
             $.ajax({
@@ -144,7 +152,7 @@
                 }
             });
         }
-        //$scope.addRouteLayer();
+        // $scope.addRouteLayer();
 
 
         $scope.changeImpedance = function (event) {
@@ -163,12 +171,8 @@
                 ];
 
                 var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                    'request=GetFeature&typeName=tutorial:shortest_path&' +
-                    'outputformat=application/json&' +
-                    '&viewparams=' + viewParams.join(';');
-
-                url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                    'request=GetFeature&typeName=tutorial:dgl_shortest_path&' +
+                    'request=GetFeature&typeName=workspace:layerName&'.replace('workspace', $scope.geoWorkspace)
+                        .replace('layerName', $scope.geoShortestPathLayer) +
                     'outputformat=application/json&' +
                     '&viewparams=' + viewParams.join(';');
 
@@ -365,12 +369,8 @@
             coordinates = L.latLng(coordinates[1], coordinates[0]);// [lat, lng]
 
             var url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                'request=GetFeature&typeName=tutorial:nearest_vertex&' +
-                'outputformat=application/json&' +
-                'viewparams=x:' + coordinates.lng + ';y:' + coordinates.lat;
-
-            url = $scope.geoserverUrl + '/wfs?service=WFS&version=1.0.0&' +
-                'request=GetFeature&typeName=tutorial:dgl_nearest_car_routable_vertex&' +
+                'request=GetFeature&typeName=workspace:layerName&'.replace('workspace', $scope.geoWorkspace)
+                    .replace('layerName', $scope.geoNearestVertexLayer) +
                 'outputformat=application/json&' +
                 'viewparams=x:' + coordinates.lng + ';y:' + coordinates.lat;
 
