@@ -109,6 +109,7 @@ class WalkingTimeOperation(AbstractAdditionalLayerOperation):
         newProperties = {
             prefix + PostfixAttribute.EUCLIDEAN_DISTANCE + PostfixAttribute.WALKING_TIME: euclideanDistanceTime,
             prefix + PostfixAttribute.AVG_WALKING_DISTANCE + PostfixAttribute.WALKING_TIME: walkingDistanceTime,
+            prefix + PostfixAttribute.AVG_WALKING_DISTANCE: walkingDistance
         }
         return newProperties
 

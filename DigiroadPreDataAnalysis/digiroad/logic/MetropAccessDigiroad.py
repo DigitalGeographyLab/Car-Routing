@@ -10,7 +10,7 @@ from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
 from digiroad.util import GeometryType, getEnglishMeaning, FileActions, extractCRS, createPointFromPointFeature, \
     getConfigurationProperties, dgl_timer_enabled, \
-    dgl_timer, parallel_job_print, Logger
+    dgl_timer, parallel_job_print, Logger, PostfixAttribute
 
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.util import CostAttributes
@@ -566,20 +566,26 @@ class MetropAccessDigiroadApplication:
         endPointId = shortestPath["overallProperties"]["endPoint_" + pointIdentifierKey]
 
         travelTime = 0.0
-        totalDistance = 0.0
+        distance = 0.0
         for segmentFeature in shortestPath["features"]:
             for key in segmentFeature["properties"]:
                 if costAttribute == key:
                     travelTime += segmentFeature["properties"][costAttribute]
                 if getEnglishMeaning(CostAttributes.DISTANCE) == key:
-                    totalDistance += segmentFeature["properties"][getEnglishMeaning(CostAttributes.DISTANCE)]
+                    distance += segmentFeature["properties"][getEnglishMeaning(CostAttributes.DISTANCE)]
 
-        totalTravelTime = shortestPath["overallProperties"]["startPoint_EuclideanDistanceWalkingTime"] + \
-                          shortestPath["overallProperties"]["startPoint_AVGWalkingDistanceWalkingTime"] + \
+        totalDistance = shortestPath["overallProperties"]["startPoint_" + PostfixAttribute.EUCLIDEAN_DISTANCE] + \
+                          shortestPath["overallProperties"]["startPoint_" + PostfixAttribute.AVG_WALKING_DISTANCE] + \
+                          distance + \
+                          shortestPath["overallProperties"]["endPoint_" + PostfixAttribute.AVG_WALKING_DISTANCE] + \
+                          shortestPath["overallProperties"]["endPoint_" + PostfixAttribute.EUCLIDEAN_DISTANCE]
+
+        totalTravelTime = shortestPath["overallProperties"]["startPoint_" + PostfixAttribute.EUCLIDEAN_DISTANCE + PostfixAttribute.WALKING_TIME] + \
+                          shortestPath["overallProperties"]["startPoint_" + PostfixAttribute.AVG_WALKING_DISTANCE + PostfixAttribute.WALKING_TIME] + \
                           travelTime + \
-                          shortestPath["overallProperties"]["endPoint_ParkingTime"] + \
-                          shortestPath["overallProperties"]["endPoint_AVGWalkingDistanceWalkingTime"] + \
-                          shortestPath["overallProperties"]["endPoint_EuclideanDistanceWalkingTime"]
+                          shortestPath["overallProperties"]["endPoint_" + PostfixAttribute.PARKING_TIME] + \
+                          shortestPath["overallProperties"]["endPoint_" + PostfixAttribute.AVG_WALKING_DISTANCE + PostfixAttribute.WALKING_TIME] + \
+                          shortestPath["overallProperties"]["endPoint_" + PostfixAttribute.EUCLIDEAN_DISTANCE + PostfixAttribute.WALKING_TIME]
 
         return startPointId, endPointId, totalDistance, totalTravelTime
 
