@@ -264,7 +264,7 @@ class MetropAccessDigiroadApplication:
 
                 self.fileActions.deleteFolder(path=newOutputFolderPath)
                 self.fileActions.deleteFile(summaryFolderPath, csv_filename)
-                self.fileActions.deleteFile(summaryFolderPath, zipCSVFilename)
+                # self.fileActions.deleteFile(summaryFolderPath, zipCSVFilename)
 
         else:
             newOutputFolderPath = outputFolderPath + os.sep + "geoms" + os.sep + getEnglishMeaning(
@@ -276,7 +276,7 @@ class MetropAccessDigiroadApplication:
 
             self.fileActions.deleteFolder(path=newOutputFolderPath)
             self.fileActions.deleteFile(summaryFolderPath, csv_filename)
-            self.fileActions.deleteFile(summaryFolderPath, zipCSVFilename)
+            # self.fileActions.deleteFile(summaryFolderPath, zipCSVFilename)
 
         inputStartCoordinates = self.operations.mergeAdditionalLayers(
             originalJsonURL=startCoordinatesGeojsonFilename,

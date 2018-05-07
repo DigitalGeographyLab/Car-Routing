@@ -219,7 +219,7 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
                         outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
                     )
 
-            if (not routesOnly) and summaryOnly:
+            elif summaryOnly:
                 starterApplication.createGeneralSummary(
                     startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                     endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
@@ -244,7 +244,7 @@ def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPoin
                     costAttribute=impedances[key],
                     outputFilename=prefix + "metroAccessDigiroadSummary.geojson"
                 )
-            if (not routesOnly) and summaryOnly:
+            elif summaryOnly:
                 starterApplication.createGeneralSummary(
                     startCoordinatesGeojsonFilename=startPointsGeojsonFilename,
                     endCoordinatesGeojsonFilename=endPointsGeojsonFilename,
