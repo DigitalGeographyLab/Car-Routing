@@ -11,6 +11,8 @@ class PrivateCarTransportMode(AbstractTransportMode):
         self.epsgCode = epsgCode
         self.fileActions = FileActions()
         self.serviceProvider = geojsonServiceProvider
+        config = getConfigurationProperties(section="DATABASE_CONFIG")
+        self.tableName = config["table_name"]
 
     def getNearestVertexFromAPoint(self, coordinates):
         """
@@ -29,19 +31,20 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "ST_SnapToGrid(v.the_geom, 0.00000001) AS geom, " \
               "string_agg(distinct(e.old_id || ''),',') AS name " \
               "FROM " \
-              "edges_vertices_pgr AS v," \
-              "edges AS e " \
+              "table_name_vertices_pgr AS v," \
+              "table_name AS e " \
               "WHERE " \
               "v.id = (SELECT " \
               "id" \
-              "FROM edges_vertices_pgr" \
+              "FROM table_name_vertices_pgr" \
               "AND ST_DWithin(ST_Transform(v.the_geom, 4326)," \
               "ST_Transform(ST_SetSRID(ST_MakePoint(%s, %s), %s), 4326)::geography," \
               "1000)" \
               "ORDER BY the_geom <-> ST_SetSRID(ST_MakePoint(%s, %s), %s) LIMIT 1)" \
               "AND (e.source = v.id OR e.target = v.id)" \
-              "GROUP BY v.id, v.the_geom" % (str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode,
-                                             str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode)
+              "GROUP BY v.id, v.the_geom".replace("table_name", self.tableName) % (
+                  str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode,
+                  str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode)
 
         geojson = self.serviceProvider.execute(sql)
 
@@ -75,7 +78,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
         #     print("Nearest Vertex found within the radius %s " % radius)
         # else:
         #     print("Nearest Vertex NOT found within the radius %s " % radius)
-        # 
+        #
         # print("End getNearestRoutableVertexFromAPoint")
         return geojson
 
@@ -85,8 +88,8 @@ class PrivateCarTransportMode(AbstractTransportMode):
         #        "ST_SnapToGrid(v.the_geom, 0.00000001) AS geom, " \
         #        "string_agg(distinct(e.old_id || ''),',') AS name " \
         #        "FROM " \
-        #        "edges_vertices_pgr AS v," \
-        #        "edges AS e " \
+        #        "table_name_vertices_pgr AS v," \
+        #        "table_name AS e " \
         #        "WHERE " \
         #        "(e.source = v.id OR e.target = v.id) " \
         #        "AND e.TOIMINNALL <> 10 " \
@@ -103,8 +106,8 @@ class PrivateCarTransportMode(AbstractTransportMode):
                "ST_SnapToGrid(v.the_geom, 0.00000001) AS geom, " \
                "string_agg(distinct(e.id || ''),',') AS name " \
                "FROM " \
-               "edges_vertices_pgr AS v," \
-               "edges AS e " \
+               "table_name_vertices_pgr AS v," \
+               "table_name AS e " \
                "WHERE " \
                "(e.source = v.id OR e.target = v.id) " \
                "AND e.TOIMINNALL <> 10 " \
@@ -113,9 +116,10 @@ class PrivateCarTransportMode(AbstractTransportMode):
                "%s)" \
                "GROUP BY v.id, v.the_geom " \
                "ORDER BY v.the_geom <-> ST_SetSRID(ST_MakePoint(%s, %s), %s)" \
-               "LIMIT 1" % (str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode,
-                            str(radius),
-                            str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode)
+               "LIMIT 1".replace("table_name", self.tableName) % (
+                   str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode,
+                   str(radius),
+                   str(coordinates.getLongitude()), str(coordinates.getLatitude()), epsgCode)
 
     def getShortestPath(self, startVertexId, endVertexId, cost):
         """
@@ -154,8 +158,8 @@ class PrivateCarTransportMode(AbstractTransportMode):
         #       "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3) THEN %s " \
         #       "ELSE -1 " \
         #       "END)::double precision AS reverse_cost " \
-        #       "FROM edges', %s, %s, true, true) AS r, " \
-        #       "edges AS e " \
+        #       "FROM table_name', %s, %s, true, true) AS r, " \
+        #       "table_name AS e " \
         #       "WHERE " \
         #       "r.id2 = e.id " \
         #       "GROUP BY e.old_id, e.liikennevi" % (cost, cost, str(startVertexId), str(endVertexId))
@@ -178,16 +182,17 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
-              "END)::double precision AS cost," \
+              "END)::double precision AS cost, " \
               "(CASE " \
               "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3) THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM edges', %s, %s, true, true) AS r, " \
-              "edges AS e " \
+              "FROM table_name', %s, %s, true, true) AS r, " \
+              "table_name AS e " \
               "WHERE " \
               "r.id2 = e.id " \
-              "GROUP BY e.id, e.liikennevi" % (cost, cost, str(startVertexId), str(endVertexId))
+              "GROUP BY e.id, e.liikennevi".replace("table_name", self.tableName) % (
+                  cost, cost, str(startVertexId), str(endVertexId))
 
         geojson = self.serviceProvider.execute(sql)
         # print("End getShortestPath")
@@ -224,14 +229,13 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM edges\', %s, %s, true)) as r," \
-              "edges_vertices_pgr AS s," \
-              "edges_vertices_pgr AS e " \
+              "FROM table_name', %s, %s, true)) as r," \
+              "table_name_vertices_pgr AS s," \
+              "table_name_vertices_pgr AS e " \
               "WHERE " \
               "s.id = r.start_vid " \
-              "and e.id = r.end_vid " \
-              % (
-                  costAttribute, costAttribute, startVertexID, endVertexID)
+              "and e.id = r.end_vid ".replace("table_name", self.tableName) \
+              % (costAttribute, costAttribute, startVertexID, endVertexID)
         # "GROUP BY " \
         # "s.id, e.id, r.agg_cost" \
 
@@ -269,14 +273,13 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM edges\', ARRAY[%s], %s, true)) as r," \
-              "edges_vertices_pgr AS s," \
-              "edges_vertices_pgr AS e " \
+              "FROM table_name', ARRAY[%s], %s, true)) as r," \
+              "table_name_vertices_pgr AS s," \
+              "table_name_vertices_pgr AS e " \
               "WHERE " \
               "s.id = r.start_vid " \
-              "and e.id = r.end_vid " \
-              % (
-                  costAttribute, costAttribute, ",".join(map(str, startVerticesID)), endVertexID)
+              "and e.id = r.end_vid ".replace("table_name", self.tableName) \
+              % (costAttribute, costAttribute, ",".join(map(str, startVerticesID)), endVertexID)
         # "GROUP BY " \
         # "s.id, e.id, r.agg_cost" \
 
@@ -316,14 +319,13 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
-              "FROM edges\', %s, ARRAY[%s], true)) as r," \
-              "edges_vertices_pgr AS s," \
-              "edges_vertices_pgr AS e " \
+              "FROM table_name', %s, ARRAY[%s], true)) as r," \
+              "table_name_vertices_pgr AS s," \
+              "table_name_vertices_pgr AS e " \
               "WHERE " \
               "s.id = r.start_vid " \
-              "and e.id = r.end_vid " \
-              % (
-                  costAttribute, costAttribute, startVertexID, ",".join(map(str, endVerticesID)))
+              "and e.id = r.end_vid ".replace("table_name", self.tableName) \
+              % (costAttribute, costAttribute, startVertexID, ",".join(map(str, endVerticesID)))
         # "GROUP BY " \
         # "s.id, e.id, r.agg_cost" \
 
@@ -373,9 +375,9 @@ class PrivateCarTransportMode(AbstractTransportMode):
     #           "THEN %s " \
     #           "ELSE -1 " \
     #           "END)::double precision AS reverse_cost " \
-    #           "FROM edges\', ARRAY[%s], ARRAY[%s], true)) as r," \
-    #           "edges_vertices_pgr AS s," \
-    #           "edges_vertices_pgr AS e " \
+    #           "FROM table_name\', ARRAY[%s], ARRAY[%s], true)) as r," \
+    #           "table_name_vertices_pgr AS s," \
+    #           "table_name_vertices_pgr AS e " \
     #           "WHERE " \
     #           "s.id = r.start_vid " \
     #           "and e.id = r.end_vid " \
@@ -444,12 +446,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
                       "THEN %s " \
                       "ELSE -1 " \
                       "END)::double precision AS reverse_cost " \
-                      "FROM edges\', ARRAY[%s], ARRAY[%s], true)) as r," \
-                      "edges_vertices_pgr AS s," \
-                      "edges_vertices_pgr AS e " \
+                      "FROM table_name', ARRAY[%s], ARRAY[%s], true)) as r," \
+                      "table_name_vertices_pgr AS s," \
+                      "table_name_vertices_pgr AS e " \
                       "WHERE " \
                       "s.id = r.start_vid " \
-                      "and e.id = r.end_vid " \
+                      "and e.id = r.end_vid ".replace("table_name", self.tableName) \
                       % (costAttribute, costAttribute,
                          ",".join(map(str, startVerticesID[startBottomLimit:startUpperLimit])),
                          ",".join(map(str, endVerticesID[endBottomLimit:endUpperLimit]))
