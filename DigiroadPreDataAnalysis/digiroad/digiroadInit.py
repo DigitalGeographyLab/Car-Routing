@@ -1,7 +1,13 @@
 import getopt
+import multiprocessing
 import sys
 
 import os
+
+import time
+import traceback
+
+import psutil
 
 from digiroad.carRoutingExceptions import ImpedanceAttributeNotDefinedException, NotParameterGivenException, \
     TransportModeNotDefinedException
@@ -11,29 +17,30 @@ from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.transportMode.BicycleTransportMode import BicycleTransportMode
 from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
 from digiroad.util import CostAttributes, getConfigurationProperties, TransportModes, Logger, FileActions, \
-    getFormattedDatetime
+    getFormattedDatetime, GeneralLogger
 
 
 def printHelp():
-    print(
-        "DigiroadPreDataAnalysis tool\n"
-        "\n\t[--help]: Print information about the parameters necessary to run the tool."
-        "\n\t[-s, --start_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
-        "\n\t[-e, --end_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
-        "\n\t[-o, --outputFolder]: The final destination where the output geojson and summary files will be located."
-        "\n\t[-c, --costAttributes]: The impedance/cost attribute to calculate the shortest path."
-        "\n\t[-t, --transportMode]: The transport mode used to calculate the shortest path."
-        "\n\t[--routes]: Only calculate the shortest path."
-        "\n\t[--summary]: Only the cost summary should be calculated."
-        "\n\t[--is_entry_list]: The start and end points entries are folders containing a list of geojson files."
-        "\n\t[--all]: Calculate the shortest path to all the impedance/cost attributes."
-        "\n\nImpedance/cost values allowed:"
-        "\n\tDISTANCE"
-        "\n\tSPEED_LIMIT_TIME"
-        "\n\tDAY_AVG_DELAY_TIME"
-        "\n\tMIDDAY_DELAY_TIME"
-        "\n\tRUSH_HOUR_DELAY"
-    )
+    # print(
+    #     "DigiroadPreDataAnalysis tool\n"
+    #     "\n\t[--help]: Print information about the parameters necessary to run the tool."
+    #     "\n\t[-s, --start_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
+    #     "\n\t[-e, --end_point]: Geojson file containing all the pair of points to calculate the shortest path between them."
+    #     "\n\t[-o, --outputFolder]: The final destination where the output geojson and summary files will be located."
+    #     "\n\t[-c, --costAttributes]: The impedance/cost attribute to calculate the shortest path."
+    #     "\n\t[-t, --transportMode]: The transport mode used to calculate the shortest path."
+    #     "\n\t[--routes]: Only calculate the shortest path."
+    #     "\n\t[--summary]: Only the cost summary should be calculated."
+    #     "\n\t[--is_entry_list]: The start and end points entries are folders containing a list of geojson files."
+    #     "\n\t[--all]: Calculate the shortest path to all the impedance/cost attributes."
+    #     "\n\nImpedance/cost values allowed:"
+    #     "\n\tDISTANCE"
+    #     "\n\tSPEED_LIMIT_TIME"
+    #     "\n\tDAY_AVG_DELAY_TIME"
+    #     "\n\tMIDDAY_DELAY_TIME"
+    #     "\n\tRUSH_HOUR_DELAY"
+    # )
+    pass
 
 
 def main():
@@ -51,6 +58,7 @@ def main():
 
     :return: None. All the information is stored in the ``shortestPathOutput`` URL.
     """
+
     argv = sys.argv[1:]
     opts, args = getopt.getopt(
         argv, "s:e:o:c:t:",
@@ -93,7 +101,7 @@ def main():
             printHelp()
             return
 
-        print("options: %s, arg: %s" % (opt, arg))
+        # print("options: %s, arg: %s" % (opt, arg))
 
         if opt in ("-s", "--start_point"):
             startPointsGeojsonFilename = arg
@@ -143,6 +151,9 @@ def main():
         raise ImpedanceAttributeNotDefinedException(
             impedanceErrorMessage)
 
+    generalLogger = GeneralLogger(loggerName="GENERAL", outputFolder=outputFolder)
+    MAX_TRIES = 2
+
     postgisServiceProvider = PostgisServiceProvider()
 
     transportMode = None
@@ -160,30 +171,83 @@ def main():
     )
 
     if not isEntryList:
-        prefix = ""
-        executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
-                                   starter,
-                                   impedanceList, impedances, allImpedanceAttribute,
-                                   summaryOnly,
-                                   routesOnly,
-                                   prefix)
+        prefix = os.path.basename(startPointsGeojsonFilename) + "_" + os.path.basename(endPointsGeojsonFilename)
+        error_counts = 0
+        executed = False
+
+        while not executed:
+            try:
+                executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
+                                           starter,
+                                           impedanceList, impedances, allImpedanceAttribute,
+                                           summaryOnly,
+                                           routesOnly,
+                                           prefix)
+            except Exception as err:
+                error_counts += 1
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                generalLogger.getLogger().exception(''.join('>> ' + line for line in lines))
+                generalLogger.getLogger().warning("MEMORY USAGE: %s" % psutil.virtual_memory())
+
+                Logger.getInstance().exception(''.join('>> ' + line for line in lines))
+
+                if error_counts < (MAX_TRIES + 1):
+                    message = "Error recovery for the %s time%s" % (
+                        error_counts, ("" if error_counts < 2 else "s"))
+                    generalLogger.getLogger().warning(message)
+                    Logger.getInstance().warning(message)
+                else:
+                    message = "Recurrent error, skipping analysis for: %s" % (
+                        prefix)
+                    generalLogger.getLogger().warning(message)
+                    Logger.getInstance().warning(message)
+                    executed = True
     else:
         for startRoot, startDirs, startFiles in os.walk(startPointsGeojsonFilename):
             for startPointsFilename in startFiles:
                 if startPointsFilename.endswith("geojson"):
-
                     for endRoot, endDirs, endFiles in os.walk(endPointsGeojsonFilename):
                         for endPointsFilename in endFiles:
                             if endPointsFilename.endswith("geojson"):
+                                prefix = startPointsFilename + "_" + endPointsFilename
+                                error_counts = 0
+                                executed = False
 
-                                executeSpatialDataAnalysis(outputFolder,
-                                                           os.path.join(startRoot, startPointsFilename),
-                                                           os.path.join(endRoot, endPointsFilename),
-                                                           starter,
-                                                           impedanceList, impedances, allImpedanceAttribute,
-                                                           summaryOnly,
-                                                           routesOnly,
-                                                           startPointsFilename + "_" + endPointsFilename + "-")
+                                while not executed:
+                                    try:
+                                        generalLogger.getLogger().info("Analyzing %s" % prefix)
+                                        executeSpatialDataAnalysis(outputFolder,
+                                                                   os.path.join(startRoot, startPointsFilename),
+                                                                   os.path.join(endRoot, endPointsFilename),
+                                                                   starter,
+                                                                   impedanceList, impedances, allImpedanceAttribute,
+                                                                   summaryOnly,
+                                                                   routesOnly,
+                                                                   prefix + "-")
+
+                                        error_counts = 0
+                                        executed = True
+                                    except Exception as err:
+                                        error_counts += 1
+                                        exc_type, exc_value, exc_traceback = sys.exc_info()
+                                        lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                                        generalLogger.getLogger().exception(''.join('>> ' + line for line in lines))
+                                        generalLogger.getLogger().warning("MEMORY USAGE: %s" % psutil.virtual_memory())
+
+                                        Logger.getInstance().exception(''.join('>> ' + line for line in lines))
+
+                                        if error_counts < (MAX_TRIES + 1):
+                                            message = "Error recovery for the %s time%s" % (
+                                                error_counts, ("" if error_counts < 2 else "s"))
+                                            generalLogger.getLogger().warning(message)
+                                            Logger.getInstance().warning(message)
+                                        else:
+                                            message = "Recurrent error, skipping analysis for: %s" % (
+                                                prefix)
+                                            generalLogger.getLogger().warning(message)
+                                            Logger.getInstance().warning(message)
+                                            executed = True
 
 
 def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,

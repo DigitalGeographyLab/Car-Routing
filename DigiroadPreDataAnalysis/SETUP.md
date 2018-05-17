@@ -38,6 +38,10 @@
 ```
     $ conda install -c anaconda joblib
 ```
+* psutil
+```
+    $ conda install -c anaconda psutil
+```
 
 # Run
 

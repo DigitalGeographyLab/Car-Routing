@@ -425,3 +425,33 @@ class Logger:
         # Logger.instance.error("error message")
         # Logger.instance.critical("critical message")
         return Logger.__instance
+
+
+class GeneralLogger:
+    def __init__(self, loggerName, outputFolder, prefix=""):
+        self.logger = self._createLogger(loggerName=loggerName)
+        self.handler = self._createLogFileHandler(outputFolder=outputFolder, prefix=prefix)
+
+        self.logger.addHandler(self.handler)
+
+    def _createLogger(self, loggerName):
+        configurationPath = os.getcwd() + "%resources%logging.properties".replace("%", os.sep)
+        logging.config.fileConfig(configurationPath)
+        # create logger
+        logger = logging.getLogger(loggerName)
+        return logger
+
+    def _createLogFileHandler(self, outputFolder, prefix):
+        log_filename = prefix + "_log - %s.log" % getFormattedDatetime(
+            timemilis=time.time(),
+            format='%Y-%m-%d %H_%M_%S'
+        )
+        logs_folder = outputFolder + os.sep + "logs"
+
+        fileHandler = logging.FileHandler(logs_folder + os.sep + log_filename, 'w')
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        fileHandler.setFormatter(formatter)
+        return fileHandler
+
+    def getLogger(self):
+        return self.logger
