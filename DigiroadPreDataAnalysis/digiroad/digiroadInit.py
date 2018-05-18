@@ -192,7 +192,12 @@ def main():
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
                 generalLogger.getLogger().exception(''.join('>> ' + line for line in lines))
-                generalLogger.getLogger().warning("MEMORY USAGE: %s" % psutil.virtual_memory())
+                memory = psutil.virtual_memory()
+                generalLogger.getLogger().warning(
+                    "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
+                        memory.total, memory.available, memory.percent, memory.used,
+                        memory.free)
+                )
 
                 Logger.getInstance().exception(''.join('>> ' + line for line in lines))
 
@@ -236,7 +241,12 @@ def main():
                                         exc_type, exc_value, exc_traceback = sys.exc_info()
                                         lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
                                         generalLogger.getLogger().exception(''.join('>> ' + line for line in lines))
-                                        generalLogger.getLogger().warning("MEMORY USAGE: %s" % psutil.virtual_memory())
+                                        memory = psutil.virtual_memory()
+                                        generalLogger.getLogger().warning(
+                                            "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
+                                                memory.total, memory.available, memory.percent, memory.used,
+                                                memory.free)
+                                            )
 
                                         Logger.getInstance().exception(''.join('>> ' + line for line in lines))
 
