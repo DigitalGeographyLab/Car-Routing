@@ -447,6 +447,7 @@ class GeneralLogger:
             format='%Y-%m-%d %H_%M_%S'
         )
         logs_folder = outputFolder + os.sep + "logs"
+        FileActions().createFile(logs_folder, log_filename)
 
         fileHandler = logging.FileHandler(logs_folder + os.sep + log_filename, 'w')
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')

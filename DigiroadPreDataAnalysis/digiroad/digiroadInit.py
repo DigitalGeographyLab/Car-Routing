@@ -17,7 +17,7 @@ from digiroad.logic.MetropAccessDigiroad import MetropAccessDigiroadApplication
 from digiroad.transportMode.BicycleTransportMode import BicycleTransportMode
 from digiroad.transportMode.PrivateCarTransportMode import PrivateCarTransportMode
 from digiroad.util import CostAttributes, getConfigurationProperties, TransportModes, Logger, FileActions, \
-    getFormattedDatetime, GeneralLogger
+    getFormattedDatetime, GeneralLogger, timeDifference
 
 
 def printHelp():
@@ -170,6 +170,9 @@ def main():
         transportMode=transportMode
     )
 
+    startTime = time.time()
+    functionName = "Routing Data Analysis"
+    generalLogger.getLogger().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
     if not isEntryList:
         prefix = os.path.basename(startPointsGeojsonFilename) + "_" + os.path.basename(endPointsGeojsonFilename)
         error_counts = 0
@@ -247,6 +250,11 @@ def main():
                                             generalLogger.getLogger().warning(message)
                                             Logger.getInstance().warning(message)
                                             executed = True
+    endTime = time.time()
+    generalLogger.getLogger().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+
+    totalTime = timeDifference(startTime, endTime)
+    generalLogger.getLogger().info("%s Total Time: %s m" % (functionName, totalTime))
 
 
 def executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,

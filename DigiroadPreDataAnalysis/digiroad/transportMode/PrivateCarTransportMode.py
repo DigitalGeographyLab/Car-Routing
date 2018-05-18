@@ -92,7 +92,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
         #        "table_name AS e " \
         #        "WHERE " \
         #        "(e.source = v.id OR e.target = v.id) " \
-        #        "AND e.TOIMINNALL <> 10 " \
+        #        "AND e.TOIMINN_LK <> 8 " \
         #        "AND ST_DWithin(ST_Transform(v.the_geom, 4326)," \
         #        "ST_Transform(ST_SetSRID(ST_MakePoint(%s, %s), %s), 4326)::geography," \
         #        "%s)" \
@@ -110,7 +110,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
                "table_name AS e " \
                "WHERE " \
                "(e.source = v.id OR e.target = v.id) " \
-               "AND e.TOIMINNALL <> 10 " \
+               "AND e.TOIMINN_LK <> 8 " \
                "AND ST_DWithin(ST_Transform(v.the_geom, 4326)," \
                "ST_Transform(ST_SetSRID(ST_MakePoint(%s, %s), %s), 4326)::geography," \
                "%s)" \
@@ -137,7 +137,7 @@ class PrivateCarTransportMode(AbstractTransportMode):
         # sql = "SELECT " \
         #       "min(r.seq) AS seq, " \
         #       "e.old_id AS id," \
-        #       "e.liikennevi::integer as direction," \
+        #       "e.AJOSUUNTA::integer as direction," \
         #       "sum(e.pituus) AS distance," \
         #       "sum(e.digiroa_aa) AS speed_limit_time," \
         #       "sum(e.kokopva_aa) AS day_avg_delay_time," \
@@ -150,23 +150,23 @@ class PrivateCarTransportMode(AbstractTransportMode):
         #       "source::integer," \
         #       "target::integer," \
         #       "(CASE  " \
-        #       "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+        #       "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
         #       "THEN %s " \
         #       "ELSE -1 " \
         #       "END)::double precision AS cost," \
         #       "(CASE " \
-        #       "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3) THEN %s " \
+        #       "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3) THEN %s " \
         #       "ELSE -1 " \
         #       "END)::double precision AS reverse_cost " \
         #       "FROM table_name', %s, %s, true, true) AS r, " \
         #       "table_name AS e " \
         #       "WHERE " \
         #       "r.id2 = e.id " \
-        #       "GROUP BY e.old_id, e.liikennevi" % (cost, cost, str(startVertexId), str(endVertexId))
+        #       "GROUP BY e.old_id, e.AJOSUUNTA" % (cost, cost, str(startVertexId), str(endVertexId))
         sql = "SELECT " \
               "min(r.seq) AS seq, " \
               "e.id AS id, " \
-              "e.liikennevi::integer as direction," \
+              "e.AJOSUUNTA::integer as direction," \
               "sum(e.pituus) AS distance," \
               "sum(e.digiroa_aa) AS speed_limit_time," \
               "sum(e.kokopva_aa) AS day_avg_delay_time," \
@@ -179,19 +179,19 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "source::integer," \
               "target::integer," \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS cost, " \
               "(CASE " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3) THEN %s " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3) THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
               "FROM table_name', %s, %s, true, true) AS r, " \
               "table_name AS e " \
               "WHERE " \
               "r.id2 = e.id " \
-              "GROUP BY e.id, e.liikennevi".replace("table_name", self.tableName) % (
+              "GROUP BY e.id, e.AJOSUUNTA".replace("table_name", self.tableName) % (
                   cost, cost, str(startVertexId), str(endVertexId))
 
         geojson = self.serviceProvider.execute(sql)
@@ -220,12 +220,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "FROM pgr_dijkstraCost(" \
               "\'SELECT id::integer, source::integer, target::integer, " \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS cost, " \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
@@ -264,12 +264,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "FROM pgr_dijkstraCost(" \
               "\'SELECT id::integer, source::integer, target::integer, " \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS cost, " \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
@@ -310,12 +310,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
               "FROM pgr_dijkstraCost(" \
               "\'SELECT id::integer, source::integer, target::integer, " \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS cost, " \
               "(CASE  " \
-              "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+              "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3)  " \
               "THEN %s " \
               "ELSE -1 " \
               "END)::double precision AS reverse_cost " \
@@ -345,12 +345,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
     #     """
     #
     #     # (CASE
-    #     # WHEN liikennevi = 2 OR liikennevi = 3
+    #     # WHEN AJOSUUNTA = 2 OR AJOSUUNTA = 3
     #     # THEN %s
     #     # ELSE -1
     #     # END)::double precision AS cost,
     #     # (CASE
-    #     # WHEN liikennevi = 2 OR liikennevi = 4
+    #     # WHEN AJOSUUNTA = 2 OR AJOSUUNTA = 4
     #     # THEN %s
     #     # ELSE -1
     #     # END)
@@ -366,12 +366,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
     #           "FROM pgr_dijkstraCost(" \
     #           "\'SELECT id::integer, source::integer, target::integer, " \
     #           "(CASE  " \
-    #           "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+    #           "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
     #           "THEN %s " \
     #           "ELSE -1 " \
     #           "END)::double precision AS cost, " \
     #           "(CASE  " \
-    #           "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+    #           "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3)  " \
     #           "THEN %s " \
     #           "ELSE -1 " \
     #           "END)::double precision AS reverse_cost " \
@@ -437,12 +437,12 @@ class PrivateCarTransportMode(AbstractTransportMode):
                       "FROM pgr_dijkstraCost(" \
                       "\'SELECT id::integer, source::integer, target::integer, " \
                       "(CASE  " \
-                      "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 4)  " \
+                      "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 4)  " \
                       "THEN %s " \
                       "ELSE -1 " \
                       "END)::double precision AS cost, " \
                       "(CASE  " \
-                      "WHEN toiminnall <> 10 AND (liikennevi = 2 OR liikennevi = 3)  " \
+                      "WHEN TOIMINN_LK <> 8 AND (AJOSUUNTA = 2 OR AJOSUUNTA = 3)  " \
                       "THEN %s " \
                       "ELSE -1 " \
                       "END)::double precision AS reverse_cost " \
