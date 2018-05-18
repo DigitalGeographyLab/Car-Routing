@@ -412,9 +412,9 @@ class Logger:
     @staticmethod
     def getInstance():
         if not Logger.__instance:
-            configurationPath = os.getcwd() + "%resources%logging.properties".replace("%", os.sep)
+            # configurationPath = os.getcwd() + "%resources%logging.properties".replace("%", os.sep)
 
-            logging.config.fileConfig(configurationPath)
+            # logging.config.fileConfig(configurationPath)
 
             # create logger
             Logger.__instance = logging.getLogger("CARDAT")

@@ -151,7 +151,7 @@ def main():
         raise ImpedanceAttributeNotDefinedException(
             impedanceErrorMessage)
 
-    generalLogger = GeneralLogger(loggerName="GENERAL", outputFolder=outputFolder)
+    generalLogger = GeneralLogger(loggerName="GENERAL", outputFolder=outputFolder, prefix="General")
     MAX_TRIES = 2
 
     postgisServiceProvider = PostgisServiceProvider()
@@ -177,6 +177,7 @@ def main():
 
         while not executed:
             try:
+                generalLogger.getLogger().info("Analyzing %s" % prefix)
                 executeSpatialDataAnalysis(outputFolder, startPointsGeojsonFilename, endPointsGeojsonFilename,
                                            starter,
                                            impedanceList, impedances, allImpedanceAttribute,
@@ -198,8 +199,7 @@ def main():
                     generalLogger.getLogger().warning(message)
                     Logger.getInstance().warning(message)
                 else:
-                    message = "Recurrent error, skipping analysis for: %s" % (
-                        prefix)
+                    message = "Recurrent error, skipping analysis for: %s" % prefix
                     generalLogger.getLogger().warning(message)
                     Logger.getInstance().warning(message)
                     executed = True
@@ -243,8 +243,7 @@ def main():
                                             generalLogger.getLogger().warning(message)
                                             Logger.getInstance().warning(message)
                                         else:
-                                            message = "Recurrent error, skipping analysis for: %s" % (
-                                                prefix)
+                                            message = "Recurrent error, skipping analysis for: %s" % prefix
                                             generalLogger.getLogger().warning(message)
                                             Logger.getInstance().warning(message)
                                             executed = True
