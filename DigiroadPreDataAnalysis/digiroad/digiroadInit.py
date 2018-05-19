@@ -208,6 +208,7 @@ def main():
                 time.sleep(RECOVERY_WAIT_TIME)
                 generalLogger.getLogger().warning("Calling garbage collector...")
                 gc.collect()
+                time.sleep(RECOVERY_WAIT_TIME)
                 memory = psutil.virtual_memory()
                 generalLogger.getLogger().warning(
                     "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
@@ -268,6 +269,7 @@ def main():
                                         time.sleep(RECOVERY_WAIT_TIME)
                                         generalLogger.getLogger().warning("Calling garbage collector...")
                                         gc.collect()
+                                        time.sleep(RECOVERY_WAIT_TIME)
                                         memory = psutil.virtual_memory()
                                         generalLogger.getLogger().warning(
                                             "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
