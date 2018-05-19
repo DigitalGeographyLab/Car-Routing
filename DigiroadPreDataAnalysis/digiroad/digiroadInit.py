@@ -1,5 +1,5 @@
 import getopt
-import multiprocessing
+import gc
 import sys
 
 import os
@@ -153,6 +153,7 @@ def main():
 
     generalLogger = GeneralLogger(loggerName="GENERAL", outputFolder=outputFolder, prefix="General")
     MAX_TRIES = 2
+    RECOVERY_WAIT_TIME = 10
 
     postgisServiceProvider = PostgisServiceProvider()
 
@@ -187,6 +188,9 @@ def main():
                                            summaryOnly,
                                            routesOnly,
                                            prefix)
+                error_counts = 0
+                executed = True
+                gc.collect()
             except Exception as err:
                 error_counts += 1
                 exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -200,6 +204,16 @@ def main():
                 )
 
                 Logger.getInstance().exception(''.join('>> ' + line for line in lines))
+
+                time.sleep(RECOVERY_WAIT_TIME)
+                generalLogger.getLogger().warning("Calling garbage collector...")
+                gc.collect()
+                memory = psutil.virtual_memory()
+                generalLogger.getLogger().warning(
+                    "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
+                        memory.total, memory.available, memory.percent, memory.used,
+                        memory.free)
+                )
 
                 if error_counts < (MAX_TRIES + 1):
                     message = "Error recovery for the %s time%s" % (
@@ -236,6 +250,7 @@ def main():
 
                                         error_counts = 0
                                         executed = True
+                                        gc.collect()
                                     except Exception as err:
                                         error_counts += 1
                                         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -249,6 +264,16 @@ def main():
                                             )
 
                                         Logger.getInstance().exception(''.join('>> ' + line for line in lines))
+
+                                        time.sleep(RECOVERY_WAIT_TIME)
+                                        generalLogger.getLogger().warning("Calling garbage collector...")
+                                        gc.collect()
+                                        memory = psutil.virtual_memory()
+                                        generalLogger.getLogger().warning(
+                                            "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
+                                                memory.total, memory.available, memory.percent, memory.used,
+                                                memory.free)
+                                        )
 
                                         if error_counts < (MAX_TRIES + 1):
                                             message = "Error recovery for the %s time%s" % (
