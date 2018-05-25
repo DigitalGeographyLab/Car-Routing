@@ -1,6 +1,7 @@
 import copy
 import os
 
+import time
 from joblib import delayed, Parallel
 
 from digiroad.carRoutingExceptions import NotURLDefinedException, \
@@ -10,7 +11,7 @@ from digiroad.logic.Operations import Operations
 from digiroad.reflection import Reflection
 from digiroad.util import GeometryType, getEnglishMeaning, FileActions, extractCRS, createPointFromPointFeature, \
     getConfigurationProperties, dgl_timer_enabled, \
-    dgl_timer, parallel_job_print, Logger, PostfixAttribute
+    dgl_timer, parallel_job_print, Logger, PostfixAttribute, getFormattedDatetime, timeDifference
 
 # from src.digiroad.carRoutingExceptions import NotWFSDefinedException, NotURLDefinedException  # ONLY test purposes
 from digiroad.util import CostAttributes
@@ -24,11 +25,16 @@ def createShortestPathFileWithAdditionalProperties(self,
                                                    outputFolderPath,
                                                    summaryFolderPath,
                                                    csv_filename,
-                                                   epsgCode):
+                                                   epsgCode,
+                                                   endEpsgCode):
+    # startTime = time.time()
+    # functionName = "createShortestPathFileWithAdditionalProperties"
+    # Logger.getInstance().info("%s Start Time: %s" % (functionName, getFormattedDatetime(timemilis=startTime)))
+
     ####################################
     startVertexId, newStartPointFeature = extractFeatureInformation(
         self=self,
-        endEPSGCode=epsgCode,
+        epsgCode=epsgCode,
         feature=startPointFeature,
         geojsonServiceProvider=self.transportMode,
         operations=self.operations
@@ -46,7 +52,7 @@ def createShortestPathFileWithAdditionalProperties(self,
     ####################################
     endVertexId, newEndPointFeature = extractFeatureInformation(
         self=self,
-        endEPSGCode=epsgCode,
+        epsgCode=endEpsgCode,
         feature=endPointFeature,
         geojsonServiceProvider=self.transportMode,
         operations=self.operations
@@ -126,10 +132,16 @@ def createShortestPathFileWithAdditionalProperties(self,
         self.fileActions.writeFile(folderPath=outputFolderPath, filename=completeFilename,
                                    data=shortestPath)
 
+    # endTime = time.time()
+    # Logger.getInstance().info("%s End Time: %s" % (functionName, getFormattedDatetime(timemilis=endTime)))
+    #
+    # totalTime = timeDifference(startTime, endTime)
+    # Logger.getInstance().info("%s Total Time: %s m" % (functionName, totalTime))
+
     return outputFolderPath, completeFilename, summaryFolderPath, csv_filename
 
 
-def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider, operations):
+def extractFeatureInformation(self, epsgCode, feature, geojsonServiceProvider, operations):
     pointIdentifierKey = getConfigurationProperties(section="WFS_CONFIG")["point_identifier"]
 
     pointId = feature["properties"][pointIdentifierKey]
@@ -139,7 +151,7 @@ def extractFeatureInformation(self, endEPSGCode, feature, geojsonServiceProvider
     coordinates = feature["geometry"]["coordinates"]
     featurePoint = Point(latitute=coordinates[1],
                          longitude=coordinates[0],
-                         epsgCode=endEPSGCode)
+                         epsgCode=epsgCode)
     featurePoint = operations.transformPoint(featurePoint, geojsonServiceProvider.getEPSGCode())
     nearestVertexGeojson = geojsonServiceProvider.getNearestRoutableVertexFromAPoint(
         featurePoint)
@@ -619,9 +631,9 @@ class MetropAccessDigiroadApplication:
 
         Logger.getInstance().info("Start nearest vertices finding")
         epsgCode = self.operations.extractCRSWithGeopandas(startCoordinatesGeojsonFilename)
-        # epsgCode = self.operations.extractCRSWithGeopandas(endCoordinatesGeojsonFilename)
+        endEpsgCode = self.operations.extractCRSWithGeopandas(endCoordinatesGeojsonFilename)
         startVerticesID, startPointsFeaturesList = self.getVerticesID(inputStartCoordinates, epsgCode)
-        endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates, epsgCode)
+        endVerticesID, endPointsFeaturesList = self.getVerticesID(inputEndCoordinates, endEpsgCode)
         Logger.getInstance().info("End nearest vertices finding")
 
         totals = None
@@ -732,8 +744,13 @@ class MetropAccessDigiroadApplication:
             "total_travel_time": "travel_time"
         }
 
-        dataframeSummary = self.operations.calculateTravelTimeFromGeojsonObject(
-            travelTimeSummary=totals
+
+        filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson",
+                                              data=totals)
+        totals = None
+
+        dataframeSummary = self.operations.calculateTravelTimeFromGeojsonFile(
+            travelTimeSummaryURL=filepath
         )
 
         dataframeSummary = self.operations.renameColumnsAndExtractSubSet(
@@ -750,9 +767,6 @@ class MetropAccessDigiroadApplication:
             os.makedirs(summaryFolderPath)
 
         dataframeSummary.to_csv(csv_path, sep=csv_separator, index=False)
-
-        filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson",
-                                              data=totals)
 
         self.fileActions.compressOutputFile(
             folderPath=summaryFolderPath,
