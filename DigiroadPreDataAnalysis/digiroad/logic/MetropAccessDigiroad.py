@@ -747,7 +747,7 @@ class MetropAccessDigiroadApplication:
 
         filepath = self.fileActions.writeFile(folderPath=summaryFolderPath, filename=outputFilename + ".geojson",
                                               data=totals)
-        totals = None
+        del totals
 
         dataframeSummary = self.operations.calculateTravelTimeFromGeojsonFile(
             travelTimeSummaryURL=filepath
