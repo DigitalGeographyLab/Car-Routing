@@ -154,6 +154,7 @@ def main():
     generalLogger = GeneralLogger(loggerName="GENERAL", outputFolder=outputFolder, prefix="General")
     MAX_TRIES = 2
     RECOVERY_WAIT_TIME = 10
+    RECOVERY_WAIT_TIME_8_MIN = 480
 
     postgisServiceProvider = PostgisServiceProvider()
 
@@ -208,7 +209,7 @@ def main():
                 time.sleep(RECOVERY_WAIT_TIME)
                 generalLogger.getLogger().warning("Calling garbage collector...")
                 gc.collect()
-                time.sleep(RECOVERY_WAIT_TIME)
+                time.sleep(RECOVERY_WAIT_TIME_8_MIN)
                 memory = psutil.virtual_memory()
                 generalLogger.getLogger().warning(
                     "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
@@ -262,14 +263,14 @@ def main():
                                             "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
                                                 memory.total, memory.available, memory.percent, memory.used,
                                                 memory.free)
-                                            )
+                                        )
 
                                         Logger.getInstance().exception(''.join('>> ' + line for line in lines))
 
                                         time.sleep(RECOVERY_WAIT_TIME)
                                         generalLogger.getLogger().warning("Calling garbage collector...")
                                         gc.collect()
-                                        time.sleep(RECOVERY_WAIT_TIME)
+                                        time.sleep(RECOVERY_WAIT_TIME_8_MIN)
                                         memory = psutil.virtual_memory()
                                         generalLogger.getLogger().warning(
                                             "MEMORY USAGE: total=%s, available=%s, percent=%s, used=%s, free=%s" % (
