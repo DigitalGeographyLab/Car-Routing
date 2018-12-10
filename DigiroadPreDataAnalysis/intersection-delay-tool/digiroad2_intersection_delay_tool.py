@@ -291,7 +291,7 @@ def is_endpoint(G, node):
     
 def get_paths_to_simplify(G, strict=True):
     """
-    Create a list of all the paths to be simplified between endpoint nodes.
+    Create a list of all the paths to be simplified (generalized) between endpoint nodes.
     The path is ordered from the first endpoint, through the interstitial nodes,
     to the second endpoint.
     Parameters
@@ -332,7 +332,7 @@ def get_paths_to_simplify(G, strict=True):
 
 def simplify_graph(G, strict=True, speed_limit_col='KmH', length_col='length'):
     """
-    Simplify a graph's topology by removing all nodes that are not intersections
+    Simplify (generalize) a graph's topology by removing all nodes that are not intersections
     or dead-ends.
     Create an edge directly between the end points that encapsulate them,
     but retain the geometry of the original edges, saved as attribute in new
